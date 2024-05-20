@@ -1,14 +1,22 @@
-const express=require('express');
-const app=express();
-const mongoose=require('mongoose');
-const stuRouter=require('./routes/stu.router');
+require('dotenv').config();
 
-mongoose.connect('mongodb://localhost:27017/stuDb').then(()=>{console.log("Connected to MongoDB")});
+const express = require('express');
+const connectDB = require('./backend/MongoDBConfig/DataBase');
+const userRoutes = require('./backend/routes/login_signup.routes');
+const complaintRoutes = require('./backend/routes/complaint.routes');
 
+const app = express();
 
-app.use(express.json())
+// Connect to database
+connectDB();
 
-app.use('/',stuRouter);
+// Init Middleware
+app.use(express.json({ extended: false }));
 
-app.listen(3000,(req,res)=>{console.log("Server running on port 3000")})
+// Define Routes
+app.use('/api/users', userRoutes);
+app.use('/api/complaints', complaintRoutes);
 
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
