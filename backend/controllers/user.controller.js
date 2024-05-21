@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/UserModel");
+const User = require("../models/schema.model");
 
 async function registerUser(req, res) {
   const { email, password, username,name, mobileNumber, role } = req.body;
@@ -64,7 +64,7 @@ async function loginUser(req, res) {
 async function userDetails(req, res) {
     try {
         //const { id } = req.params.id
-        const user = await user.findById(req.body.id)
+        const user = await User.findById(req.body.id)
         if (user) {
             const { password, ...info } = user._doc;
             res.status(200).json(info);
