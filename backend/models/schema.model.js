@@ -5,11 +5,12 @@ const schema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     username: { type: String, required: true },
+    name:{type:String,required:true},
     mobileNumber: { type: String },
     active: { type: Boolean, default: true },
     role: {
       type: String,
-      enum: ["admin", "employee", "user"],
+      enum: ["admin", "user"],
       default: "user",
     },
   },
