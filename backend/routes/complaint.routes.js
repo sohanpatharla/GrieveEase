@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { addComplaint, updateComplaint, listComplaintsByUser, deleteComplaint} = require('../controllers/complaint.controller');
-const verify = require('../JWT_Auth/verify');
+const verify = require('../middleware/verify');
 
 // Complaint routes
 router.post('/addComplaint', verify, addComplaint);
