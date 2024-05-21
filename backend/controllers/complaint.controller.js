@@ -1,8 +1,8 @@
-const userModel = require('../models/complaint.model');
+const Complaint = require('../models/complaint.model');
 
 async function addComplaint(req, res) {
     const { complaintId, complaintName, complaintContent } = req.body;
-    const createdBy = req.user._id;
+    const createdBy = req.user.id;
     try {
         const complaint = new Complaint({ complaintId, complaintName, complaintContent, createdBy });
         await complaint.save()
@@ -35,7 +35,7 @@ async function updateComplaint(req, res) {
 
 async function listComplaintsByUser(req,res) {
     try {
-        const complaints = await Complaint.find({ createdBy: req.user._id });
+        const complaints = await Complaint.find({ createdBy: req.user.id });
         res.json(complaints);
       } catch (err) {
         console.error(err.message);
@@ -45,16 +45,19 @@ async function listComplaintsByUser(req,res) {
 
 async function deleteComplaint(req, res) {
   try {
-      const complaint = await Complaint.findById(req.body.complaintId); // Find the complaint by its ID
+      const { complaintId } = req.params; // Accessing the complaint ID from route parameters
+      const complaint = await Complaint.findOne({ complaintId }); // Find the complaint by its complaintId
       if (!complaint) {
           return res.status(404).json("Complaint not found");
       }
 
       // Check if the user is either an admin or the creator of the complaint
-      if (req.user.role === "admin" || complaint.createdBy.equals(req.user._id)) {
-          const deletedComplaint = await Complaint.findByIdAndDelete(req.body.complaintId);
-          console.log(deletedComplaint);
-          const complaints = await Complaint.find({}); // Fetch all complaints
+      if (req.user.role === "admin" || complaint.createdBy.equals(req.user.id)) {
+          // Delete the complaint
+          await Complaint.findOneAndDelete({ complaintId });
+
+          // Fetch all complaints after deletion
+          const complaints = await Complaint.find({});
           return res.status(200).json(complaints);
       } else {
           return res.status(403).json("You are not authorized to delete this complaint");
@@ -63,5 +66,4 @@ async function deleteComplaint(req, res) {
       return res.status(500).json(err);
   }
 }
-
 module.exports = { addComplaint, updateComplaint, listComplaintsByUser, deleteComplaint}

@@ -62,3 +62,4 @@ Thumbs.db
 
 package.json
 package-lock.json
+.vscode

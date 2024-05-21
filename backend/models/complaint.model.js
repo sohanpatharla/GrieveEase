@@ -5,7 +5,7 @@ const Schema = new mongoose.Schema({
   complaintName: { type: String, required: true },
   complaintContent: { type: String, required: true },
   createdOn: { type: Date, default: Date.now },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User',required: true },
   resolvedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   status: { type: String, enum: ['open', 'closed'], default: 'open' }
 });

@@ -63,15 +63,15 @@ async function loginUser(req, res) {
 
 async function userDetails(req, res) {
     try {
-        //const { id } = req.params.id
-        const user = await User.findById(req.body._id)
-        if (user) {
-            const { password, ...info } = user._doc;
-            res.status(200).json(info);
+        //console.log(req.params.id)
+        const details = await User.findById(req.user.id)
+        if (details) {
+            const { password, ...info } = details._doc;
+            await res.status(200).json(info);
         }
-        else {
-            res.json({ message: `No User wuth id ${id}` })
-        }
+        // else {
+        //     res.json({ message: `No User wuth id ${id}` })
+        // }
     } catch (err) {
         res.status(500).json(err)
     }
