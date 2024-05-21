@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/UserModel");
 
 async function registerUser(req, res) {
-  const { email, password, username, mobileNumber, role } = req.body;
+  const { email, password, username,name, mobileNumber, role } = req.body;
 
   try {
     let user = await User.findOne({ username });
@@ -11,7 +11,7 @@ async function registerUser(req, res) {
       return res.status(400).json({ msg: "Username not available" });
     }
 
-    user = new User({ email, password, username, mobileNumber, role });
+    user = new User({ email, password, username, name,mobileNumber, role });
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
