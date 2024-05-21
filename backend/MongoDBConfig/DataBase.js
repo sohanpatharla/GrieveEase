@@ -5,7 +5,7 @@ const connectDB = async () => {
     await mongoose.connect('mongodb://localhost:27017/grievance_redressal', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
+      //useCreateIndex: true,
     });
     console.log('Connection to DB successful');
   } catch (err) {
