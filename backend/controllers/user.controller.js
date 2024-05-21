@@ -64,7 +64,7 @@ async function loginUser(req, res) {
 async function userDetails(req, res) {
     try {
         //const { id } = req.params.id
-        const user = await User.findById(req.body.id)
+        const user = await User.findById(req.body._id)
         if (user) {
             const { password, ...info } = user._doc;
             res.status(200).json(info);
