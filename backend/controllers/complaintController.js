@@ -1,4 +1,4 @@
-const Complaint = require('../models/complaint.model');
+const Complaint = require('../models/complaintModel');
 
 async function addComplaint(req, res) {
   const { complaintId, complaintName, complaintContent } = req.body;

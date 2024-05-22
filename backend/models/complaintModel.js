@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const Schema = new mongoose.Schema({
+  
   complaintId: { type: String, required: true, unique: true },
   complaintName: { type: String, required: true },
   complaintContent: { type: String, required: true },
@@ -10,4 +11,4 @@ const Schema = new mongoose.Schema({
   status: { type: String, enum: ['open', 'closed'], default: 'open' }
 });
 
-module.exports = mongoose.model('complaint', Schema);
+module.exports = mongoose.model('Complaint', Schema);
