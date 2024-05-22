@@ -7,7 +7,7 @@ const schema = new mongoose.Schema(
     username: { type: String, required: true },
     password: { type: String, required: true },
     mobileNumber: { type: String },
-    role: {default: "admin"},
+    role: {type: String, default: "admin"},
   },
   { timestamps: true }
 );

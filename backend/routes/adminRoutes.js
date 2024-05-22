@@ -1,16 +1,25 @@
 const express = require('express');
 const router = express.Router();
-//const { registerUser,loginUser, userDetails } = require('../controllers/user.controller');
-//const verify = require('../JWT_Auth/verify');
+const verify = require('../JWT_Auth/verify');
+const {
+    getAllComplaints,
+    addEmployee,
+    updateEmployee,
+    deleteEmployee,
+    mapComplaint,
+    updateComplaint,
+    openStatus,
+    closedStatus
+} = require('../controllers/adminController');
 
-// User routes
-router.get('/', getAllComplaints);
-router.post('/addEmployee',fun);
-router.put('/updateEmployee/:id', fun);
-router.delete('/deleteEmployee', fun);
-router.post('/mapComplaint/:issueId', fun);
-router.put('/updateComplaint/:id', fun);
-router.get('/openStatus', fun);
-router.get('/closedStatus',fun);
+// Use verify middleware to protect routes if needed
+router.get('/', verify, getAllComplaints);
+router.post('/addEmployee', verify, addEmployee);
+router.put('/updateEmployee/:id', verify, updateEmployee);
+router.delete('/deleteEmployee', verify, deleteEmployee);
+router.post('/mapComplaint/:id', verify, mapComplaint);
+router.put('/updateComplaint/:id', verify, updateComplaint);
+router.get('/openStatus', verify, openStatus);
+router.get('/closedStatus', verify, closedStatus);
 
 module.exports = router;
