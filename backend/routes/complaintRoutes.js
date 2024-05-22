@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { addComplaint, updateComplaint, listComplaintsByUser, deleteComplaint} = require('../controllers/complaint.controller');
+const { addComplaint, updateComplaint, listComplaintsByUser, deleteComplaint} = require('../controllers/complaintController');
 const verify = require('../JWT_Auth/verify');
 
 // Complaint routes

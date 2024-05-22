@@ -4,10 +4,10 @@ const router = express.Router();
 //const verify = require('../JWT_Auth/verify');
 
 // User routes
-router.get('/', getAllComplints);
-router.post('/addEmployee', fun);
-router.put('/updateEmployee/:id',verifyadmin, fun);
-router.delete('/deleteEmployee', verify, fun);
+router.get('/', getAllComplaints);
+router.post('/addEmployee',fun);
+router.put('/updateEmployee/:id', fun);
+router.delete('/deleteEmployee', fun);
 router.post('/mapComplaint/:issueId', fun);
 router.put('/updateComplaint/:id', fun);
 router.get('/openStatus', fun);
