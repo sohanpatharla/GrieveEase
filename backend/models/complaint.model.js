@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Schema = new mongoose.Schema({
-  complaintId: { type: String, required: true, unique: true },
+  complaintId: { type: Number, required: true },
   complaintName: { type: String, required: true },
   complaintContent: { type: String, required: true },
   createdOn: { type: Date, default: Date.now },
