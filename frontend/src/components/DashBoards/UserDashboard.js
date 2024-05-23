@@ -21,9 +21,9 @@ const UserDashboard = () => {
   const [error, setError] = useState('');
   const [user, setUser] = useState(null); // Assuming user info is stored here
 
-  useEffect(() => {
-    fetchComplaints();
-  }, []);
+  // useEffect(() => {
+  //   fetchComplaints();
+  // }, []);
 
   const fetchComplaints = async () => {
     try {

@@ -44,7 +44,8 @@ const deleteEmployee = async (req, res) => {
     const { id } = req.body;
 
     try {
-        await Employee.findByIdAndDelete(id);
+        const emp = await Employee.findOne({employeeId:id});
+        await Employee.findOneAndDelete({ _id: emp._id });
         res.status(200).json({ message: 'Employee deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
