@@ -27,7 +27,7 @@ app.use(express.json({ extended: false }));
 // Define Routes
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/complaints',verify, complaintRoutes);
+app.use('/api/complaints', complaintRoutes);
 // app.use('/ogrs/admin',adminRoutes);
 // app.use('/ogrs/employee',employeeRoutes);
 

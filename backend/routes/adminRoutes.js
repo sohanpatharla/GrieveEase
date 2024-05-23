@@ -13,7 +13,7 @@ const {
 } = require('../controllers/adminController');
 
 // Use verify middleware to protect routes if needed
-router.get('/', getAllComplaints);
+router.get('/complaints', getAllComplaints);
 router.post('/addEmployee', addEmployee);
 router.put('/updateEmployee/:id', updateEmployee);
 router.delete('/deleteEmployee', deleteEmployee);
