@@ -31,26 +31,18 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('/api/users/profiles');
+      const res = await axios.get('http://localhost:5000/api/users/profiles');
       console.log('Fetched users:', res.data);
       setUsers(res.data);
     } catch (error) {
-      if (error.response) {
-        console.error('Error response:', error.response);
-        console.error('Status:', error.response.status);
-        console.error('Data:', error.response.data);
-      } else if (error.request) {
-        console.error('Error request:', error.request);
-      } else {
-        console.error('General error:', error.message);
-      }
-      console.error('Error fetching users:', error.config);
+      console.error('Error fetching Users:', error);
     }
   };
 
   const fetchComplaints = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/admin/complaints');
+      console.log('Fetched Complaints:', res.data);
       setComplaints(res.data);
     } catch (error) {
       console.error('Error fetching complaints:', error);
@@ -189,11 +181,15 @@ const AdminDashboard = () => {
             <div className="buttons">
               <button onClick={fetchComplaints}>Complaints</button>
             </div>
+            {users.length > 0 ? (
             <ul>
               {complaints.map(complaint => (
-                <li key={complaint.id}>{complaint.complaintName} - {complaint.status}</li>
+                <li key={complaint._id}>{complaint.complaintName} - {complaint.status}</li>
               ))}
             </ul>
+            ) : (
+              <p>No users found. Click "Fetch Users" to load data.</p>
+            )}
           </div>
         )}
         {activeTab === 'statusManagement' && (
