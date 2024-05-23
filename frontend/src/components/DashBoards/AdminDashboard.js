@@ -12,9 +12,9 @@ const AdminDashboard = () => {
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const fetchData = async () => {
     await fetchUsers();
