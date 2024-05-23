@@ -38,6 +38,7 @@ const UserDashboard = () => {
   const addComplaint = async () => {
     try {
       const res = await api.post('/complaints/addComplaint', { ...newComplaint, createdBy: user });
+      console.log(res.data);
       setComplaints([...complaints, res.data]);
       setNewComplaint({
         complaintId: '',
@@ -148,6 +149,7 @@ const UserDashboard = () => {
                 <span>Description: {complaint.complaintContent}</span>
                 <span>Priority: {complaint.priority}</span>
                 <span>Category: {complaint.category}</span>
+                <span>Comments: {complaint.comments}</span>
                 <span>Status: {complaint.status}</span>
                 <span>Last Updated: {new Date(complaint.lastUpdated).toLocaleString()}</span>
               </div>
