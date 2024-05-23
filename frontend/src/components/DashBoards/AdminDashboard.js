@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './AdminDashboard.css';
+// import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('userManagement');
@@ -30,7 +30,22 @@ const AdminDashboard = () => {
   };
 
   const fetchUsers = async () => {
-    // Implement fetch users if required
+    try {
+      const res = await axios.get('/api/users/profiles');
+      console.log('Fetched users:', res.data);
+      setUsers(res.data);
+    } catch (error) {
+      if (error.response) {
+        console.error('Error response:', error.response);
+        console.error('Status:', error.response.status);
+        console.error('Data:', error.response.data);
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+      } else {
+        console.error('General error:', error.message);
+      }
+      console.error('Error fetching users:', error.config);
+    }
   };
 
   const fetchComplaints = async () => {
@@ -113,12 +128,15 @@ const AdminDashboard = () => {
       setMessage('Complaint updated successfully!');
       fetchComplaints();
     } catch (error) {
+      console.error('Error updating complaint:', error.response || error.message);
       setMessage('Error updating complaint');
       console.error('Error updating complaint:', error);
     }
   };
 
-  const handleMapComplaint = async (id) => {
+  const handleMapComplaint = async (e) => {
+    e.preventDefault();
+    const { id } = formData;
     try {
       const res = await axios.post(`http://localhost:5000/api/admin/mapComplaint/${id}`, formData);
       setMessage('Complaint mapped successfully!');
@@ -133,63 +151,49 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
       <div className="tabs">
-        <button
-          className={activeTab === 'userManagement' ? 'active' : ''}
-          onClick={() => handleTabChange('userManagement')}
-        >
-          User Management
-        </button>
-        <button
-          className={activeTab === 'complaintManagement' ? 'active' : ''}
-          onClick={() => handleTabChange('complaintManagement')}
-        >
-          Complaint Management
-        </button>
-        <button
-          className={activeTab === 'statusManagement' ? 'active' : ''}
-          onClick={() => handleTabChange('statusManagement')}
-        >
-          Status Management
-        </button>
-        <button
-          className={activeTab === 'employeeManagement' ? 'active' : ''}
-          onClick={() => handleTabChange('employeeManagement')}
-        >
-          Employee Management
-        </button>
-        <button
-          className={activeTab === 'dashboardAnalytics' ? 'active' : ''}
-          onClick={() => handleTabChange('dashboardAnalytics')}
-        >
-          Dashboard Analytics
-        </button>
+        <button className={activeTab === 'userManagement' ? 'active' : ''} onClick={() => handleTabChange('userManagement')}>User Management</button>
+        <button className={activeTab === 'complaintManagement' ? 'active' : ''} onClick={() => handleTabChange('complaintManagement')}>Complaint Management</button>
+        <button className={activeTab === 'statusManagement' ? 'active' : ''} onClick={() => handleTabChange('statusManagement')}>Status Management</button>
+        <button className={activeTab === 'employeeManagement' ? 'active' : ''} onClick={() => handleTabChange('employeeManagement')}>Employee Management</button>
+        <button className={activeTab === 'dashboardAnalytics' ? 'active' : ''} onClick={() => handleTabChange('dashboardAnalytics')}>Dashboard Analytics</button>
       </div>
       <div className="dashboard-content">
         {message && <p className="message">{message}</p>}
         {activeTab === 'userManagement' && (
           <div>
-            <h2>User Management</h2>
-            <ul>
-              {users.map(user => (
-                <li key={user.id}>{user.name} - {user.email}</li>
-              ))}
-            </ul>
+            <h2>User Data</h2>
+            <div className="buttons">
+              <button onClick={fetchUsers}>Fetch Users</button>
+            </div>
+            {users.length > 0 ? (
+              <ul>
+                {users.map(user => (
+                  <li key={user._id}>{user.name} - {user.email}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No users found. Click "Fetch Users" to load data.</p>
+            )}
           </div>
         )}
         {activeTab === 'complaintManagement' && (
           <div>
             <h2>Complaint Management</h2>
-            <ul>
-              {complaints.map(complaint => (
-                <li key={complaint.id}>{complaint.complaintName} - {complaint.status}</li>
-              ))}
-            </ul>
-            <form onSubmit={(e) => handleUpdateComplaint(formData.id)}>
+            <form onSubmit={handleUpdateComplaint}>
+              <input type="text" name="id" placeholder="Complaint ID" onChange={handleInputChange} />
               <input type="text" name="complaintName" placeholder="Complaint Name" onChange={handleInputChange} />
               <input type="text" name="complaintContent" placeholder="Complaint Content" onChange={handleInputChange} />
               <input type="text" name="status" placeholder="Status" onChange={handleInputChange} />
               <button type="submit">Update Complaint</button>
             </form>
+            <div className="buttons">
+              <button onClick={fetchComplaints}>Complaints</button>
+            </div>
+            <ul>
+              {complaints.map(complaint => (
+                <li key={complaint.id}>{complaint.complaintName} - {complaint.status}</li>
+              ))}
+            </ul>
           </div>
         )}
         {activeTab === 'statusManagement' && (
@@ -205,28 +209,26 @@ const AdminDashboard = () => {
         {activeTab === 'employeeManagement' && (
           <div>
             <h2>Employee Management</h2>
-            <ul>
-              {employees.map(employee => (
-                <li key={employee.id}>{employee.name} - {employee.role}</li>
-              ))}
-            </ul>
             <form onSubmit={handleAddEmployee}>
-              <input type="text" name="companyEmail" placeholder="Company Email" onChange={handleInputChange} />
-              <input type="text" name="employeeId" placeholder="Employee ID" onChange={handleInputChange} />
-              <input type="text" name="employeeName" placeholder="Employee Name" onChange={handleInputChange} />
-              <input type="text" name="username" placeholder="Username" onChange={handleInputChange} />
-              <input type="password" name="password" placeholder="Password" onChange={handleInputChange} />
-              <input type="text" name="mobileNumber" placeholder="Mobile Number" onChange={handleInputChange} />
+              <input type="text" name="name" placeholder="Name" onChange={handleInputChange} />
+              <input type="email" name="email" placeholder="Email" onChange={handleInputChange} />
               <button type="submit">Add Employee</button>
             </form>
+            <ul>
+              {employees.map(employee => (
+                <li key={employee.id}>
+                  {employee.name} - {employee.email}
+                  <button onClick={() => handleUpdateEmployee(employee.id)}>Update</button>
+                  <button onClick={() => handleDeleteEmployee(employee.id)}>Delete</button>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
         {activeTab === 'dashboardAnalytics' && (
           <div>
             <h2>Dashboard Analytics</h2>
-            <p>Total Users: {analytics.totalUsers}</p>
-            <p>Total Complaints: {analytics.totalComplaints}</p>
-            <p>Resolved Complaints: {analytics.resolvedComplaints}</p>
+            <pre>{JSON.stringify(analytics, null, 2)}</pre>
           </div>
         )}
       </div>

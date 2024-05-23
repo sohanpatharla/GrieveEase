@@ -14,7 +14,8 @@ const getAllComplaints = async (req, res) => {
 
 // Function to add a new employee
 const addEmployee = async (req, res) => {
-    const { companyEmail, employeeId, employeeName, username, password, mobileNumber, addedBy } = req.body;
+    const { companyEmail, employeeId, employeeName, username, password, mobileNumber } = req.body;
+    const addedBy = req.user.id;
 
     try {
         const newEmployee = new Employee({ companyEmail, employeeId, employeeName, username, password, mobileNumber, addedBy });
@@ -67,13 +68,15 @@ const mapComplaint = async (req, res) => {
 const updateComplaint = async (req, res) => {
     const { id } = req.params;
     const { complaintName, complaintContent, status } = req.body;
-
+    const updatedComplaint_id = await Complaint.findOne({complaintId : id})
+    if(updatedComplaint_id){
     try {
-        const updatedComplaint = await Complaint.findByIdAndUpdate(id, { complaintName, complaintContent, status }, { new: true });
+        const updatedComplaint = await Complaint.findByIdAndUpdate(updatedComplaint_id._id, { complaintName, complaintContent, status }, { new: true });
         res.status(200).json(updatedComplaint);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
+}
 };
 
 // Function to get all open complaints
