@@ -20,7 +20,7 @@ async function addComplaint(req, res) {
     await complaint.save().then(()=>{
       console.log("Saved");
     });
-    res.status(201).json({ msg: 'Complaint added successfully' });
+    res.status(201).json(complaint);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
