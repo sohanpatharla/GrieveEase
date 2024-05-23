@@ -89,7 +89,7 @@ async function registerUser(req, res) {
 }
 
 
-module.exports = { registerUser,loginUser };
+//module.exports = { registerUser,loginUser };
   
 // const bcrypt = require("bcryptjs");
 // const jwt = require("jsonwebtoken");
@@ -154,20 +154,21 @@ module.exports = { registerUser,loginUser };
 //   }
 // }
 
-// async function userDetails(req, res) {
-//     try {
-//         //console.log(req.params.id)
-//         const details = await User.findById(req.user.id)
-//         if (details) {
-//             const { password, ...info } = details._doc;
-//             await res.status(200).json(info);
-//         }
-//         // else {
-//         //     res.json({ message: `No User wuth id ${id}` })
-//         // }
-//     } catch (err) {
-//         res.status(500).json(err)
-//     }
-// }
+async function userDetails(req, res) {
+    try {
+        //console.log(req.params.id)
+        const details = await User.find({})
+        await res.status(200).json(details);
+        // if (details) {
+        //     const { password, ...info } = details._doc;
+        //     await res.status(200).json(info);
+        // }
+        // else {
+        //     res.json({ message: `No User wuth id ${id}` })
+        // }
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
 
-// module.exports = { registerUser, loginUser, userDetails };
+module.exports = { registerUser, loginUser, userDetails };
