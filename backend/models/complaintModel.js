@@ -10,7 +10,7 @@ const complaintSchema = new mongoose.Schema({
   attachments: { type: Array, default: [] },
   comments: { type: String, default: '' },
   createdOn: { type: Date, default: Date.now },
-  status: { type: String, default: 'Pending' },
+  status: { type: String, enum: ['Closed', 'Pending'], default: 'Pending' },
   lastUpdated: { type: Date, default: Date.now },
   assignedTo: { type: String, default: '' },
 }, { timestamps: true });

@@ -3,6 +3,7 @@ const router = express.Router();
 const verify = require('../JWT_Auth/verify');
 const {
     getAllComplaints,
+    getAllEmployees,
     addEmployee,
     updateEmployee,
     deleteEmployee,
@@ -14,6 +15,7 @@ const {
 
 // Use verify middleware to protect routes if needed
 router.get('/complaints', getAllComplaints);
+router.get('/employees', getAllEmployees);
 router.post('/addEmployee', addEmployee);
 router.put('/updateEmployee/:id', updateEmployee);
 router.delete('/deleteEmployee', deleteEmployee);

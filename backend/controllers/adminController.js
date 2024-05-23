@@ -12,6 +12,15 @@ const getAllComplaints = async (req, res) => {
     }
 };
 
+const getAllEmployees = async (req,res) => {
+    try {
+        const employees = await Employee.find();
+        res.status(200).json(employees);
+    }catch(error){
+        res.status(500).json({ error : "Internal Server Error"});
+    }
+}
+
 // Function to add a new employee
 const addEmployee = async (req, res) => {
     const { companyEmail, employeeId, employeeName, username, password, mobileNumber } = req.body;
@@ -83,7 +92,7 @@ const updateComplaint = async (req, res) => {
 // Function to get all open complaints
 const openStatus = async (req, res) => {
     try {
-        const openComplaints = await Complaint.find({ status: 'open' });
+        const openComplaints = await Complaint.find({ status: 'Pending' });
         res.status(200).json(openComplaints);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -93,7 +102,7 @@ const openStatus = async (req, res) => {
 // Function to get all closed complaints
 const closedStatus = async (req, res) => {
     try {
-        const closedComplaints = await Complaint.find({ status: 'closed' });
+        const closedComplaints = await Complaint.find({ status: 'Closed' });
         res.status(200).json(closedComplaints);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -102,6 +111,7 @@ const closedStatus = async (req, res) => {
 
 module.exports = {
     getAllComplaints,
+    getAllEmployees,
     addEmployee,
     updateEmployee,
     deleteEmployee,
