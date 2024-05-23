@@ -60,6 +60,3 @@ Thumbs.db
 # dotenv environment variables file
 .env
 
-package.json
-package-lock.json
-.vscode

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css'
+import './Home.css';
 const Home = () => {
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
