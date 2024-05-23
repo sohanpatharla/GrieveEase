@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import Signup from './components/Auth/Signup';
 import Login from './components/Auth/Login';
+import UserDashboard from './components/DashBoards/UserDashboard';
+import AdminDashboard from './components/DashBoards/AdminDashboard';
+import EmployeeDashboard from './components/DashBoards/EmployeeDasboard';
 function App() {
   return (
     <Router>
@@ -11,8 +14,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/add-complaint" element={<AddComplaint />} /> */}
+        <Route path="/user" element={<UserDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/employee" element={<EmployeeDashboard />} />
+        {/* <Route path="/add-complaint" element={<AddComplaint />} /> */}
       </Routes>
     </Router>
   );

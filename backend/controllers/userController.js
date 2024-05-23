@@ -8,7 +8,11 @@ async function loginUser(req, res) {
   try {
     const user = await User.findOne({ email });
     if (!user) {
+      console.log("Not found");
       return res.status(400).json({ msg: "Invalid credentials" });
+    }
+    else{
+      console.log("User found");
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -17,6 +21,9 @@ async function loginUser(req, res) {
     }
 
     if (user.role !== role) {
+      console.log(user.role);
+      console.log(role);
+      console.log("Unauthorized access");
       return res.status(403).json({ msg: "Unauthorized access" });
     }
 
@@ -41,8 +48,48 @@ async function loginUser(req, res) {
     res.status(500).send("Server error");
   }
 }
+async function registerUser(req, res) {
+  const { email, password, username, name, mobileNumber, role } = req.body;
+  
+  console.log('Request body:', req.body);
 
-module.exports = { loginUser };
+  try {
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ msg: "Email already in use" });
+    }
+
+    user = new User({ email, password, username, name, mobileNumber, role });
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+
+    await user.save();
+
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      process.env.SECRET_KEY,
+      { expiresIn: "1h" },
+      (err, token) => {
+        if (err) throw err;
+        res.status(201).json({ token });
+      }
+    );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+}
+
+
+module.exports = { registerUser,loginUser };
   
 // const bcrypt = require("bcryptjs");
 // const jwt = require("jsonwebtoken");

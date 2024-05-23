@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 const express = require('express');
 const connectDB = require('./backend/MongoDBConfig/DataBase');
 const userRoutes = require('./backend/routes/userRoutes');
@@ -25,7 +24,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 // Define Routes
-app.use('api/users/login', userRoutes);
+app.use('/api/users', userRoutes);
 // app.use('/ogrs/complaints', complaintRoutes);
 // app.use('/ogrs/admin',adminRoutes);
 // app.use('/ogrs/employee',employeeRoutes);

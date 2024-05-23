@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-// import { signup } from '../../services/authService';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';  // Reuse the same CSS file for styling consistency
 
 const Signup = () => {
@@ -7,23 +8,35 @@ const Signup = () => {
     email: '',
     password: '',
     username: '',
+    name: '',
     mobileNumber: '',
+    role: 'user', // default role is set to 'user'
   });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const { email, password, username, mobileNumber } = formData;
+  const { email, password, username, name, mobileNumber, role } = formData;
 
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
-    // e.preventDefault();
-    // try {
-    //   await signup(formData);
-    //   alert('User registered successfully');
-    //   window.location.href = '/login';  // Redirect to login page after successful signup
-    // } catch (error) {
-    //   console.error(error);
-    //   alert('Error registering user');
-    // }
+    e.preventDefault();
+    try {
+        const res = await axios.post('http://localhost:5000/api/users/register', formData);
+        console.log('Response:', res); // Log the response for debugging
+        localStorage.setItem('token', res.data.token);
+        alert('User registered successfully');
+        if (role === 'admin') {
+          navigate('/admin'); // Navigate to '/admin' route after successful login
+        } else if (role === 'employee') {
+          navigate('/employee'); // Navigate to '/employee' route after successful login
+        } else {
+          navigate('/user'); // Navigate to '/user' route after successful login
+        }
+    } catch (error) {
+        console.error('Error response:', error.response); // Log detailed error response
+        setError('Error registering user');
+    }
   };
 
   return (
@@ -56,12 +69,53 @@ const Signup = () => {
         />
         <input
           type="text"
+          name="name"
+          value={name}
+          onChange={onChange}
+          required
+          placeholder="Name"
+        />
+        <input
+          type="text"
           name="mobileNumber"
           value={mobileNumber}
           onChange={onChange}
           placeholder="Mobile Number"
         />
+        <div className="role-selection">
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="user"
+              checked={role === 'user'}
+              onChange={onChange}
+            />
+            User
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="admin"
+              checked={role === 'admin'}
+              onChange={onChange}
+            />
+            Admin
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="employee"
+              checked={role === 'employee'}
+              onChange={onChange}
+            />
+            Employee
+          </label>
+        </div>
         <button type="submit">Sign Up</button>
+        {error && <p className="error-message">{error}</p>}
       </form>
     </div>
   );
