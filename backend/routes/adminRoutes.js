@@ -13,13 +13,13 @@ const {
 } = require('../controllers/adminController');
 
 // Use verify middleware to protect routes if needed
-router.get('/', verify, getAllComplaints);
-router.post('/addEmployee', verify, addEmployee);
-router.put('/updateEmployee/:id', verify, updateEmployee);
-router.delete('/deleteEmployee', verify, deleteEmployee);
-router.post('/mapComplaint/:id', verify, mapComplaint);
-router.put('/updateComplaint/:id', verify, updateComplaint);
-router.get('/openStatus', verify, openStatus);
-router.get('/closedStatus', verify, closedStatus);
+router.get('/', getAllComplaints);
+router.post('/addEmployee', addEmployee);
+router.put('/updateEmployee/:id', updateEmployee);
+router.delete('/deleteEmployee', deleteEmployee);
+router.post('/mapComplaint/:id', mapComplaint);
+router.put('/updateComplaint/:id', updateComplaint);
+router.get('/openStatus', openStatus);
+router.get('/closedStatus', closedStatus);
 
 module.exports = router;

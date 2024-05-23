@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api'; // Import the axios instance
 import './UserDashboard.css';
 
 const UserDashboard = () => {
@@ -19,7 +19,7 @@ const UserDashboard = () => {
   });
   const [editComplaint, setEditComplaint] = useState(null);
   const [error, setError] = useState('');
-  const [user, setUser] = useState(null); // assuming user info is stored here
+  const [user, setUser] = useState(null); // Assuming user info is stored here
 
   useEffect(() => {
     fetchComplaints();
@@ -27,7 +27,7 @@ const UserDashboard = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await axios.get('/api/complaints');
+      const res = await api.get('/complaints');
       setComplaints(res.data);
     } catch (err) {
       console.error('Error fetching complaints:', err);
@@ -37,7 +37,7 @@ const UserDashboard = () => {
 
   const addComplaint = async () => {
     try {
-      const res = await axios.post('/api/complaints', { ...newComplaint, createdBy: user });
+      const res = await api.post('/complaints/addComplaint', { ...newComplaint, createdBy: user });
       setComplaints([...complaints, res.data]);
       setNewComplaint({
         complaintId: '',
@@ -66,7 +66,7 @@ const UserDashboard = () => {
     }
 
     try {
-      await axios.put(`/api/complaints/${id}`, editComplaint);
+      await api.put(`/complaints/${id}`, editComplaint);
       fetchComplaints();
       setEditComplaint(null);
       setError('');
@@ -141,7 +141,7 @@ const UserDashboard = () => {
         <h2>Your Complaints</h2>
         <ul>
           {complaints.map((complaint) => (
-            <li key={complaint.complaintId}>
+            <li key={complaint._id}> {/* Ensure _id is unique */}
               <div className="complaint-info">
                 <span>ID: {complaint.complaintId}</span>
                 <span>Name: {complaint.complaintName}</span>

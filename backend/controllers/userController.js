@@ -31,7 +31,8 @@ async function loginUser(req, res) {
       user: {
         id: user.id,
         role: user.role,
-      },
+      }
+      ,
     };
 
     jwt.sign(

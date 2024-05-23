@@ -3,8 +3,9 @@ const express = require('express');
 const connectDB = require('./backend/MongoDBConfig/DataBase');
 const userRoutes = require('./backend/routes/userRoutes');
 const cors = require('cors');   
-// const complaintRoutes = require('./backend/routes/complaint.routes');
-// const adminRoutes = require('./backend/routes/admin.routes');
+const complaintRoutes = require('./backend/routes/complaintRoutes');
+const adminRoutes = require('./backend/routes/adminRoutes');
+const verify = require('./backend/JWT_Auth/verify');
 // const employeeRoutes = require('./backend/routes/employee.routes');
 
 
@@ -12,7 +13,7 @@ const app = express();
 const corsOptions = {
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
   };
   
   app.use(cors(corsOptions));
@@ -25,7 +26,8 @@ app.use(express.json({ extended: false }));
 
 // Define Routes
 app.use('/api/users', userRoutes);
-// app.use('/ogrs/complaints', complaintRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/complaints',verify, complaintRoutes);
 // app.use('/ogrs/admin',adminRoutes);
 // app.use('/ogrs/employee',employeeRoutes);
 

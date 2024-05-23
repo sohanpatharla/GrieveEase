@@ -1,21 +1,25 @@
-const jwt = require("jsonwebtoken")
-require('dotenv').config();
+const jwt = require('jsonwebtoken');
+const User = require('../models/userModel');
 
-function verify(req, res, next) {
-    const token = req.headers.token;
-  
-    if (!token) {
-      return res.status(401).json({ msg: 'No token, authorization denied' });
-    }
-  
-    try {
-      const decoded = jwt.verify(token.split(" ")[1], process.env.SECRET_KEY);
-      req.user = decoded.user;
-      next();
-    } catch (err) {
-      res.status(401).json({ msg: 'Token is not valid' });
-    }
-  };
-  
+module.exports = async function(req, res, next) {
+  const token = req.header('x-auth-token');
 
-module.exports = verify;
+  if (!token) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+
+  try {
+    console.log("Validating token");
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    console.log("Decoded token:", decoded);
+    req.user = await User.findById(decoded.user.id).select('-password'); // Assuming the payload has user.id
+    console.log("Authenticated user:", req.user);
+    if (!req.user) {
+      return res.status(401).json({ msg: 'User not found' });
+    }
+    next();
+  } catch (err) {
+    console.error("Token validation error:", err);
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
+};

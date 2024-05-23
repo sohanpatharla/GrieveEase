@@ -1,6 +1,6 @@
-const Admin = require('../models/Admin');
-const Employee = require('../models/Employee');
-const Complaint = require('../models/Complaint');
+const Admin = require('../models/adminModel');
+const Employee = require('../models/employeeModel');
+const Complaint = require('../models/complaintModel');
 
 // Function to get all complaints
 const getAllComplaints = async (req, res) => {

@@ -7,6 +7,11 @@ const connectDB = async () => {
       useUnifiedTopology: true,
       //useCreateIndex: true,
     });
+    // await mongoose.connect('mongodb+srv://sohanpatharla:sohanpatharla@cluster0.vm3etby.mongodb.net/grievance_redressal', {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true,
+    //   //useCreateIndex: true,
+    // });
     console.log('Connection to DB successful');
   } catch (err) {
     console.error(err.message);

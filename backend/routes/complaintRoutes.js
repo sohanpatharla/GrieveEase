@@ -3,7 +3,7 @@ const { addComplaint, updateComplaint, listComplaintsByUser, deleteComplaint} = 
 const verify = require('../JWT_Auth/verify');
 
 // Complaint routes
-router.post('/addComplaint', verify, addComplaint);
+router.post('/addComplaint', verify,addComplaint);
 router.get('/complaints', verify, listComplaintsByUser);
 router.put('/status', verify, updateComplaint);
 router.delete('/delete', verify, deleteComplaint);

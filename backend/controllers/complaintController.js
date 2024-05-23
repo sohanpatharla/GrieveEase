@@ -1,8 +1,11 @@
 const Complaint = require('../models/complaintModel');
 
 async function addComplaint(req, res) {
+  console.log("Working");
+  console.log(req.user);
   const { complaintId, complaintName, complaintContent, priority, category, attachments, comments } = req.body;
   const createdBy = req.user.id;
+  console.log(req.body);
   try {
     const complaint = new Complaint({
       complaintId,
@@ -14,7 +17,9 @@ async function addComplaint(req, res) {
       attachments,
       comments
     });
-    await complaint.save();
+    await complaint.save().then(()=>{
+      console.log("Saved");
+    });
     res.status(201).json({ msg: 'Complaint added successfully' });
   } catch (err) {
     console.error(err.message);
