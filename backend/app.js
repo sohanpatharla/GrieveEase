@@ -1,11 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const connectDB = require('./backend/MongoDBConfig/DataBase');
-const userRoutes = require('./backend/routes/userRoutes');
+const connectDB = require('./MongoDBConfig/DataBase');
+const userRoutes = require('./routes/userRoutes');
 const cors = require('cors');   
-const complaintRoutes = require('./backend/routes/complaintRoutes');
-const adminRoutes = require('./backend/routes/adminRoutes');
-const verify = require('./backend/JWT_Auth/verify');
+const complaintRoutes = require('./routes/complaintRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const verify = require('./JWT_Auth/verify');
 // const employeeRoutes = require('./backend/routes/employee.routes');
 
 
