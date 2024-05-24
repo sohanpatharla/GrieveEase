@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./AdminDashboard.css";
+import api from '../../api';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("userManagement");
@@ -34,7 +34,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/users/profiles");
+      const res = await api.get("http://localhost:5000/api/users/profiles");
       console.log("Fetched users:", res.data);
       setUsers(res.data);
     } catch (error) {
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/complaints");
+      const res = await api.get("http://localhost:5000/api/admin/complaints");
       //console.log("Fetched Complaints:", res.data);
       setComplaints(res.data);
     } catch (error) {
@@ -54,7 +54,7 @@ const AdminDashboard = () => {
 
   const fetchOpenComplaints = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/openStatus");
+      const res = await api.get("http://localhost:5000/api/admin/openStatus");
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching open complaints:", error);
@@ -63,7 +63,7 @@ const AdminDashboard = () => {
 
   const fetchClosedComplaints = async () => {
     try {
-      const res = await axios.get(
+      const res = await api.get(
         "http://localhost:5000/api/admin/closedStatus"
       );
       setComplaints(res.data);
@@ -74,7 +74,7 @@ const AdminDashboard = () => {
 
   // const fetchStatuses = async () => {
   //   try {
-  //     const res = await axios.get('http://localhost:5000/api/admin/statuses');
+  //     const res = await api.get('http://localhost:5000/api/admin/statuses');
   //     setStatuses(res.data);
   //   } catch (error) {
   //     console.error('Error fetching statuses:', error);
@@ -83,7 +83,7 @@ const AdminDashboard = () => {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/employees");
+      const res = await api.get("http://localhost:5000/api/admin/employees");
       setEmployees(res.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -92,7 +92,7 @@ const AdminDashboard = () => {
 
   // const fetchAnalytics = async () => {
   //   try {
-  //     const res = await axios.get('http://localhost:5000/api/admin/analytics');
+  //     const res = await api.get('http://localhost:5000/api/admin/analytics');
   //     setAnalytics(res.data);
   //   } catch (error) {
   //     console.error('Error fetching analytics:', error);
@@ -106,7 +106,7 @@ const AdminDashboard = () => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
+      const res = await api.post(
         "http://localhost:5000/api/admin/addEmployee",
         formData
       );
@@ -118,38 +118,55 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleUpdateEmployee = async (id) => {
+  const handleUpdateEmployee = async () => {
+    const { employeeId, ...updateData } = formData;
+    console.log(formData);
+    console.log(`this is the id${employeeId}`);
     try {
-      const res = await axios.put(
-        `http://localhost:5000/api/admin/updateComplaint/${id}`,
-        formData
+      await api.put(
+        `http://localhost:5000/api/admin/updateEmployee/${employeeId}`,
+        updateData
       );
       setMessage("Employee updated successfully!");
-      fetchEmployees();
+      setFormData({}); // Clear form data
     } catch (error) {
       setMessage("Error updating employee");
       console.error("Error updating employee:", error);
     }
   };
 
-  const handleDeleteEmployee = async (id) => {
+  const handleDeleteEmployee = async () => {
+    const { employeeId } = formData;
     try {
-      await axios.delete("http://localhost:5000/api/admin/deleteEmployee", {
-        data: { id },
-      });
+      await api.delete(
+        `http://localhost:5000/api/admin/deleteEmployee/${employeeId}`
+      );
       setMessage("Employee deleted successfully!");
-      fetchEmployees();
     } catch (error) {
       setMessage("Error deleting employee");
       console.error("Error deleting employee:", error);
     }
   };
+  // const handleDeleteComplaint = async () => {
+  //   try {
+  //     const { id } = formData;
+  //     console.log(formData)
+  //     await axios.delete(
+  //       `http://localhost:5000/api/admin/delete/${id}`
+  //     );
+  //     setFetchedComplaint(null);
+  //     setMessage("Complaint deleted successfully!");
+  //   } catch (error) {
+  //     console.error("Error deleting complaint:", error.response || error.message);
+  //     setMessage("Error deleting complaint");
+  //   }
+  // }
 
   const handleUpdateComplaint = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
     try {
       const { id, ...updateData } = formData;
-      await axios.put(
+      await api.put(
         `http://localhost:5000/api/admin/updateComplaint/${id}`,
         updateData
       );
@@ -166,7 +183,7 @@ const AdminDashboard = () => {
     try {
       const { id } = formData;
       console.log(formData)
-      const res = await axios.get(
+      const res = await api.get(
         `http://localhost:5000/api/admin/complaint/${id}`
       );
       setFetchedComplaint(res.data);
@@ -182,7 +199,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     const { id } = formData;
     try {
-      const res = await axios.post(
+      const res = await api.post(
         `http://localhost:5000/api/admin/mapComplaint/${id}`,
         formData
       );
@@ -346,31 +363,53 @@ const AdminDashboard = () => {
             <form onSubmit={handleAddEmployee}>
               <input
                 type="text"
-                name="name"
-                placeholder="Name"
+                name="companyEmail"
+                placeholder="Company Email"
                 onChange={handleInputChange}
+                required
               />
               <input
-                type="email"
-                name="email"
-                placeholder="Email"
+                type="text"
+                name="employeeId"
+                placeholder="Employee ID"
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="employeeName"
+                placeholder="Employee Name"
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="mobileNumber"
+                placeholder="Mobile Number"
                 onChange={handleInputChange}
               />
               <button type="submit">Add Employee</button>
             </form>
-            <ul>
-              {employees.map((employee) => (
-                <li key={employee.id}>
-                  {employee.name} - {employee.email}
-                  <button onClick={() => handleUpdateEmployee(employee.id)}>
-                    Update
-                  </button>
-                  <button onClick={() => handleDeleteEmployee(employee.id)}>
-                    Delete
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <button onClick={() => handleUpdateEmployee()}>  Update</button>
+              <button onClick={() => handleDeleteEmployee()}>Delete</button>
+
+
+
+
             <div className="buttons">
               <button onClick={fetchEmployees}>All Employees</button>
             </div>

@@ -44,33 +44,58 @@ const getAllEmployees = async (req,res) => {
 // Function to add a new employee
 const addEmployee = async (req, res) => {
     const { companyEmail, employeeId, employeeName, username, password, mobileNumber } = req.body;
-    const addedBy = req.user.id;
-
+    const addedBy = req.user.id; // Make sure to authenticate and get the admin's user ID
+  
     try {
-        const newEmployee = new Employee({ companyEmail, employeeId, employeeName, username, password, mobileNumber, addedBy });
-        await newEmployee.save();
-        res.status(201).json(newEmployee);
+      const newEmployee = new Employee({
+        companyEmail,
+        employeeId,
+        employeeName,
+        username,
+        password,
+        mobileNumber,
+        addedBy
+      });
+      console.log(`new employee is ${newEmployee}`);
+      await newEmployee.save();
+      res.status(201).json(newEmployee);
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-};
+  };
+  
 
 // Function to update an employee
 const updateEmployee = async (req, res) => {
     const { id } = req.params;
+    console.log(req.params);
+    console.log(id);
     const { companyEmail, employeeId, employeeName, username, password, mobileNumber } = req.body;
+    const addedBy = req.user.id; 
+    
 
     try {
-        const updatedEmployee = await Employee.findByIdAndUpdate(id, { companyEmail, employeeId, employeeName, username, password, mobileNumber }, { new: true });
-        res.status(200).json(updatedEmployee);
+        const updatedEmployee_id = await Employee.findOne({ employeeId: id });
+        console.log(`my id is ${updatedEmployee_id}`);
+        if(updatedEmployee_id)
+            {
+                const updatedEmployee = await Employee.findByIdAndUpdate(
+                    updatedEmployee_id,
+                    { companyEmail, employeeId, employeeName, username, password, mobileNumber, addedBy },
+                    { new: true }
+                );
+                res.status(200).json(updatedEmployee);
+            }
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
+
 // Function to delete an employee
 const deleteEmployee = async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.params;
 
     try {
         const emp = await Employee.findOne({employeeId:id});
