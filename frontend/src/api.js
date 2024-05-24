@@ -1,9 +1,15 @@
+
 import axios from 'axios';
+// require('dotenv').config();
 
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
+// const PORT=process.env.PORT;
+// const BACKEND=process.env.BACKEND_PORT;
 
+// console.log(`Running on port:${PORT}`);
+// console.log(`Running on port:${BACKEND}`);
 // Add a request interceptor to include the token in all requests
 api.interceptors.request.use(
   (config) => {
