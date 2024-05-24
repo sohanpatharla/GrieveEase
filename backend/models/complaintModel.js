@@ -8,11 +8,11 @@ const complaintSchema = new mongoose.Schema({
   priority: { type: String, default: 'Medium' },
   category: { type: String, default: 'Technical' },
   attachments: { type: Array, default: [] },
-  comments: { type: String, default: '' },
+  comments: { type: String, default: 'comments' },
   createdOn: { type: Date, default: Date.now },
   status: { type: String, enum: ['Closed', 'Pending'], default: 'Pending' },
   lastUpdated: { type: Date, default: Date.now },
-  assignedTo: { type: String, default: '' },
+  assignedTo: { type: String, default: 'employee?' },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Complaint', complaintSchema);

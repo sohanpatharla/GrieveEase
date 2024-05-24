@@ -6,7 +6,8 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("userManagement");
   const [users, setUsers] = useState([]);
   const [complaints, setComplaints] = useState([]);
-  //const [statuses, setStatuses] = useState([]);
+  const [fetchedComplaint, setFetchedComplaint] = useState([]); // State to hold fetched complaint
+  const [statuses, setStatuses] = useState([]);
   const [employees, setEmployees] = useState([]);
   //const [analytics, setAnalytics] = useState({});
   const [formData, setFormData] = useState({});
@@ -44,7 +45,7 @@ const AdminDashboard = () => {
   const fetchComplaints = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/admin/complaints");
-      console.log("Fetched Complaints:", res.data);
+      //console.log("Fetched Complaints:", res.data);
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching complaints:", error);
@@ -120,7 +121,7 @@ const AdminDashboard = () => {
   const handleUpdateEmployee = async (id) => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/admin/updateEmployee/${id}`,
+        `http://localhost:5000/api/admin/updateComplaint/${id}`,
         formData
       );
       setMessage("Employee updated successfully!");
@@ -144,23 +145,38 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleUpdateComplaint = async (id) => {
+  const handleUpdateComplaint = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
     try {
-      const res = await axios.put(
+      const { id, ...updateData } = formData;
+      await axios.put(
         `http://localhost:5000/api/admin/updateComplaint/${id}`,
-        formData
+        updateData
       );
+      //console.log(updateData)
       setMessage("Complaint updated successfully!");
-      fetchComplaints();
+      //fetchComplaints(); // Refresh the complaints list
     } catch (error) {
-      console.error(
-        "Error updating complaint:",
-        error.response || error.message
-      );
+      console.error("Error updating complaint:", error.response || error.message);
       setMessage("Error updating complaint");
-      console.error("Error updating complaint:", error);
     }
   };
+
+  const fetchComplaint = async () => {
+    try {
+      const { id } = formData;
+      console.log(formData)
+      const res = await axios.get(
+        `http://localhost:5000/api/admin/complaint/${id}`
+      );
+      setFetchedComplaint(res.data);
+      setMessage("Complaint fetched successfully!");
+    } catch (error) {
+      console.error("Error fetching complaint:", error.response || error.message);
+      setMessage("Error fetching complaint");
+    }
+  }
+
 
   const handleMapComplaint = async (e) => {
     e.preventDefault();
@@ -258,8 +274,20 @@ const AdminDashboard = () => {
               />
               <input
                 type="text"
+                name="comments"
+                placeholder="Comments"
+                onChange={handleInputChange}
+              />
+              <input
+                type="text"
                 name="status"
                 placeholder="Status"
+                onChange={handleInputChange}
+              />
+              <input
+                type="text"
+                name="assignedTo"
+                placeholder="Assigned To"
                 onChange={handleInputChange}
               />
               <button type="submit">Update Complaint</button>
@@ -284,16 +312,34 @@ const AdminDashboard = () => {
             )}
           </div>
         )}
-        {/* {activeTab === "statusManagement" && (
+        {activeTab === "statusManagement" && (
           <div>
             <h2>Status Management</h2>
-            <ul>
-              {statuses.map((status) => (
-                <li key={status.id}>{status.name}</li>
-              ))}
-            </ul>
+            <form>
+              <input
+                type="text"
+                name="id"
+                placeholder="Complaint ID"
+                onChange={handleInputChange}
+              />
+            </form>
+            <button onClick={fetchComplaint}>fetch Complaint</button>
+            {fetchedComplaint ? (
+              <ul>
+                {fetchedComplaint.map((complaint) => (
+                  <li key={complaint._id}>
+                    {complaint.complaintName} - {complaint.status}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>
+                No complaint found. Click "fetch Complaint" to load data.
+              </p>
+            )}
           </div>
-        )} */}
+        )}
+
         {activeTab === "employeeManagement" && (
           <div>
             <h2>Employee Management</h2>

@@ -12,6 +12,26 @@ const getAllComplaints = async (req, res) => {
     }
 };
 
+const getComplaint = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const complaintId = await Complaint.findOne({ complaintId: id });
+        //console.log('Found Complaint ID:', complaintId); // Log the found complaint
+    
+        if (complaintId) {
+          const complaint = await Complaint.findById(complaintId._id);
+          //console.log('Found Complaint:', complaint); // Log the found complaint
+          res.status(200).json(complaint);
+        } else {
+          res.status(404).json({ error: 'Complaint not found' });
+        }
+      } catch (error) {
+        console.error('Error fetching complaint:', error); // Log the error
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+};
+
+
 const getAllEmployees = async (req,res) => {
     try {
         const employees = await Employee.find();
@@ -77,17 +97,29 @@ const mapComplaint = async (req, res) => {
 // Function to update a complaint
 const updateComplaint = async (req, res) => {
     const { id } = req.params;
-    const { complaintName, complaintContent, status } = req.body;
-    const updatedComplaint_id = await Complaint.findOne({complaintId : id})
-    if(updatedComplaint_id){
+    const { complaintName, complaintContent, comments, assignedTo, status } = req.body;
+  
     try {
-        const updatedComplaint = await Complaint.findByIdAndUpdate(updatedComplaint_id._id, { complaintName, complaintContent, status }, { new: true });
+      const updatedComplaint_id = await Complaint.findOne({ complaintId: id });
+      //console.log('Found Complaint ID:', updatedComplaint_id); // Log the found complaint
+  
+      if (updatedComplaint_id) {
+        const updatedComplaint = await Complaint.findByIdAndUpdate(
+          updatedComplaint_id._id,
+          { complaintName, complaintContent, comments, status, assignedTo },
+          { new: true }
+        );
+        //console.log('Updated Complaint:', updatedComplaint); // Log the updated complaint
         res.status(200).json(updatedComplaint);
+      } else {
+        res.status(404).json({ error: 'Complaint not found' });
+      }
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error updating complaint:', error); // Log the error
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-}
-};
+  };
+  
 
 // Function to get all open complaints
 const openStatus = async (req, res) => {
@@ -111,6 +143,7 @@ const closedStatus = async (req, res) => {
 
 module.exports = {
     getAllComplaints,
+    getComplaint,
     getAllEmployees,
     addEmployee,
     updateEmployee,

@@ -1,76 +1,81 @@
 /* AdminDashboard.css */
 .admin-dashboard {
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
-    background-color: #f4f4f4;
-  }
-  
-  .tabs {
-    display: flex;
-    margin-bottom: 20px;
-  }
-  
-  .tabs button {
-    flex: 1;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    background-color: #e7e7e7;
-    transition: background-color 0.3s;
-  }
-  
-  .tabs button.active {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .tabs button:not(.active):hover {
-    background-color: #ddd;
-  }
-  
-  .dashboard-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  ul li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  form {
-    margin-top: 20px;
-  }
-  
-  form input {
-    margin: 10px 0;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  form button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  form button:hover {
-    background-color: #0056b3;
-  }
-  
-  .message {
-    color: green;
-    margin-bottom: 20px;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  background-color: #f5f5f5; /* Light gray background */
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  background-color: #e0e0e0; /* Light gray button background */
+  color: #333; /* Dark gray text color */
+  font-weight: 600; /* Bold font weight */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tabs button.active {
+  background-color: #007bff; /* Blue background for active tab */
+  color: white; /* White text color for active tab */
+}
+
+.tabs button:not(.active):hover {
+  background-color: #ccc; /* Darker gray on hover */
+}
+
+.dashboard-content {
+  background-color: #ffffff; /* White background */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd; /* Lighter gray border */
+}
+
+form {
+  margin-top: 20px;
+}
+
+form input {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  color: #155724; /* Green color for success message */
+  margin-bottom: 20px;
+}
