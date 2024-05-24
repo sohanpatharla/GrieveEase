@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 import api from '../../api';
+import api from '../../api';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("userManagement");
   const [users, setUsers] = useState([]);
   const [complaints, setComplaints] = useState([]);
-  const [fetchedComplaint, setFetchedComplaint] = useState([]); // State to hold fetched complaint
-  const [statuses, setStatuses] = useState([]);
+  const [fetchedComplaint, setFetchedComplaint] = useState(null);
+  const [showAssignField, setShowAssignField] = useState(false); // State to hold fetched complaint
+  //const [statuses, setStatuses] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [employeeName, setEmployeeName] = useState('');
   //const [analytics, setAnalytics] = useState({});
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState("");
@@ -35,6 +38,7 @@ const AdminDashboard = () => {
   const fetchUsers = async () => {
     try {
       const res = await api.get("http://localhost:5000/api/users/profiles");
+      const res = await api.get("http://localhost:5000/api/users/profiles");
       console.log("Fetched users:", res.data);
       setUsers(res.data);
     } catch (error) {
@@ -42,8 +46,24 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchComplaint = async () => {
+    try {
+      const { id } = formData;
+      console.log(formData)
+      const res = await api.get(
+        `http://localhost:5000/api/admin/complaint/${id}`
+      );
+      setFetchedComplaint(res.data);
+      setMessage("Complaint fetched successfully!");
+    } catch (error) {
+      console.error("Error fetching complaint:", error.response || error.message);
+      setMessage("Error fetching complaint");
+    }
+  }
+
   const fetchComplaints = async () => {
     try {
+      const res = await api.get("http://localhost:5000/api/admin/complaints");
       const res = await api.get("http://localhost:5000/api/admin/complaints");
       //console.log("Fetched Complaints:", res.data);
       setComplaints(res.data);
@@ -55,6 +75,7 @@ const AdminDashboard = () => {
   const fetchOpenComplaints = async () => {
     try {
       const res = await api.get("http://localhost:5000/api/admin/openStatus");
+      const res = await api.get("http://localhost:5000/api/admin/openStatus");
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching open complaints:", error);
@@ -64,6 +85,7 @@ const AdminDashboard = () => {
   const fetchClosedComplaints = async () => {
     try {
       const res = await api.get(
+      const res = await api.get(
         "http://localhost:5000/api/admin/closedStatus"
       );
       setComplaints(res.data);
@@ -72,8 +94,24 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteComplaint = async () => {
+    try {
+      const { id } = formData;
+      console.log(formData)
+      await api.delete(
+        `http://localhost:5000/api/admin/delete/${id}`
+      );
+      setFetchedComplaint(null);
+      setMessage("Complaint deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting complaint:", error.response || error.message);
+      setMessage("Error deleting complaint");
+    }
+  }
+
   // const fetchStatuses = async () => {
   //   try {
+  //     const res = await api.get('http://localhost:5000/api/admin/statuses');
   //     const res = await api.get('http://localhost:5000/api/admin/statuses');
   //     setStatuses(res.data);
   //   } catch (error) {
@@ -84,6 +122,7 @@ const AdminDashboard = () => {
   const fetchEmployees = async () => {
     try {
       const res = await api.get("http://localhost:5000/api/admin/employees");
+      const res = await api.get("http://localhost:5000/api/admin/employees");
       setEmployees(res.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -92,6 +131,7 @@ const AdminDashboard = () => {
 
   // const fetchAnalytics = async () => {
   //   try {
+  //     const res = await api.get('http://localhost:5000/api/admin/analytics');
   //     const res = await api.get('http://localhost:5000/api/admin/analytics');
   //     setAnalytics(res.data);
   //   } catch (error) {
@@ -103,9 +143,14 @@ const AdminDashboard = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleEmployeeNameChange = (e) => {
+    setEmployeeName(e.target.value);
+  };
+
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
+      const res = await api.post(
       const res = await api.post(
         "http://localhost:5000/api/admin/addEmployee",
         formData
@@ -167,6 +212,7 @@ const AdminDashboard = () => {
     try {
       const { id, ...updateData } = formData;
       await api.put(
+      await api.put(
         `http://localhost:5000/api/admin/updateComplaint/${id}`,
         updateData
       );
@@ -179,7 +225,29 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchComplaint = async () => {
+
+  // const handleMapComplaint = async (e) => {
+  //   e.preventDefault();
+  //   const { id } = formData;
+  //   try {
+  //     const res = await api.post(
+  //       `http://localhost:5000/api/admin/mapComplaint/${id}`,
+  //       formData
+  //     );
+  //     setMessage("Complaint mapped successfully!");
+  //     fetchComplaints();
+  //   } catch (error) {
+  //     setMessage("Error mapping complaint");
+  //     console.error("Error mapping complaint:", error);
+  //   }
+  // }; 
+  const mapfield = () => {
+    setShowAssignField(true);
+  }
+
+  const handleMapComplaint = async () => {
+    console.log(formData);
+    console.log(employeeName);
     try {
       const { id } = formData;
       console.log(formData)
@@ -201,13 +269,13 @@ const AdminDashboard = () => {
     try {
       const res = await api.post(
         `http://localhost:5000/api/admin/mapComplaint/${id}`,
-        formData
+        { assignedTo: employeeName }
       );
-      setMessage("Complaint mapped successfully!");
-      fetchComplaints();
+      //setFetchedComplaint(res.data);
+      setMessage('Complaint updated successfully!');
     } catch (error) {
-      setMessage("Error mapping complaint");
-      console.error("Error mapping complaint:", error);
+      console.error('Error maping complaint:', error.response || error.message);
+      setMessage('Error updating complaint');
     }
   };
 
@@ -340,23 +408,27 @@ const AdminDashboard = () => {
                 onChange={handleInputChange}
               />
             </form>
-            <button onClick={fetchComplaint}>fetch Complaint</button>
+            <button onClick={fetchComplaint}>FetchStatuses</button>
+            <button onClick={mapfield}>AssignTo</button>
+            <button onClick={handleDeleteComplaint}>DeleteComplaint</button>
             {fetchedComplaint ? (
-              <ul>
-                {fetchedComplaint.map((complaint) => (
-                  <li key={complaint._id}>
-                    {complaint.complaintName} - {complaint.status}
-                  </li>
-                ))}
-              </ul>
+              <p>{fetchedComplaint.complaintName} - {fetchedComplaint.status}</p>
             ) : (
-              <p>
-                No complaint found. Click "fetch Complaint" to load data.
-              </p>
+              <p>No complaint found. Click "fetch Complaint" to load data.</p>
             )}
+            {showAssignField && (
+            <div>
+              <input
+                type="text"
+                name="employeeName"
+                placeholder="Employee Name"
+                onChange={handleEmployeeNameChange}
+              />
+              <button onClick={handleMapComplaint}>Update</button>
+            </div>
+          )}
           </div>
         )}
-
         {activeTab === "employeeManagement" && (
           <div>
             <h2>Employee Management</h2>
