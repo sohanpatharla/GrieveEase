@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+// import api from "api";
 import "./AdminDashboard.css";
+import api from '../../api';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("userManagement");
@@ -36,7 +37,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/users/profiles");
+      const res = await api.get("http://localhost:5000/api/users/profiles");
       console.log("Fetched users:", res.data);
       setUsers(res.data);
     } catch (error) {
@@ -48,7 +49,7 @@ const AdminDashboard = () => {
     try {
       const { id } = formData;
       console.log(formData)
-      const res = await axios.get(
+      const res = await api.get(
         `http://localhost:5000/api/admin/complaint/${id}`
       );
       setFetchedComplaint(res.data);
@@ -61,7 +62,7 @@ const AdminDashboard = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/complaints");
+      const res = await api.get("http://localhost:5000/api/admin/complaints");
       //console.log("Fetched Complaints:", res.data);
       setComplaints(res.data);
     } catch (error) {
@@ -71,7 +72,7 @@ const AdminDashboard = () => {
 
   const fetchOpenComplaints = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/openStatus");
+      const res = await api.get("http://localhost:5000/api/admin/openStatus");
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching open complaints:", error);
@@ -80,7 +81,7 @@ const AdminDashboard = () => {
 
   const fetchClosedComplaints = async () => {
     try {
-      const res = await axios.get(
+      const res = await api.get(
         "http://localhost:5000/api/admin/closedStatus"
       );
       setComplaints(res.data);
@@ -93,7 +94,7 @@ const AdminDashboard = () => {
     try {
       const { id } = formData;
       console.log(formData)
-      await axios.delete(
+      await api.delete(
         `http://localhost:5000/api/admin/delete/${id}`
       );
       setFetchedComplaint(null);
@@ -106,7 +107,7 @@ const AdminDashboard = () => {
 
   // const fetchStatuses = async () => {
   //   try {
-  //     const res = await axios.get('http://localhost:5000/api/admin/statuses');
+  //     const res = await api.get('http://localhost:5000/api/admin/statuses');
   //     setStatuses(res.data);
   //   } catch (error) {
   //     console.error('Error fetching statuses:', error);
@@ -115,7 +116,7 @@ const AdminDashboard = () => {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/employees");
+      const res = await api.get("http://localhost:5000/api/admin/employees");
       setEmployees(res.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -124,7 +125,7 @@ const AdminDashboard = () => {
 
   // const fetchAnalytics = async () => {
   //   try {
-  //     const res = await axios.get('http://localhost:5000/api/admin/analytics');
+  //     const res = await api.get('http://localhost:5000/api/admin/analytics');
   //     setAnalytics(res.data);
   //   } catch (error) {
   //     console.error('Error fetching analytics:', error);
@@ -142,7 +143,7 @@ const AdminDashboard = () => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
+      const res = await api.post(
         "http://localhost:5000/api/admin/addEmployee",
         formData
       );
@@ -156,7 +157,7 @@ const AdminDashboard = () => {
 
   const handleUpdateEmployee = async (id) => {
     try {
-      const res = await axios.put(
+      const res = await api.put(
         `http://localhost:5000/api/admin/updateComplaint/${id}`,
         formData
       );
@@ -170,7 +171,7 @@ const AdminDashboard = () => {
 
   const handleDeleteEmployee = async (id) => {
     try {
-      await axios.delete("http://localhost:5000/api/admin/deleteEmployee", {
+      await api.delete("http://localhost:5000/api/admin/deleteEmployee", {
         data: { id },
       });
       setMessage("Employee deleted successfully!");
@@ -185,7 +186,7 @@ const AdminDashboard = () => {
     e.preventDefault(); // Prevent the default form submission behavior
     try {
       const { id, ...updateData } = formData;
-      await axios.put(
+      await api.put(
         `http://localhost:5000/api/admin/updateComplaint/${id}`,
         updateData
       );
@@ -203,7 +204,7 @@ const AdminDashboard = () => {
   //   e.preventDefault();
   //   const { id } = formData;
   //   try {
-  //     const res = await axios.post(
+  //     const res = await api.post(
   //       `http://localhost:5000/api/admin/mapComplaint/${id}`,
   //       formData
   //     );
@@ -223,7 +224,7 @@ const AdminDashboard = () => {
     console.log(employeeName);
     try {
       const { id } = formData;
-      await axios.post(
+      await api.post(
         `http://localhost:5000/api/admin/mapComplaint/${id}`,
         { assignedTo: employeeName }
       );
