@@ -4,11 +4,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to right, #ff6b6b, #ff5252);
+    background: color(a98-rgb red green blue)
 }
 
 .signup-form {
-    background-color: #fff;
+    background-color: #d1cdcd;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -25,7 +25,7 @@ input[type="email"], input[type="password"], input[type="text"] {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ccc;
+    border: 1px solid #aca7a7;
     border-radius: 5px;
 }
 

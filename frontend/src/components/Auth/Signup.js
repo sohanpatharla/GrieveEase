@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';  // Reuse the same CSS file for styling consistency
+import './Signup.css';  // Reuse the same CSS file for styling consistency
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -40,9 +40,9 @@ const Signup = () => {
   };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={onSubmit}>
-        <h2>Sign Up</h2>
+    <div className="signup-container">
+      <form className="signup-form" onSubmit={onSubmit}>
+        <h2>SignUp</h2>
         <input
           type="email"
           name="email"

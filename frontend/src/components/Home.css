@@ -1,20 +1,37 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    padding: 20px;
+/* .container1 {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('pic.jpg'); 
+    background-size: 100vw 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .home-container {
+    margin-right:  0; ;
+    position: relative; 
     text-align: center;
-    background-color: #fff;
+   
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 15vw;
+    opacity: 1;
+   
+    align-items: center;
 }
 
 h1 {
-    color: #333;
+    color: #111010;
     text-transform: uppercase;
+    margin-top: 10px;
 }
 
 p {
@@ -32,4 +49,4 @@ button {
 
 button:hover {
     background-color: #45a049;
-}
+} */

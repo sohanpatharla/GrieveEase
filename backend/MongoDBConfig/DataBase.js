@@ -7,7 +7,7 @@ const connectDB = async () => {
     //   useUnifiedTopology: true,
     //   //useCreateIndex: true,
     // });
-    await mongoose.connect('mongodb+srv://sohanpatharla:sohanpatharla@cluster0.vm3etby.mongodb.net/grievance_redressal', {
+    await mongoose.connect('mongodb://localhost:27017/grievance_redressal', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       //useCreateIndex: true,

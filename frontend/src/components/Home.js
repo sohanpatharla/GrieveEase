@@ -1,19 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
+
 const Home = () => {
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Welcome to the Grievance Redressal System</h1>
-      <p>Please log in or sign up to continue</p>
-      <div>
+    <div className='container1'>
+    <h1>Welcome to the Grievance Redressal System</h1>
+    <div className="home-container">
+     
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        
+        <p>Login to Continue</p>
         <Link to="/login">
           <button style={{ margin: '10px', padding: '10px 20px' }}>Login</button>
         </Link>
-        <Link to="/signup">
-          <button style={{ margin: '10px', padding: '10px 20px' }}>Signup</button>
-        </Link>
       </div>
+      <p style={{ textAlign: 'center' }}>Don't have an account? <Link to="/signup">Sign up</Link></p>
+    </div>
     </div>
   );
 };

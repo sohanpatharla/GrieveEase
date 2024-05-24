@@ -1,61 +1,65 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Login.css';
+import { useNavigate } from 'react-router-dom';
+import lockIcon from './gp.png'; // Import your images accordingly
+import notebookIcon from './complaint1.avif';
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    role: 'user', // default role is set to 'user'
-  });
-  const [error, setError] = useState(null);
+const LoginPage = () => 
+  {
+    const [formData, setFormData] = useState({
+      email: '',
+      password: '',
+      role: 'user', // default role is set to 'user'
+    });
+    const [error, setError] = useState(null);
+  
+    const { email, password, role } = formData;
+    const navigate = useNavigate(); // Use useNavigate hook
+  
+    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const { email, password, role } = formData;
-  const navigate = useNavigate(); // Use useNavigate hook
+    const onSubmit = async(e)=>
+      {
+        e.preventDefault( );
+        try
+        {
+          const res = await axios.post('http://localhost:5000/api/users/login',formData);
+          localStorage.setItem('token',res.data.token);
+          if(role==="admin")
+            navigate('/admin')
+          else if (role === 'employee') {
+            navigate('/employee'); // Navigate to '/employee' route after successful login
+          } else {
+            navigate('/user'); // Navigate to '/user' route after successful login
+          }
+        } 
+        catch (error) {
+          console.error(error);
+          setError('Error logging in');
+        }
+      };
 
-  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:5000/api/users/login', formData);
-      localStorage.setItem('token', res.data.token);
-      // Navigate to appropriate route after login
-      if (role === 'admin') {
-        navigate('/admin'); // Navigate to '/admin' route after successful login
-      } else if (role === 'employee') {
-        navigate('/employee'); // Navigate to '/employee' route after successful login
-      } else {
-        navigate('/user'); // Navigate to '/user' route after successful login
-      }
-    } catch (error) {
-      console.error(error);
-      setError('Error logging in');
-    }
-  };
-
-  return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={onSubmit}>
-        <h2>Login</h2>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={onChange}
-          required
-          placeholder="Email"
-        />
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={onChange}
-          required
-          placeholder="Password"
-        />
-        <div className="role-selection">
+       
+      
+  //<img src={notebookIcon} alt="Notebook Icon" />
+    return (
+      <>
+        
+        <div className="container">
+          
+            <div className="image-container">
+                <img src={lockIcon} alt="Lock Icon" />
+               
+            </div>
+            <div>
+            <h1>Login</h1>
+            <form>
+          
+                <input type="email"  name ="email" placeholder="Email Address"  value ={email} onChange={onChange} required />
+                <input type="password" name="password" placeholder="Password" value={password} onChange={onchange} required />
+                <div className="role-selection">
           <label>
             <input
               type="radio"
@@ -87,11 +91,23 @@ const Login = () => {
             Employee
           </label>
         </div>
-        <button type="submit">Login</button>
-        {error && <p className="error-message">{error}</p>}
-      </form>
-    </div>
-  );
+                <button className="button" type="submit">Submit</button>
+                <div>
+                    <a href="#">Forgot password?</a>
+                </div>
+                <div>
+                    <a href="#">Don't have an account? Signup</a>
+                </div>
+                error && <p className="error-message">{error}</p>
+            </form>
+            </div>
+            <div className="image-container2">
+                <img src={notebookIcon} alt="Lock Icon" />
+               
+            </div>
+        </div>
+        </>
+    );
 };
 
-export default Login;
+export default LoginPage;

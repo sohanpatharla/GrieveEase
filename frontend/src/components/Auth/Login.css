@@ -1,65 +1,85 @@
-.login-container {
-  width: 100%;
-  height: 100vh;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #524a4a;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #4CAF50, #45a049);
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background-color: rgb(255, 255, 255);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100vw; 
+  height:100vh;/* Adjusted width */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .login-form {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 300px;
-}
-
-.login-form h2 {
-  color: #333;
   text-align: center;
-  margin-bottom: 20px;
 }
 
 input[type="email"], input[type="password"] {
   width: 100%;
-  padding: 10px;
+  padding: 15px;
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-input[type="email"]:focus, input[type="password"]:focus {
-  outline: none;
-  border-color: #666;
-}
-
-.role-selection {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.role-selection label {
-  color: #555;
-  margin-right: 10px;
-}
-
-button[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
+.button {
+  background-color: #00ff95;
+  
+  padding: 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%;
+  width: 5vw; /* Set button width to 20% of the viewport width */
+  margin: 10px 0;
 }
 
-button[type="submit"]:hover {
-  background-color: #45a049;
+button:hover {
+  background-color: #00b345;
 }
 
-.error-message {
-  color: #ff0000;
+a {
+  color: #e100ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+    align-items: center;
+
+  width: 50vw;
+  margin-top: auto;
+}
+.image-container2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+    align-items: center;
+
+  width: 50vw;
+  margin-bottom: auto;
+}
+
+.image-container img {
+  width: 100%; /* Adjust image width */
+}
+h1 {
   text-align: center;
+  color: #333;
 }
