@@ -32,6 +32,6 @@ app.use('/api/complaints', complaintRoutes);
 // app.use('/ogrs/employee',employeeRoutes);
 
 
-const PORT =5000;
+const PORT =process.env.PORT;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
