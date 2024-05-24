@@ -56,10 +56,19 @@ async function listComplaintsByUser(req, res) {
     res.status(500).send('Server error');
   }
 }
+async function listComplaintByUser(req, res) {
+  try {
+    const complaints = await Complaint.findOne({ complaintId: req.params.id });
+    res.json(complaints);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+}
 
 async function deleteComplaint(req, res) {
   try {
-    const complaint = await Complaint.findOne({ createdBy: req.user.id });
+    const complaint = await Complaint.findOne({ complaintId: req.params.id });
     if (!complaint) {
       return res.status(404).json("No complaints by the user");
     }
@@ -72,4 +81,4 @@ async function deleteComplaint(req, res) {
   }
 }
 
-module.exports = { addComplaint, updateComplaint, listComplaintsByUser, deleteComplaint };
+module.exports = { addComplaint, updateComplaint, listComplaintsByUser, listComplaintByUser,deleteComplaint };
