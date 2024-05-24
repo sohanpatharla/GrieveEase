@@ -16,28 +16,47 @@ const getComplaint = async (req, res) => {
     const { id } = req.params;
     try {
         const complaintId = await Complaint.findOne({ complaintId: id });
-        //console.log('Found Complaint ID:', complaintId); // Log the found complaint
-    
+        console.log('Found Complaint ID:', complaintId); // Log the found complaint
+
         if (complaintId) {
-          const complaint = await Complaint.findById(complaintId._id);
-          //console.log('Found Complaint:', complaint); // Log the found complaint
-          res.status(200).json(complaint);
+            const complaint = await Complaint.findById(complaintId._id);
+            //console.log('Found Complaint:', complaint); // Log the found complaint
+            res.status(200).json(complaint);
         } else {
-          res.status(404).json({ error: 'Complaint not found' });
+            res.status(404).json({ error: 'Complaint not found' });
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Error fetching complaint:', error); // Log the error
         res.status(500).json({ error: 'Internal Server Error' });
-      }
+    }
 };
 
+async function deleteComplaint(req, res) {
+    const { id } = req.params;
+    console.log(id); // Log the received ID
+    try {
+        const complaint = await Complaint.findOne({ complaintId: id });
+        console.log('Found Complaint:', complaint); // Log the found complaint
+        if (!complaint) {
+            return res.status(404).json("No complaint available");
+        }
 
-const getAllEmployees = async (req,res) => {
+        await Complaint.findOneAndDelete({ _id: complaint._id });
+
+        return res.status(200).json("Complaint deleted successfully");
+
+    } catch (err) {
+        console.error('Error deleting complaint:', err); // Log the error
+        return res.status(500).json(err);
+    }
+}
+
+const getAllEmployees = async (req, res) => {
     try {
         const employees = await Employee.find();
         res.status(200).json(employees);
-    }catch(error){
-        res.status(500).json({ error : "Internal Server Error"});
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
@@ -73,7 +92,7 @@ const deleteEmployee = async (req, res) => {
     const { id } = req.body;
 
     try {
-        const emp = await Employee.findOne({employeeId:id});
+        const emp = await Employee.findOne({ employeeId: id });
         await Employee.findOneAndDelete({ _id: emp._id });
         res.status(200).json({ message: 'Employee deleted successfully' });
     } catch (error) {
@@ -84,12 +103,20 @@ const deleteEmployee = async (req, res) => {
 // Function to map a complaint to an employee
 const mapComplaint = async (req, res) => {
     const { id } = req.params;
-    const { resolvedBy } = req.body;
-
+    const { assignedTo } = req.body;
     try {
-        const complaint = await Complaint.findByIdAndUpdate(id, { resolvedBy }, { new: true });
-        res.status(200).json(complaint);
+        const complaintId = await Complaint.findOne({ complaintId: id });
+        console.log('Found Complaint ID:', complaintId); // Log the found complaint
+
+        if (complaintId) {
+            const complaint = await Complaint.findByIdAndUpdate(complaintId._id, { assignedTo }, { new: true });
+            //console.log('Found Complaint:', complaint); // Log the found complaint
+            res.status(200).json(complaint);
+        } else {
+            res.status(404).json({ error: 'Complaint not found' });
+        }
     } catch (error) {
+        console.error('Error assigning complaint:', error); // Log the error
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
@@ -98,28 +125,28 @@ const mapComplaint = async (req, res) => {
 const updateComplaint = async (req, res) => {
     const { id } = req.params;
     const { complaintName, complaintContent, comments, assignedTo, status } = req.body;
-  
+
     try {
-      const updatedComplaint_id = await Complaint.findOne({ complaintId: id });
-      //console.log('Found Complaint ID:', updatedComplaint_id); // Log the found complaint
-  
-      if (updatedComplaint_id) {
-        const updatedComplaint = await Complaint.findByIdAndUpdate(
-          updatedComplaint_id._id,
-          { complaintName, complaintContent, comments, status, assignedTo },
-          { new: true }
-        );
-        //console.log('Updated Complaint:', updatedComplaint); // Log the updated complaint
-        res.status(200).json(updatedComplaint);
-      } else {
-        res.status(404).json({ error: 'Complaint not found' });
-      }
+        const updatedComplaint_id = await Complaint.findOne({ complaintId: id });
+        //console.log('Found Complaint ID:', updatedComplaint_id); // Log the found complaint
+
+        if (updatedComplaint_id) {
+            const updatedComplaint = await Complaint.findByIdAndUpdate(
+                updatedComplaint_id._id,
+                { complaintName, complaintContent, comments, status, assignedTo },
+                { new: true }
+            );
+            //console.log('Updated Complaint:', updatedComplaint); // Log the updated complaint
+            res.status(200).json(updatedComplaint);
+        } else {
+            res.status(404).json({ error: 'Complaint not found' });
+        }
     } catch (error) {
-      console.error('Error updating complaint:', error); // Log the error
-      res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error updating complaint:', error); // Log the error
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  };
-  
+};
+
 
 // Function to get all open complaints
 const openStatus = async (req, res) => {
@@ -144,6 +171,7 @@ const closedStatus = async (req, res) => {
 module.exports = {
     getAllComplaints,
     getComplaint,
+    deleteComplaint,
     getAllEmployees,
     addEmployee,
     updateEmployee,

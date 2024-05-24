@@ -4,6 +4,7 @@ const verify = require('../JWT_Auth/verify');
 const {
     getAllComplaints,
     getComplaint,
+    deleteComplaint,
     getAllEmployees,
     addEmployee,
     updateEmployee,
@@ -17,6 +18,7 @@ const {
 // Use verify middleware to protect routes if needed
 router.get('/complaints', getAllComplaints);
 router.get('/complaint/:id',getComplaint);
+router.delete('/delete/:id', deleteComplaint);
 router.get('/employees', getAllEmployees);
 router.post('/addEmployee', addEmployee);
 router.put('/updateEmployee/:id', updateEmployee);
