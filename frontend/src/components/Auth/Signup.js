@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';  // Reuse the same CSS file for styling consistency
+import './Signup.css'; // Corrected the CSS filename
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -10,9 +12,10 @@ const Signup = () => {
     username: '',
     name: '',
     mobileNumber: '',
-    role: 'user', // default role is set to 'user'
+    role: 'user',
   });
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
+  const [isSignUpSuccess, setIsSignUpSuccess] = useState(false); // Track signup success
   const navigate = useNavigate();
 
   const { email, password, username, name, mobileNumber, role } = formData;
@@ -22,26 +25,35 @@ const Signup = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-        const res = await axios.post('http://localhost:5000/api/users/register', formData);
-        console.log('Response:', res); // Log the response for debugging
-        localStorage.setItem('token', res.data.token);
-        alert('User registered successfully');
-        if (role === 'admin') {
-          navigate('/admin'); // Navigate to '/admin' route after successful login
-        } else if (role === 'employee') {
-          navigate('/employee'); // Navigate to '/employee' route after successful login
-        } else {
-          navigate('/user'); // Navigate to '/user' route after successful login
-        }
+      const res = await axios.post('http://localhost:5000/api/users/register', formData);
+      localStorage.setItem('token', res.data.token);
+      toast.success('User registered successfully', {
+        autoClose: 3000,
+      });
+      setIsSignUpSuccess(true); // Set signup success
+      
     } catch (error) {
-        console.error('Error response:', error.response); // Log detailed error response
-        setError('Error registering user');
+      console.error('Error response:', error.response);
+      // setError('Error registering user');
+      toast.error('Error registering user',);
     }
   };
 
+  // Navigate to next page after successful signup and toast message
+  if (isSignUpSuccess) {
+    if (role === 'admin') {
+      navigate('/admin');
+    } else if (role === 'employee') {
+      navigate('/employee');
+    } else {
+      navigate('/user');
+    }
+  }
+
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={onSubmit}>
+    <div className="signup-container">
+      <ToastContainer />
+      <form className="signup-form" onSubmit={onSubmit}>
         <h2>Sign Up</h2>
         <input
           type="email"
@@ -115,7 +127,7 @@ const Signup = () => {
           </label>
         </div>
         <button type="submit">Sign Up</button>
-        {error && <p className="error-message">{error}</p>}
+        {/* {error && <p className="error-message">{error}</p>} */}
       </form>
     </div>
   );

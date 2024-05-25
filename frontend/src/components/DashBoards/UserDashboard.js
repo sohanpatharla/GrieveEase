@@ -24,9 +24,9 @@ const UserDashboard = () => {
   const [fetchComplaintId, setFetchComplaintId] = useState(''); // State for fetch complaint ID
   const [fetchedComplaint, setFetchedComplaint] = useState(null); // State to store fetched complaint
 
-  useEffect(() => {
-    fetchComplaints();
-  }, []);
+  // useEffect(() => {
+  //   fetchComplaints();
+  // }, []);
 
   const handleDeleteComplaint = (e) => {
     const { value } = e.target;

@@ -5,47 +5,51 @@
     justify-content: center;
     align-items: center;
     background: linear-gradient(to right, #ff6b6b, #ff5252);
-}
-
-.signup-form {
+  }
+  
+  .signup-form {
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     width: 300px;
-}
-
-.signup-form h2 {
+  }
+  
+  .signup-form h2 {
     color: #333;
     text-align: center;
     margin-bottom: 20px;
-}
-
-input[type="email"], input[type="password"], input[type="text"] {
+  }
+  
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
-}
-
-input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
+  }
+  
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="text"]:focus {
     outline: none;
     border-color: #666;
-}
-
-.role-selection {
+  }
+  
+  .role-selection {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-}
-
-.role-selection label {
+  }
+  
+  .role-selection label {
     color: #555;
     margin-right: 10px;
-}
-
-button[type="submit"] {
+  }
+  
+  button[type="submit"] {
     background-color: #ff6b6b;
     color: white;
     padding: 10px 20px;
@@ -53,13 +57,14 @@ button[type="submit"] {
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
-}
-
-button[type="submit"]:hover {
+  }
+  
+  button[type="submit"]:hover {
     background-color: #ff5252;
-}
-
-.error-message {
+  }
+  
+  .error-message {
     color: #ff0000;
     text-align: center;
-}
+  }
+  
