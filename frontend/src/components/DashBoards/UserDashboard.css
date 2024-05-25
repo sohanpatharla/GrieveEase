@@ -1,25 +1,23 @@
-/* Grinvave Portal Dark Theme CSS Styling */
-
-body {
+/* body {
     font-family: 'Roboto', sans-serif;
-    background: #1a1a1a; /* Dark gray background */
+    background: #1a1a1a; 
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: #ccc; /* Light gray text color */
+    color: #ccc; 
     overflow: hidden;
 }
 
 .dashboard-container {
     width: 90%;
     max-width: 1200px;
-    background: rgba(255, 255, 255, 0.1); /* Transparent white background */
+    background: rgba(255, 255, 255, 0.1); 
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle box-shadow for depth */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     animation: fadeIn 1s ease-in-out;
     position: relative;
     z-index: 1;
@@ -42,8 +40,8 @@ h1, h2 {
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-weight: 600; /* Bold font weight */
-    color: #3f51b5; /* Deep blue color */
+    font-weight: 600; 
+    color: #3f51b5; 
     animation: slideInFromLeft 1s ease-in-out;
 }
 
@@ -62,32 +60,32 @@ input, textarea, button {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #333; /* Dark gray border */
+    border: 1px solid #333; 
     border-radius: 5px;
     font-size: 16px;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
 input, textarea {
-    background: #333; /* Dark gray background */
-    color: #ccc; /* Light gray text color */
+    background: #333; 
+    color: #ccc; 
 }
 
 input:focus, textarea:focus {
     outline: none;
-    background: #1a1a1a; /* Dark gray background on focus */
-    border-color: #3f51b5; /* Deep blue border color on focus */
+    background: #1a1a1a; 
+    border-color: #3f51b5; 
 }
 
 button {
-    background: #3f51b5; /* Deep blue background */
-    color: #fff; /* White text color */
+    background: #3f51b5; 
+    color: #fff; 
     cursor: pointer;
     transition: background 0.3s, transform 0.3s;
 }
 
 button:hover {
-    background: #1a237e; /* Darker blue on hover */
+    background: #1a237e; 
     transform: scale(1.05);
 }
 
@@ -96,14 +94,14 @@ button:active {
 }
 
 .error-message {
-    color: #ff3333; /* Red error message color */
+    color: #ff3333; 
     text-align: center;
 }
 
 .add-complaint, .list-complaints, .edit-complaint {
     margin: 20px 0;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.1); /* Transparent white background */
+    background: rgba(255, 255, 255, 0.1); 
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -116,7 +114,7 @@ button:active {
 .list-complaints li {
     padding: 10px;
     margin: 10px 0;
-    background: #1a1a1a; /* Dark gray background */
+    background: #1a1a1a; 
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
@@ -133,4 +131,4 @@ button:active {
         opacity: 1;
         transform: translateX(0);
     }
-}
+} */
