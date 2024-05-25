@@ -17,7 +17,13 @@ const UserDashboard = () => {
     lastUpdated: new Date(),
     assignedTo: '',
   });
-  const [editComplaint, setEditComplaint] = useState(null);
+  const [editComplaint, setEditComplaint] = useState({
+    complaintName: '',
+    complaintContent: '',
+    priority: '',
+    category: '',
+    comments: '',
+  });
   const [error, setError] = useState('');
   const [user, setUser] = useState(null);
   const [cId, setCId] = useState('');
@@ -78,18 +84,13 @@ const UserDashboard = () => {
   };
 
   const updateComplaint = async (id) => {
-    if (!editComplaint) {
-      setError('Complaint details are required');
-      return;
-    }
-
+    console.log(editComplaint)
     try {
-      console.log(`Edited complaint:${editComplaint}`);
-      await api.put(`/complaints/updateComplaint/${id}`, editComplaint);
+      await api.patch(`/complaints/updateComplaint/${id}`, { ...editComplaint});
       // fetchComplaints();
-      setEditComplaint(null);
-      setError('');
-    } catch (err) {
+      //setEditComplaint(null);
+      //setError('');
+    } catch (err) { 
       console.error('Error updating complaint:', err);
       setError('Error updating complaint');
     }
@@ -229,7 +230,7 @@ const UserDashboard = () => {
             onChange={handleEditComplaintChange}
             placeholder="Comments"
           />
-          <button onClick={() => updateComplaint(editComplaint._id)}>Update Complaint</button>
+          <button onClick={() => updateComplaint(editComplaint.com)}>Update Complaint</button>
         </div>
       )}
 

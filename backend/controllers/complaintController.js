@@ -28,12 +28,12 @@ async function addComplaint(req, res) {
 }
 
 async function updateComplaint(req, res) {
-  const { id } = req.params; // Extract the id from req.params
-  const { complaintName, complaintContent, priority, category, attachments, comments, status, assignedTo } = req.body; // Extract the updated fields from req.body
+  const { id } = req.params.id; // Extract the id from req.params
+  const { complaintName, complaintContent, priority, category, comments } = req.body; // Extract the updated fields from req.body
 
   try {
     // Find the complaint by id and createdBy user
-    const complaint = await Complaint.findOne({ _id: id, createdBy: req.user.id });
+    const complaint = await Complaint.findOne({ complaintId:id,createdBy:req.user.id });
     if (!complaint) {
       return res.status(404).json({ msg: 'Complaint not found' });
     }
@@ -43,10 +43,9 @@ async function updateComplaint(req, res) {
     if (complaintContent) complaint.complaintContent = complaintContent;
     if (priority) complaint.priority = priority;
     if (category) complaint.category = category;
-    if (attachments) complaint.attachments = attachments;
+    
     if (comments) complaint.comments = comments;
-    if (status) complaint.status = status;
-    if (assignedTo) complaint.assignedTo = assignedTo;
+   ssignedTo;
     complaint.lastUpdated = new Date();
 
     await complaint.save();

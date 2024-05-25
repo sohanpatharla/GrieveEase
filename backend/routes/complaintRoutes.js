@@ -6,7 +6,7 @@ const verify = require('../JWT_Auth/verify');
 router.post('/addComplaint', verify, addComplaint);
 router.get('/complaints', verify, listComplaintsByUser);
 router.get('/complaint/:id', verify, listComplaintById);
-router.put('/updateComplaint/:id', verify, updateComplaint);
+router.patch('/updateComplaint/:id', verify, updateComplaint);
 router.delete('/delete/:id', verify, deleteComplaint);
 
 module.exports = router;
