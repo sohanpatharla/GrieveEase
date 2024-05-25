@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./AdminDashboard.css";
-import api from '../../api';
 import api from '../../api';
 
 const AdminDashboard = () => {
@@ -38,7 +37,6 @@ const AdminDashboard = () => {
   const fetchUsers = async () => {
     try {
       const res = await api.get("http://localhost:5000/api/users/profiles");
-      const res = await api.get("http://localhost:5000/api/users/profiles");
       console.log("Fetched users:", res.data);
       setUsers(res.data);
     } catch (error) {
@@ -64,7 +62,6 @@ const AdminDashboard = () => {
   const fetchComplaints = async () => {
     try {
       const res = await api.get("http://localhost:5000/api/admin/complaints");
-      const res = await api.get("http://localhost:5000/api/admin/complaints");
       //console.log("Fetched Complaints:", res.data);
       setComplaints(res.data);
     } catch (error) {
@@ -75,7 +72,6 @@ const AdminDashboard = () => {
   const fetchOpenComplaints = async () => {
     try {
       const res = await api.get("http://localhost:5000/api/admin/openStatus");
-      const res = await api.get("http://localhost:5000/api/admin/openStatus");
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching open complaints:", error);
@@ -84,7 +80,6 @@ const AdminDashboard = () => {
 
   const fetchClosedComplaints = async () => {
     try {
-      const res = await api.get(
       const res = await api.get(
         "http://localhost:5000/api/admin/closedStatus"
       );
@@ -122,7 +117,6 @@ const AdminDashboard = () => {
   const fetchEmployees = async () => {
     try {
       const res = await api.get("http://localhost:5000/api/admin/employees");
-      const res = await api.get("http://localhost:5000/api/admin/employees");
       setEmployees(res.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -150,7 +144,6 @@ const AdminDashboard = () => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post(
       const res = await api.post(
         "http://localhost:5000/api/admin/addEmployee",
         formData
@@ -212,7 +205,6 @@ const AdminDashboard = () => {
     try {
       const { id, ...updateData } = formData;
       await api.put(
-      await api.put(
         `http://localhost:5000/api/admin/updateComplaint/${id}`,
         updateData
       );
@@ -245,29 +237,11 @@ const AdminDashboard = () => {
     setShowAssignField(true);
   }
 
-  const handleMapComplaint = async () => {
-    console.log(formData);
-    console.log(employeeName);
-    try {
-      const { id } = formData;
-      console.log(formData)
-      const res = await api.get(
-        `http://localhost:5000/api/admin/complaint/${id}`
-      );
-      setFetchedComplaint(res.data);
-      setMessage("Complaint fetched successfully!");
-    } catch (error) {
-      console.error("Error fetching complaint:", error.response || error.message);
-      setMessage("Error fetching complaint");
-    }
-  }
-
-
   const handleMapComplaint = async (e) => {
     e.preventDefault();
     const { id } = formData;
     try {
-      const res = await api.post(
+      await api.post(
         `http://localhost:5000/api/admin/mapComplaint/${id}`,
         { assignedTo: employeeName }
       );
