@@ -144,7 +144,7 @@ const AdminDashboard = () => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post(
+      await api.post(
         "http://localhost:5000/api/admin/addEmployee",
         formData
       );

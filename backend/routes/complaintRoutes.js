@@ -1,11 +1,12 @@
-const router = require('express').Router()
-const { addComplaint, updateComplaint, listComplaintsByUser, deleteComplaint} = require('../controllers/complaintController');
+const router = require('express').Router();
+const { addComplaint, updateComplaint, listComplaintsByUser, listComplaintById, deleteComplaint } = require('../controllers/complaintController');
 const verify = require('../JWT_Auth/verify');
 
 // Complaint routes
-router.post('/addComplaint', verify,addComplaint);
+router.post('/addComplaint', verify, addComplaint);
 router.get('/complaints', verify, listComplaintsByUser);
-router.put('/status', verify, updateComplaint);
-router.delete('/delete', verify, deleteComplaint);
+router.get('/complaint/:id', verify, listComplaintById);
+router.put('/updateComplaint/:id', verify, updateComplaint);
+router.delete('/delete/:id', verify, deleteComplaint);
 
 module.exports = router;

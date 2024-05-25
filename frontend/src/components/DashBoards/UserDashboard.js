@@ -19,11 +19,29 @@ const UserDashboard = () => {
   });
   const [editComplaint, setEditComplaint] = useState(null);
   const [error, setError] = useState('');
-  const [user, setUser] = useState(null); // Assuming user info is stored here
+  const [user, setUser] = useState(null);
+  const [cId, setCId] = useState('');
+  const [fetchComplaintId, setFetchComplaintId] = useState(''); // State for fetch complaint ID
+  const [fetchedComplaint, setFetchedComplaint] = useState(null); // State to store fetched complaint
 
-  // useEffect(() => {
-  //   fetchComplaints();
-  // }, []);
+  useEffect(() => {
+    fetchComplaints();
+  }, []);
+
+  const handleDeleteComplaint = (e) => {
+    const { value } = e.target;
+    setCId(value);
+  };
+
+  const deleteComplaint = async (id) => {
+    try {
+      await api.delete(`/complaints/delete/${id}`);
+      setComplaints(complaints.filter(complaint => complaint._id !== id));
+    } catch (err) {
+      console.error('Error deleting complaint:', err);
+      setError('Error deleting complaint');
+    }
+  };
 
   const fetchComplaints = async () => {
     try {
@@ -38,7 +56,6 @@ const UserDashboard = () => {
   const addComplaint = async () => {
     try {
       const res = await api.post('/complaints/addComplaint', { ...newComplaint, createdBy: user });
-      console.log(res.data);
       setComplaints([...complaints, res.data]);
       setNewComplaint({
         complaintId: '',
@@ -67,8 +84,9 @@ const UserDashboard = () => {
     }
 
     try {
-      await api.put(`/complaints/${id}`, editComplaint);
-      fetchComplaints();
+      console.log(`Edited complaint:${editComplaint}`);
+      await api.put(`/complaints/updateComplaint/${id}`, editComplaint);
+      // fetchComplaints();
       setEditComplaint(null);
       setError('');
     } catch (err) {
@@ -85,6 +103,21 @@ const UserDashboard = () => {
   const handleEditComplaintChange = (e) => {
     const { name, value } = e.target;
     setEditComplaint({ ...editComplaint, [name]: value });
+  };
+
+  const handleFetchComplaintChange = (e) => {
+    setFetchComplaintId(e.target.value);
+  };
+
+  const fetchComplaintById = async (id) => {
+    try {
+      const res = await api.get(`/complaints/complaint/${id}`);
+      setFetchedComplaint(res.data);
+      setError('');
+    } catch (err) {
+      console.error('Error fetching complaint:', err);
+      setError('Error fetching complaint');
+    }
   };
 
   return (
@@ -153,7 +186,7 @@ const UserDashboard = () => {
                 <span>Status: {complaint.status}</span>
                 <span>Last Updated: {new Date(complaint.lastUpdated).toLocaleString()}</span>
               </div>
-              <button onClick={() => setEditComplaint(complaint)}>Edit</button>
+              <button className="editButton" onClick={() => setEditComplaint(complaint)}>Edit</button>
             </li>
           ))}
         </ul>
@@ -196,9 +229,35 @@ const UserDashboard = () => {
             onChange={handleEditComplaintChange}
             placeholder="Comments"
           />
-          <button onClick={() => updateComplaint(editComplaint.complaintId)}>Update Complaint</button>
+          <button onClick={() => updateComplaint(editComplaint._id)}>Update Complaint</button>
         </div>
       )}
+
+      <div className="list-complaint">
+        <input type="text" name="compId" value={cId} placeholder="Enter Complaint-Id" onChange={handleDeleteComplaint} />
+        <button onClick={() => deleteComplaint(cId)}>Delete Complaint</button>
+      </div>
+
+      <div className="fetch-complaint">
+        <input type="text" name="fetchCompId" value={fetchComplaintId} placeholder="Enter Complaint-Id" onChange={handleFetchComplaintChange} />
+        <button onClick={() => fetchComplaintById(fetchComplaintId)}>Fetch Complaint</button>
+        {fetchedComplaint && (
+          <div>
+            <h2>Fetched Complaint</h2>
+            <div className="complaint-info">
+              <span>ID: {fetchedComplaint.complaintId}</span>
+              <span>Name: {fetchedComplaint.complaintName}</span>
+              <span>Description: {fetchedComplaint.complaintContent}</span>
+              <span>Priority: {fetchedComplaint.priority}</span>
+              <span>Category: {fetchedComplaint.category}</span>
+              <span>Comments: {fetchedComplaint.comments}</span>
+              <span>Status: {fetchedComplaint.status}</span>
+              <span>Last Updated: {new Date(fetchedComplaint.lastUpdated).toLocaleString()}</span>
+            </div>
+            <button className="editButton" onClick={() => setEditComplaint(fetchedComplaint)}>Edit</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
