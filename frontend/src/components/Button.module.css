@@ -5,11 +5,11 @@
 }
 
 #landingback {
-  background-image: url("./svg/test3.svg"), url("./svg/test4.svg");
+  /* background-image: url("./svg/1.svg"), url("./svg/2.svg"); */
   background-position: right top, left bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: 33%;
+  background-size: 25%;
   height: 100vh;
   overflow-x: hidden !important;
 }
@@ -69,10 +69,10 @@
 }
 
 #landbox {
-  top: 34vh;
-  justify-content: center;
+  padding-top: 36vh; /* Adjust as needed for vertical alignment */
   text-align: center;
   line-height: 2rem;
+  display: block;
 }
 
 #landtext {

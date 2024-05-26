@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Login.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    role: 'user',
+    role: 'user', // default role is set to 'user'
   });
+  const [error, setError] = useState(null);
 
   const { email, password, role } = formData;
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Use useNavigate hook
 
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -22,33 +22,22 @@ const Login = () => {
     try {
       const res = await axios.post('http://localhost:5000/api/users/login', formData);
       localStorage.setItem('token', res.data.token);
-
-      // Show success toast message
-      toast.success('Login successful!', {
-        autoClose: 3000,
-      });
-
-      // Delay navigation to allow toast message to be displayed
-      setTimeout(() => {
-        if (role === 'admin') {
-          navigate('/admin');
-        } else if (role === 'employee') {
-          navigate('/employee');
-        } else {
-          navigate('/user');
-        }
-      }, 3000);
+      // Navigate to appropriate route after login
+      if (role === 'admin') {
+        navigate('/admin'); // Navigate to '/admin' route after successful login
+      } else if (role === 'employee') {
+        navigate('/employee'); // Navigate to '/employee' route after successful login
+      } else {
+        navigate('/user'); // Navigate to '/user' route after successful login
+      }
     } catch (error) {
       console.error(error);
-      toast.error('Error logging in. Please check your credentials and try again.', {
-        autoClose: 3000,
-      });
+      setError('Error logging in');
     }
   };
 
   return (
     <div className="login-container">
-      <ToastContainer />
       <form className="login-form" onSubmit={onSubmit}>
         <h2>Login</h2>
         <input
@@ -100,6 +89,7 @@ const Login = () => {
           </label>
         </div>
         <button type="submit">Login</button>
+        {error && <p className="error-message">{error}</p>}
       </form>
     </div>
   );

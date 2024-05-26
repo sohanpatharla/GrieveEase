@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api'; // Import the axios instance
-import './UserDashboard.css';
+import './UserDashboard.css'; // Custom styles if needed
 
 const UserDashboard = () => {
   const [complaints, setComplaints] = useState([]);
@@ -19,29 +19,11 @@ const UserDashboard = () => {
   });
   const [editComplaint, setEditComplaint] = useState(null);
   const [error, setError] = useState('');
-  const [user, setUser] = useState(null);
-  const [cId, setCId] = useState('');
-  const [fetchComplaintId, setFetchComplaintId] = useState(''); // State for fetch complaint ID
-  const [fetchedComplaint, setFetchedComplaint] = useState(null); // State to store fetched complaint
+  const [user, setUser] = useState(null); // Assuming user info is stored here
 
-  // useEffect(() => {
-  //   fetchComplaints();
-  // }, []);
-
-  const handleDeleteComplaint = (e) => {
-    const { value } = e.target;
-    setCId(value);
-  };
-
-  const deleteComplaint = async (id) => {
-    try {
-      await api.delete(`/complaints/delete/${id}`);
-      setComplaints(complaints.filter(complaint => complaint._id !== id));
-    } catch (err) {
-      console.error('Error deleting complaint:', err);
-      setError('Error deleting complaint');
-    }
-  };
+  useEffect(() => {
+    fetchComplaints();
+  }, []);
 
   const fetchComplaints = async () => {
     try {
@@ -84,9 +66,8 @@ const UserDashboard = () => {
     }
 
     try {
-      console.log(`Edited complaint:${editComplaint}`);
-      await api.put(`/complaints/updateComplaint/${id}`, editComplaint);
-      // fetchComplaints();
+      await api.put(`/complaints/${id}`, editComplaint);
+      fetchComplaints();
       setEditComplaint(null);
       setError('');
     } catch (err) {
@@ -105,161 +86,187 @@ const UserDashboard = () => {
     setEditComplaint({ ...editComplaint, [name]: value });
   };
 
-  const handleFetchComplaintChange = (e) => {
-    setFetchComplaintId(e.target.value);
-  };
-
-  const fetchComplaintById = async (id) => {
-    try {
-      const res = await api.get(`/complaints/complaint/${id}`);
-      setFetchedComplaint(res.data);
-      setError('');
-    } catch (err) {
-      console.error('Error fetching complaint:', err);
-      setError('Error fetching complaint');
-    }
-  };
-
   return (
-    <div className="dashboard-container">
-      <h1>User Dashboard</h1>
+    <div className="container border-bottom scrollarea">
+      <h1 className="my-4">User Dashboard</h1>
 
-      <div className="add-complaint">
-        <h2>Add Complaint</h2>
-        <input
-          type="text"
-          name="complaintId"
-          value={newComplaint.complaintId}
-          onChange={handleComplaintChange}
-          placeholder="Complaint ID"
-        />
-        <input
-          type="text"
-          name="complaintName"
-          value={newComplaint.complaintName}
-          onChange={handleComplaintChange}
-          placeholder="Complaint Name"
-        />
-        <textarea
-          name="complaintContent"
-          value={newComplaint.complaintContent}
-          onChange={handleComplaintChange}
-          placeholder="Description"
-        ></textarea>
-        <input
-          type="text"
-          name="priority"
-          value={newComplaint.priority}
-          onChange={handleComplaintChange}
-          placeholder="Priority"
-        />
-        <input
-          type="text"
-          name="category"
-          value={newComplaint.category}
-          onChange={handleComplaintChange}
-          placeholder="Category"
-        />
-        <input
-          type="text"
-          name="comments"
-          value={newComplaint.comments}
-          onChange={handleComplaintChange}
-          placeholder="Comments"
-        />
-        <button onClick={addComplaint}>Add Complaint</button>
-        {error && <p className="error-message">{error}</p>}
+      <div className="card mb-4">
+        <div className="card-header">
+          <h2>Add Complaint</h2>
+        </div>
+        <div className="card-body">
+          <div className="mb-3">
+            <label htmlFor="complaintId" className="form-label">Complaint ID</label>
+            <input
+              type="text"
+              className="form-control"
+              id="complaintId"
+              name="complaintId"
+              value={newComplaint.complaintId}
+              onChange={handleComplaintChange}
+              placeholder="Complaint ID"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="complaintName" className="form-label">Complaint Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="complaintName"
+              name="complaintName"
+              value={newComplaint.complaintName}
+              onChange={handleComplaintChange}
+              placeholder="Complaint Name"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="complaintContent" className="form-label">Description</label>
+            <textarea
+              className="form-control"
+              id="complaintContent"
+              name="complaintContent"
+              value={newComplaint.complaintContent}
+              onChange={handleComplaintChange}
+              placeholder="Description"
+            ></textarea>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="priority" className="form-label">Priority</label>
+            <input
+              type="text"
+              className="form-control"
+              id="priority"
+              name="priority"
+              value={newComplaint.priority}
+              onChange={handleComplaintChange}
+              placeholder="Priority"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="category" className="form-label">Category</label>
+            <input
+              type="text"
+              className="form-control"
+              id="category"
+              name="category"
+              value={newComplaint.category}
+              onChange={handleComplaintChange}
+              placeholder="Category"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="comments" className="form-label">Comments</label>
+            <input
+              type="text"
+              className="form-control"
+              id="comments"
+              name="comments"
+              value={newComplaint.comments}
+              onChange={handleComplaintChange}
+              placeholder="Comments"
+            />
+          </div>
+          <button className="btn btn-primary" onClick={addComplaint}>Add Complaint</button>
+          {error && <p className="text-danger mt-3">{error}</p>}
+        </div>
       </div>
 
-      <div className="list-complaints">
-        <h2>Your Complaints</h2>
-        <ul>
-          {complaints.map((complaint) => (
-            <li key={complaint._id}> {/* Ensure _id is unique */}
-              <div className="complaint-info">
-                <span>ID: {complaint.complaintId}</span>
-                <span>Name: {complaint.complaintName}</span>
-                <span>Description: {complaint.complaintContent}</span>
-                <span>Priority: {complaint.priority}</span>
-                <span>Category: {complaint.category}</span>
-                <span>Comments: {complaint.comments}</span>
-                <span>Status: {complaint.status}</span>
-                <span>Last Updated: {new Date(complaint.lastUpdated).toLocaleString()}</span>
-              </div>
-              <button className="editButton" onClick={() => setEditComplaint(complaint)}>Edit</button>
-            </li>
-          ))}
-        </ul>
+      <div className="card mb-4">
+        <div className="card-header">
+          <h2>Your Complaints</h2>
+        </div>
+        <div className="card-body">
+          <ul className="list-group">
+            {complaints.map((complaint) => (
+              <li key={complaint._id} className="list-group-item">
+                <div className="complaint-info">
+                  <div><strong>ID:</strong> {complaint.complaintId}</div>
+                  <div><strong>Name:</strong> {complaint.complaintName}</div>
+                  <div><strong>Description:</strong> {complaint.complaintContent}</div>
+                  <div><strong>Priority:</strong> {complaint.priority}</div>
+                  <div><strong>Category:</strong> {complaint.category}</div>
+                  <div><strong>Comments:</strong> {complaint.comments}</div>
+                  <div><strong>Status:</strong> {complaint.status}</div>
+                  <div><strong>Last Updated:</strong> {new Date(complaint.lastUpdated).toLocaleString()}</div>
+                </div>
+                <button className="btn btn-secondary mt-2" onClick={() => setEditComplaint(complaint)}>Edit</button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       {editComplaint && (
-        <div className="edit-complaint">
-          <h2>Edit Complaint</h2>
-          <input
-            type="text"
-            name="complaintName"
-            value={editComplaint.complaintName}
-            onChange={handleEditComplaintChange}
-            placeholder="Complaint Name"
-          />
-          <textarea
-            name="complaintContent"
-            value={editComplaint.complaintContent}
-            onChange={handleEditComplaintChange}
-            placeholder="Description"
-          ></textarea>
-          <input
-            type="text"
-            name="priority"
-            value={editComplaint.priority}
-            onChange={handleEditComplaintChange}
-            placeholder="Priority"
-          />
-          <input
-            type="text"
-            name="category"
-            value={editComplaint.category}
-            onChange={handleEditComplaintChange}
-            placeholder="Category"
-          />
-          <input
-            type="text"
-            name="comments"
-            value={editComplaint.comments}
-            onChange={handleEditComplaintChange}
-            placeholder="Comments"
-          />
-          <button onClick={() => updateComplaint(editComplaint._id)}>Update Complaint</button>
+        <div className="card">
+          <div className="card-header">
+            <h2>Edit Complaint</h2>
+          </div>
+          <div className="card-body">
+            <div className="mb-3">
+              <label htmlFor="editComplaintName" className="form-label">Complaint Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="editComplaintName"
+                name="complaintName"
+                value={editComplaint.complaintName}
+                onChange={handleEditComplaintChange}
+                placeholder="Complaint Name"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="editComplaintContent" className="form-label">Description</label>
+              <textarea
+                className="form-control"
+                id="editComplaintContent"
+                name="complaintContent"
+                value={editComplaint.complaintContent}
+                onChange={handleEditComplaintChange}
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="editPriority" className="form-label">Priority</label>
+              <input
+                type="text"
+                className="form-control"
+                id="editPriority"
+                name="priority"
+                value={editComplaint.priority}
+                onChange={handleEditComplaintChange}
+                placeholder="Priority"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="editCategory" className="form-label">Category</label>
+              <input
+                type="text"
+                className="form-control"
+                id="editCategory"
+                name="category"
+                value={editComplaint.category}
+                onChange={handleEditComplaintChange}
+                placeholder="Category"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="editComments" className="form-label">Comments</label>
+              <input
+                type="text"
+                className="form-control"
+                id="editComments"
+                name="comments"
+                value={editComplaint.comments}
+                onChange={handleEditComplaintChange}
+                placeholder="Comments"
+              />
+            </div>
+            <button className="btn btn-primary" onClick={() => updateComplaint(editComplaint._id)}>Update Complaint</button>
+            {error && <p className="text-danger mt-3">{error}</p>}
+          </div>
         </div>
       )}
-
-      <div className="list-complaint">
-        <input type="text" name="compId" value={cId} placeholder="Enter Complaint-Id" onChange={handleDeleteComplaint} />
-        <button onClick={() => deleteComplaint(cId)}>Delete Complaint</button>
-      </div>
-
-      <div className="fetch-complaint">
-        <input type="text" name="fetchCompId" value={fetchComplaintId} placeholder="Enter Complaint-Id" onChange={handleFetchComplaintChange} />
-        <button onClick={() => fetchComplaintById(fetchComplaintId)}>Fetch Complaint</button>
-        {fetchedComplaint && (
-          <div>
-            <h2>Fetched Complaint</h2>
-            <div className="complaint-info">
-              <span>ID: {fetchedComplaint.complaintId}</span>
-              <span>Name: {fetchedComplaint.complaintName}</span>
-              <span>Description: {fetchedComplaint.complaintContent}</span>
-              <span>Priority: {fetchedComplaint.priority}</span>
-              <span>Category: {fetchedComplaint.category}</span>
-              <span>Comments: {fetchedComplaint.comments}</span>
-              <span>Status: {fetchedComplaint.status}</span>
-              <span>Last Updated: {new Date(fetchedComplaint.lastUpdated).toLocaleString()}</span>
-            </div>
-            <button className="editButton" onClick={() => setEditComplaint(fetchedComplaint)}>Edit</button>
-          </div>
-        )}
-      </div>
     </div>
   );
 };
-
 export default UserDashboard;
