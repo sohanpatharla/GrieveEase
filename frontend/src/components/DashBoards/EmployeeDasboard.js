@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './EmployeeDashboard.css';
+import api from '../../api';
 
 const EmployeeDashboard = () => {
   const [complaints, setComplaints] = useState([]);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [response, setResponse] = useState('');
   const [status, setStatus] = useState('');
+  const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
     fetchComplaints();
@@ -14,7 +15,7 @@ const EmployeeDashboard = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await axios.get('/api/employee/assignedComplaints');
+      const res = await api.get('/employee/assignedComplaints');
       setComplaints(res.data);
     } catch (error) {
       console.error('Error fetching complaints:', error);
@@ -22,9 +23,14 @@ const EmployeeDashboard = () => {
   };
 
   const handleComplaintSelect = (complaint) => {
-    setSelectedComplaint(complaint);
-    setResponse(complaint.comments || '');
-    setStatus(complaint.status || '');
+    if (selectedComplaint && selectedComplaint.complaintId === complaint.complaintId) {
+      setShowDetails(!showDetails);
+    } else {
+      setSelectedComplaint(complaint);
+      setResponse(complaint.comments || '');
+      setStatus(complaint.status || '');
+      setShowDetails(true);
+    }
   };
 
   const handleResponseChange = (e) => {
@@ -43,7 +49,7 @@ const EmployeeDashboard = () => {
         status,
         lastUpdated: new Date()
       };
-      await axios.put(`/api/employee/updateComplaint/${selectedComplaint.complaintId}`, updatedComplaint);
+      await api.put(`/employee/updateComplaint/${selectedComplaint.complaintId}`, updatedComplaint);
       setComplaints(complaints.map(c => (c.complaintId === updatedComplaint.complaintId ? updatedComplaint : c)));
       setSelectedComplaint(updatedComplaint);
       alert('Complaint updated successfully!');
@@ -59,48 +65,52 @@ const EmployeeDashboard = () => {
         <h2>Assigned Complaints</h2>
         <ul>
           {complaints.map(complaint => (
-            <li key={complaint.complaintId} onClick={() => handleComplaintSelect(complaint)}>
-              {complaint.complaintName} - {complaint.status}
+            <li key={complaint.complaintId}>
+              <button onClick={() => handleComplaintSelect(complaint)}>
+                {complaint.complaintName} - {complaint.status}
+              </button>
+              {selectedComplaint && selectedComplaint.complaintId === complaint.complaintId && showDetails && (
+                <div className="complaint-details">
+                  <h2>Complaint Details</h2>
+                  <p><strong>ID:</strong> {complaint.complaintId}</p>
+                  <p><strong>Name:</strong> {complaint.complaintName}</p>
+                  <p><strong>Description:</strong> {complaint.complaintContent}</p>
+                  <p><strong>Priority:</strong> {complaint.priority}</p>
+                  <p><strong>Category:</strong> {complaint.category}</p>
+                  <p><strong>Assigned To:</strong> {complaint.assignedTo}</p>
+                  <p><strong>Status:</strong> {complaint.status}</p>
+                  <p><strong>Created On:</strong> {new Date(complaint.createdOn).toLocaleString()}</p>
+                  <p><strong>Last Updated:</strong> {new Date(complaint.lastUpdated).toLocaleString()}</p>
+                  <p><strong>Attachments:</strong></p>
+                  <ul>
+                    {complaint.attachments.map((file, index) => (
+                      <li key={index}><a href={file} target="_blank" rel="noopener noreferrer">Attachment {index + 1}</a></li>
+                    ))}
+                  </ul>
+                  <div className="update-section">
+                    <h3>Update Complaint</h3>
+                    <textarea
+                      value={response}
+                      onChange={handleResponseChange}
+                      placeholder="Add your response here..."
+                    ></textarea>
+                    <select value={status} onChange={handleStatusChange}>
+                      <option value="">Select Status</option>
+                      <option value="Closed">Closed</option>
+                      <option value="Pending">Pending</option>
+                    </select>
+                    <button onClick={handleUpdateComplaint}>Update Complaint</button>
+                  </div>
+                  <div className="chat-section">
+                    <h3>Chat Section</h3>
+                    {/* Chat implementation will go here */}
+                  </div>
+                </div>
+              )}
             </li>
           ))}
         </ul>
       </div>
-      {selectedComplaint && (
-        <div className="complaint-details">
-          <h2>Complaint Details</h2>
-          <p><strong>ID:</strong> {selectedComplaint.complaintId}</p>
-          <p><strong>Name:</strong> {selectedComplaint.complaintName}</p>
-          <p><strong>Description:</strong> {selectedComplaint.description}</p>
-          <p><strong>Created On:</strong> {new Date(selectedComplaint.createdOn).toLocaleString()}</p>
-          <p><strong>Priority:</strong> {selectedComplaint.priority}</p>
-          <p><strong>Category:</strong> {selectedComplaint.category}</p>
-          <p><strong>Assigned To:</strong> {selectedComplaint.assignedTo?.name}</p>
-          <p><strong>Last Updated:</strong> {new Date(selectedComplaint.lastUpdated).toLocaleString()}</p>
-          <p><strong>Status:</strong> {selectedComplaint.status}</p>
-          <p><strong>Attachments:</strong></p>
-          <ul>
-            {selectedComplaint.attachments.map((file, index) => (
-              <li key={index}><a href={file} target="_blank" rel="noopener noreferrer">Attachment {index + 1}</a></li>
-            ))}
-          </ul>
-          <div className="update-section">
-            <h3>Update Complaint</h3>
-            <textarea
-              value={response}
-              onChange={handleResponseChange}
-              placeholder="Add your response here..."
-            ></textarea>
-            <select value={status} onChange={handleStatusChange}>
-              <option value="">Select Status</option>
-              <option value="open">Open</option>
-              <option value="in-progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-              <option value="closed">Closed</option>
-            </select>
-            <button onClick={handleUpdateComplaint}>Update Complaint</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

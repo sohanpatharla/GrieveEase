@@ -1,31 +1,31 @@
 const Complaint = require('../models/complaintModel');
 
-async function addComplaint(req, res) {
-  console.log("Working");
-  console.log(req.user);
-  const { complaintId, complaintName, complaintContent, priority, category, attachments, comments } = req.body;
-  const createdBy = req.user.id;
-  console.log(req.body);
-  try {
-    const complaint = new Complaint({
-      complaintId,
-      complaintName,
-      complaintContent,
-      createdBy,
-      priority,
-      category,
-      attachments,
-      comments
-    });
-    await complaint.save().then(() => {
-      console.log("Saved");
-    });
-    res.status(201).json(complaint);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+  async function addComplaint(req, res) {
+    console.log("Working");
+    console.log(req.user);
+    const { complaintId, complaintName, complaintContent, priority, category, attachments, comments } = req.body;
+    const createdBy = req.user.name;
+    console.log(req.body);
+    try {
+      const complaint = new Complaint({
+        complaintId,
+        complaintName,
+        complaintContent,
+        createdBy,
+        priority,
+        category,
+        attachments,
+        comments
+      });
+      await complaint.save().then(() => {
+        console.log("Saved");
+      });
+      res.status(201).json(complaint);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
   }
-}
 
 async function updateComplaint(req, res) {
   const { id } = req.params; // Extract the id from req.params
@@ -60,7 +60,7 @@ async function updateComplaint(req, res) {
 
 async function listComplaintsByUser(req, res) {
   try {
-    const complaints = await Complaint.find({ createdBy: req.user.id });
+    const complaints = await Complaint.find();
     res.json(complaints);
   } catch (err) {
     console.error(err.message);

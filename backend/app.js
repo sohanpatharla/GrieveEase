@@ -6,8 +6,7 @@ const cors = require('cors');
 const complaintRoutes = require('./routes/complaintRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const verify = require('./JWT_Auth/verify');
-// const employeeRoutes = require('./backend/routes/employee.routes');
-
+const employeeRoutes=require('./routes/employeeRoutes');
 
 const app = express();
 const corsOptions = {
@@ -28,8 +27,9 @@ app.use(express.json({ extended: false }));
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/complaints', complaintRoutes);
-// app.use('/ogrs/admin',adminRoutes);
-// app.use('/ogrs/employee',employeeRoutes);
+app.use('/api/employee',employeeRoutes);
+
+
 
 
 const PORT =process.env.PORT;

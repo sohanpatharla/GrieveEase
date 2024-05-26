@@ -1,30 +1,18 @@
-/* Grinvave Portal Dark Theme CSS Styling */
-
-body {
-    font-family: 'Roboto', sans-serif;
-    background: #1a1a1a; /* Dark gray background */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align items to the top to allow scrolling */
-    min-height: 100vh; /* Use min-height to enable scrolling */
-    color: #ccc; /* Light gray text color */
-    overflow: auto; /* Allow scrolling */
-}
+/* UserDashboard.css */
 
 .dashboard-container {
     width: 90%;
     max-width: 1200px;
-    background: rgba(255, 255, 255, 0.1); /* Transparent white background */
+    margin: 20px auto;
     padding: 20px;
+    background: rgba(255, 255, 255, 0.1); /* Transparent white background */
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle box-shadow for depth */
     animation: fadeIn 1s ease-in-out;
-    position: relative;
-    z-index: 1;
     overflow: auto; /* Allow scrolling within the container */
-    margin-top: 20px; /* Add some margin at the top for better visibility */
+    color: #ccc; /* Light gray text color */
+    background: #1a1a1a; /* Dark gray background */
+    font-family: 'Roboto', sans-serif;
 }
 
 @keyframes fadeIn {
@@ -101,7 +89,7 @@ button:active {
     text-align: center;
 }
 
-.add-complaint, .list-complaints, .edit-complaint {
+.add-complaint, .list-complaints, .edit-complaint, .fetch-complaint, .list-complaint {
     margin: 20px 0;
     padding: 20px;
     background: rgba(255, 255, 255, 0.1); /* Transparent white background */
@@ -132,9 +120,10 @@ button:active {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
 }
 
-.editButton{
+.editButton {
     width: 10%;
 }
+
 .complaint-info {
     display: flex;
     flex-direction: column;

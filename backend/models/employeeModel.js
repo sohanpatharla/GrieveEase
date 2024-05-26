@@ -13,7 +13,7 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       default: "Employee"
     },
-    addedBy:{type:mongoose.Schema.Types.ObjectId,ref:"Admin",required:true}
+    addedBy:{type:String,required:true},
   },
   { timestamps: true }
 );

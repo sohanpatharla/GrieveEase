@@ -4,7 +4,7 @@ const complaintSchema = new mongoose.Schema({
   complaintId: { type: String, required: true },
   complaintName: { type: String, required: true },
   complaintContent: { type: String, required: true },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  createdBy: { type: String, required: true },
   priority: { type: String, default: 'Medium' },
   category: { type: String, default: 'Technical' },
   attachments: { type: Array, default: [] },

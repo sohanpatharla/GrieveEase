@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Employee = require("../models/employeeModel")
+const Complaint = require("../models/complaintModel");
 
 async function loginEmployee(req, res) {
   const { email, password } = req.body;
@@ -54,4 +55,44 @@ async function employeeDetails(req, res) {
     }
 }
 
-module.exports = { loginEmployee, employeeDetails };
+
+
+async function assignedComplaints(req, res) {
+  try {
+    console.log(req.user.name);
+    const employeeName = req.user.name; // Extract the employee ID from the token
+    const complaints = await Complaint.find({ assignedTo: employeeName });
+    console.log(complaints);
+    res.status(200).json(complaints);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+}
+async function updateComplaint(req, res) {
+  const { complaintId } = req.params;
+  const { comments, status } = req.body;
+
+  try {
+    const updatedComplaint = await Complaint.findOneAndUpdate(
+      { complaintId },
+      {
+        comments,
+        status,
+        lastUpdated: Date.now(),
+      },
+      { new: true }
+    );
+
+    if (!updatedComplaint) {
+      return res.status(404).json({ msg: "Complaint not found" });
+    }
+
+    res.json(updatedComplaint);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+}
+
+module.exports = { loginEmployee, employeeDetails,assignedComplaints,updateComplaint };

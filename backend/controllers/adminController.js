@@ -63,7 +63,7 @@ const getAllEmployees = async (req, res) => {
 // Function to add a new employee
 const addEmployee = async (req, res) => {
     const { companyEmail, employeeId, employeeName, username, password, mobileNumber } = req.body;
-    const addedBy = req.user.id; // Make sure to authenticate and get the admin's user ID
+    const addedBy = req.user.name; // Make sure to authenticate and get the admin's user ID
   
     try {
       const newEmployee = new Employee({

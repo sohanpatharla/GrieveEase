@@ -7,17 +7,20 @@ import Login from './components/Auth/Login';
 import UserDashboard from './components/DashBoards/UserDashboard';
 import AdminDashboard from './components/DashBoards/AdminDashboard';
 import EmployeeDashboard from './components/DashBoards/EmployeeDasboard';
+import HomePage from './HomePage';
+
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<UserDashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/employee" element={<EmployeeDashboard />} />
-        {/* <Route path="/add-complaint" element={<AddComplaint />} /> */}
+        <Route path="/admin" element={<AdminDashboard />} /> 
+        <Route path="/employee" element={<EmployeeDashboard />} /> 
+       {/* <Route path="/add-complaint" element={<AddComplaint />} /> */}
       </Routes>
     </Router>
   );
