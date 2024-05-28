@@ -186,8 +186,25 @@ const openStatus = async (req, res) => {
 // Function to get all closed complaints
 const closedStatus = async (req, res) => {
     try {
+        console.log('In closed status');
         const closedComplaints = await Complaint.find({ status: 'Closed' });
+        console.log(closedComplaints);
         res.status(200).json(closedComplaints);
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+// Function to get the count of complaints by status
+const getComplaintStatuses = async (req, res) => {
+    try {
+        console.log('In complaint stattuses');
+        const complaints = await Complaint.find({});
+        const statusCount = complaints.reduce((acc, complaint) => {
+            acc[complaint.status] = (acc[complaint.status] || 0) + 1;
+            return acc;
+        }, {});
+        res.status(200).json(statusCount);
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -204,5 +221,6 @@ module.exports = {
     mapComplaint,
     updateComplaint,
     openStatus,
-    closedStatus
+    closedStatus,
+    getComplaintStatuses
 };

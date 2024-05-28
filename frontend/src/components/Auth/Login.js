@@ -18,6 +18,7 @@ const Login = () => {
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
+    console.log('In login');
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:5000/api/users/login', formData);

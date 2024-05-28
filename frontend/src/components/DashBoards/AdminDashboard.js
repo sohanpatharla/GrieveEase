@@ -1,33 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 import api from '../../api';
+import ComplaintStatusOverview from './ComplaintStatusOverview';
+// import ComplaintStatusChart from './ComplaintStatusChart';
+// import ComplaintTimeChart from './ComplaintTimeChart';
+// import ComplaintCategoryChart from './ComplaintCategoryChart';
+// import ComplaintPriorityChart from './ComplaintPriorityChart';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("userManagement");
   const [users, setUsers] = useState([]);
   const [complaints, setComplaints] = useState([]);
   const [fetchedComplaint, setFetchedComplaint] = useState(null);
-  const [showAssignField, setShowAssignField] = useState(false); // State to hold fetched complaint
-  //const [statuses, setStatuses] = useState([]);
+  const [showAssignField, setShowAssignField] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [employeeName, setEmployeeName] = useState('');
-  //const [analytics, setAnalytics] = useState({});
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState("");
+  const [statusData, setStatusData] = useState([]);
+  const [timeData, setTimeData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+  const [priorityData, setPriorityData] = useState([]);
 
   // useEffect(() => {
   //   fetchData();
   // }, []);
 
-  // const fetchData = async () => {
-  //   await fetchUsers();
-  //   await fetchComplaints();
-  //   await fetchOpenComplaints();
-  //   await fetchClosedComplaints();
-  //   //await fetchStatuses();
-  //   await fetchEmployees();
-  //   //await fetchAnalytics();
-  // };
+  const fetchData = async () => {
+    await fetchUsers();
+    await fetchComplaints();
+    await fetchOpenComplaints();
+    await fetchClosedComplaints();
+    await fetchEmployees();
+    await fetchAnalytics();
+  };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -48,9 +54,7 @@ const AdminDashboard = () => {
     try {
       const { id } = formData;
       console.log(formData)
-      const res = await api.get(
-        `http://localhost:5000/api/admin/complaint/${id}`
-      );
+      const res = await api.get(`http://localhost:5000/api/admin/complaint/${id}`);
       setFetchedComplaint(res.data);
       setMessage("Complaint fetched successfully!");
     } catch (error) {
@@ -62,7 +66,6 @@ const AdminDashboard = () => {
   const fetchComplaints = async () => {
     try {
       const res = await api.get("http://localhost:5000/api/admin/complaints");
-      //console.log("Fetched Complaints:", res.data);
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching complaints:", error);
@@ -80,9 +83,7 @@ const AdminDashboard = () => {
 
   const fetchClosedComplaints = async () => {
     try {
-      const res = await api.get(
-        "http://localhost:5000/api/admin/closedStatus"
-      );
+      const res = await api.get("http://localhost:5000/api/admin/closedStatus");
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching closed complaints:", error);
@@ -93,9 +94,7 @@ const AdminDashboard = () => {
     try {
       const { id } = formData;
       console.log(formData)
-      await api.delete(
-        `http://localhost:5000/api/admin/delete/${id}`
-      );
+      await api.delete(`http://localhost:5000/api/admin/delete/${id}`);
       setFetchedComplaint(null);
       setMessage("Complaint deleted successfully!");
     } catch (error) {
@@ -103,16 +102,6 @@ const AdminDashboard = () => {
       setMessage("Error deleting complaint");
     }
   }
-
-  // const fetchStatuses = async () => {
-  //   try {
-  //     const res = await api.get('http://localhost:5000/api/admin/statuses');
-  //     const res = await api.get('http://localhost:5000/api/admin/statuses');
-  //     setStatuses(res.data);
-  //   } catch (error) {
-  //     console.error('Error fetching statuses:', error);
-  //   }
-  // };
 
   const fetchEmployees = async () => {
     try {
@@ -123,15 +112,23 @@ const AdminDashboard = () => {
     }
   };
 
-  // const fetchAnalytics = async () => {
-  //   try {
-  //     const res = await api.get('http://localhost:5000/api/admin/analytics');
-  //     const res = await api.get('http://localhost:5000/api/admin/analytics');
-  //     setAnalytics(res.data);
-  //   } catch (error) {
-  //     console.error('Error fetching analytics:', error);
-  //   }
-  // };
+  const fetchAnalytics = async () => {
+    try {
+      const res = await api.get('http://localhost:5000/api/admin/analytics');
+      const data = res.data;
+      setStatusData([
+        { name: 'Pending', value: data.pending },
+        { name: 'In Progress', value: data.inProgress },
+        { name: 'Resolved', value: data.resolved },
+        { name: 'Rejected', value: data.rejected }
+      ]);
+      setTimeData(data.timeData); // Assuming timeData is an array of {name: 'date', count: number}
+      setCategoryData(data.categoryData); // Assuming categoryData is an array of {name: 'category', count: number}
+      setPriorityData(data.priorityData); // Assuming priorityData is an array of {name: 'priority', count: number}
+    } catch (error) {
+      console.error('Error fetching analytics:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -144,10 +141,7 @@ const AdminDashboard = () => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      await api.post(
-        "http://localhost:5000/api/admin/addEmployee",
-        formData
-      );
+      await api.post("http://localhost:5000/api/admin/addEmployee", formData);
       setMessage("Employee added successfully!");
       fetchEmployees();
     } catch (error) {
@@ -161,12 +155,9 @@ const AdminDashboard = () => {
     console.log(formData);
     console.log(`this is the id${employeeId}`);
     try {
-      await api.put(
-        `http://localhost:5000/api/admin/updateEmployee/${employeeId}`,
-        updateData
-      );
+      await api.put(`http://localhost:5000/api/admin/updateEmployee/${employeeId}`, updateData);
       setMessage("Employee updated successfully!");
-      setFormData({}); // Clear form data
+      setFormData({});
     } catch (error) {
       setMessage("Error updating employee");
       console.error("Error updating employee:", error);
@@ -176,63 +167,26 @@ const AdminDashboard = () => {
   const handleDeleteEmployee = async () => {
     const { employeeId } = formData;
     try {
-      await api.delete(
-        `http://localhost:5000/api/admin/deleteEmployee/${employeeId}`
-      );
+      await api.delete(`http://localhost:5000/api/admin/deleteEmployee/${employeeId}`);
       setMessage("Employee deleted successfully!");
     } catch (error) {
       setMessage("Error deleting employee");
       console.error("Error deleting employee:", error);
     }
   };
-  // const handleDeleteComplaint = async () => {
-  //   try {
-  //     const { id } = formData;
-  //     console.log(formData)
-  //     await axios.delete(
-  //       `http://localhost:5000/api/admin/delete/${id}`
-  //     );
-  //     setFetchedComplaint(null);
-  //     setMessage("Complaint deleted successfully!");
-  //   } catch (error) {
-  //     console.error("Error deleting complaint:", error.response || error.message);
-  //     setMessage("Error deleting complaint");
-  //   }
-  // }
 
   const handleUpdateComplaint = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault();
     try {
       const { id, ...updateData } = formData;
-      await api.put(
-        `http://localhost:5000/api/admin/updateComplaint/${id}`,
-        updateData
-      );
-      //console.log(updateData)
+      await api.put(`http://localhost:5000/api/admin/updateComplaint/${id}`, updateData);
       setMessage("Complaint updated successfully!");
-      //fetchComplaints(); // Refresh the complaints list
     } catch (error) {
       console.error("Error updating complaint:", error.response || error.message);
       setMessage("Error updating complaint");
     }
   };
 
-
-  // const handleMapComplaint = async (e) => {
-  //   e.preventDefault();
-  //   const { id } = formData;
-  //   try {
-  //     const res = await api.post(
-  //       `http://localhost:5000/api/admin/mapComplaint/${id}`,
-  //       formData
-  //     );
-  //     setMessage("Complaint mapped successfully!");
-  //     fetchComplaints();
-  //   } catch (error) {
-  //     setMessage("Error mapping complaint");
-  //     console.error("Error mapping complaint:", error);
-  //   }
-  // }; 
   const mapfield = () => {
     setShowAssignField(true);
   }
@@ -241,14 +195,10 @@ const AdminDashboard = () => {
     e.preventDefault();
     const { id } = formData;
     try {
-      await api.post(
-        `http://localhost:5000/api/admin/mapComplaint/${id}`,
-        { assignedTo: employeeName }
-      );
-      //setFetchedComplaint(res.data);
+      await api.post(`http://localhost:5000/api/admin/mapComplaint/${id}`, { assignedTo: employeeName });
       setMessage('Complaint updated successfully!');
     } catch (error) {
-      console.error('Error maping complaint:', error.response || error.message);
+      console.error('Error mapping complaint:', error.response || error.message);
       setMessage('Error updating complaint');
     }
   };
@@ -257,34 +207,19 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
       <div className="tabs">
-        <button
-          className={activeTab === "userManagement" ? "active" : ""}
-          onClick={() => handleTabChange("userManagement")}
-        >
+        <button className={activeTab === "userManagement" ? "active" : ""} onClick={() => handleTabChange("userManagement")}>
           User Management
         </button>
-        <button
-          className={activeTab === "complaintManagement" ? "active" : ""}
-          onClick={() => handleTabChange("complaintManagement")}
-        >
+        <button className={activeTab === "complaintManagement" ? "active" : ""} onClick={() => handleTabChange("complaintManagement")}>
           Complaint Management
         </button>
-        <button
-          className={activeTab === "statusManagement" ? "active" : ""}
-          onClick={() => handleTabChange("statusManagement")}
-        >
+        <button className={activeTab === "statusManagement" ? "active" : ""} onClick={() => handleTabChange("statusManagement")}>
           Status Management
         </button>
-        <button
-          className={activeTab === "employeeManagement" ? "active" : ""}
-          onClick={() => handleTabChange("employeeManagement")}
-        >
+        <button className={activeTab === "employeeManagement" ? "active" : ""} onClick={() => handleTabChange("employeeManagement")}>
           Employee Management
         </button>
-        <button
-          className={activeTab === "dashboardAnalytics" ? "active" : ""}
-          onClick={() => handleTabChange("dashboardAnalytics")}
-        >
+        <button className={activeTab === "dashboardAnalytics" ? "active" : ""} onClick={() => handleTabChange("dashboardAnalytics")}>
           Dashboard Analytics
         </button>
       </div>
@@ -299,9 +234,7 @@ const AdminDashboard = () => {
             {users.length > 0 ? (
               <ul>
                 {users.map((user) => (
-                  <li key={user._id}>
-                    {user.name} - {user.email}
-                  </li>
+                  <li key={user._id}>{user.name} - {user.email}</li>
                 ))}
               </ul>
             ) : (
@@ -313,42 +246,12 @@ const AdminDashboard = () => {
           <div>
             <h2>Complaint Management</h2>
             <form onSubmit={handleUpdateComplaint}>
-              <input
-                type="text"
-                name="id"
-                placeholder="Complaint ID"
-                onChange={handleInputChange}
-              />
-              <input
-                type="text"
-                name="complaintName"
-                placeholder="Complaint Name"
-                onChange={handleInputChange}
-              />
-              <input
-                type="text"
-                name="complaintContent"
-                placeholder="Complaint Content"
-                onChange={handleInputChange}
-              />
-              <input
-                type="text"
-                name="comments"
-                placeholder="Comments"
-                onChange={handleInputChange}
-              />
-              <input
-                type="text"
-                name="status"
-                placeholder="Status"
-                onChange={handleInputChange}
-              />
-              <input
-                type="text"
-                name="assignedTo"
-                placeholder="Assigned To"
-                onChange={handleInputChange}
-              />
+              <input type="text" name="id" placeholder="Complaint ID" onChange={handleInputChange} />
+              <input type="text" name="complaintName" placeholder="Complaint Name" onChange={handleInputChange} />
+              <input type="text" name="complaintContent" placeholder="Complaint Content" onChange={handleInputChange} />
+              <input type="text" name="comments" placeholder="Comments" onChange={handleInputChange} />
+              <input type="text" name="status" placeholder="Status" onChange={handleInputChange} />
+              <input type="text" name="assignedTo" placeholder="Assigned To" onChange={handleInputChange} />
               <button type="submit">Update Complaint</button>
             </form>
             <div className="buttons">
@@ -359,15 +262,11 @@ const AdminDashboard = () => {
             {complaints.length > 0 ? (
               <ul>
                 {complaints.map((complaint) => (
-                  <li key={complaint._id}>
-                    {complaint.complaintName} - {complaint.status}
-                  </li>
+                  <li key={complaint._id}>{complaint.complaintName} - {complaint.status}</li>
                 ))}
               </ul>
             ) : (
-              <p>
-                No complaints found. Click "Complaint Buttons" to load data.
-              </p>
+              <p>No complaints found. Click "Complaint Buttons" to load data.</p>
             )}
           </div>
         )}
@@ -375,12 +274,7 @@ const AdminDashboard = () => {
           <div>
             <h2>Status Management</h2>
             <form>
-              <input
-                type="text"
-                name="id"
-                placeholder="Complaint ID"
-                onChange={handleInputChange}
-              />
+              <input type="text" name="id" placeholder="Complaint ID" onChange={handleInputChange} />
             </form>
             <button onClick={fetchComplaint}>FetchStatuses</button>
             <button onClick={mapfield}>AssignTo</button>
@@ -391,80 +285,34 @@ const AdminDashboard = () => {
               <p>No complaint found. Click "fetch Complaint" to load data.</p>
             )}
             {showAssignField && (
-            <div>
-              <input
-                type="text"
-                name="employeeName"
-                placeholder="Employee Name"
-                onChange={handleEmployeeNameChange}
-              />
-              <button onClick={handleMapComplaint}>Update</button>
-            </div>
-          )}
+              <div>
+                <input type="text" name="employeeName" placeholder="Employee Name" onChange={handleEmployeeNameChange} />
+                <button onClick={handleMapComplaint}>Update</button>
+              </div>
+            )}
           </div>
         )}
         {activeTab === "employeeManagement" && (
           <div>
             <h2>Employee Management</h2>
             <form onSubmit={handleAddEmployee}>
-              <input
-                type="text"
-                name="companyEmail"
-                placeholder="Company Email"
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="employeeId"
-                placeholder="Employee ID"
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="employeeName"
-                placeholder="Employee Name"
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="mobileNumber"
-                placeholder="Mobile Number"
-                onChange={handleInputChange}
-              />
+              <input type="text" name="companyEmail" placeholder="Company Email" onChange={handleInputChange} required />
+              <input type="text" name="employeeId" placeholder="Employee ID" onChange={handleInputChange} required />
+              <input type="text" name="employeeName" placeholder="Employee Name" onChange={handleInputChange} required />
+              <input type="text" name="username" placeholder="Username" onChange={handleInputChange} required />
+              <input type="password" name="password" placeholder="Password" onChange={handleInputChange} required />
+              <input type="text" name="mobileNumber" placeholder="Mobile Number" onChange={handleInputChange} />
               <button type="submit">Add Employee</button>
             </form>
-            <button onClick={() => handleUpdateEmployee()}>  Update</button>
-              <button onClick={() => handleDeleteEmployee()}>Delete</button>
-
-
-
-
+            <button onClick={() => handleUpdateEmployee()}>Update</button>
+            <button onClick={() => handleDeleteEmployee()}>Delete</button>
             <div className="buttons">
               <button onClick={fetchEmployees}>All Employees</button>
             </div>
             {employees.length > 0 ? (
               <ul>
                 {employees.map((employee) => (
-                  <li key={employee._id}>
-                    {employee.employeeEmail} - {employee.employeeName}
-                  </li>
+                  <li key={employee._id}>{employee.employeeEmail} - {employee.employeeName}</li>
                 ))}
               </ul>
             ) : (
@@ -472,12 +320,19 @@ const AdminDashboard = () => {
             )}
           </div>
         )}
-        {/* {activeTab === "dashboardAnalytics" && (
+        {activeTab === "dashboardAnalytics" && (
           <div>
             <h2>Dashboard Analytics</h2>
-            <pre>{JSON.stringify(analytics, null, 2)}</pre>
+            <ComplaintStatusOverview />
+            {/* <ComplaintStatusChart data={statusData} /> */}
+            {/* <ComplaintTimeChart data={timeData} /> */}
+
+            {/* <ComplaintCategoryChart data={categoryData} /> */}
+
+
+            {/* <ComplaintPriorityChart data={priorityData} /> */}
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

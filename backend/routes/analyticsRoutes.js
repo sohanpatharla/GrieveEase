@@ -12,8 +12,7 @@ const {
     mapComplaint,
     updateComplaint,
     openStatus,
-    closedStatus,
-    getComplaintStatuses
+    closedStatus
 } = require('../controllers/adminController');
 
 // Use verify middleware to protect routes if needed
@@ -28,6 +27,5 @@ router.post('/mapComplaint/:id', mapComplaint);
 router.put('/updateComplaint/:id', updateComplaint);
 router.get('/openStatus', openStatus);
 router.get('/closedStatus', closedStatus);
-router.get('/complaintStatuses', getComplaintStatuses); 
 
 module.exports = router;
