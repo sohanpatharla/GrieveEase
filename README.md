@@ -19,4 +19,4 @@ The Online Grievance Redressal System is a web application designed to streamlin
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/grievance-redressal-system.git
+git clone https://github.com/sohanpatharla/grievance-redressal-system.git
