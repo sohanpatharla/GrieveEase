@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const Employee = require('../models/employeeModel');
+const Admin = require('../models/adminModel');
 
 module.exports = async function(req, res, next) {
   console.log(`In verify.js`);
@@ -26,6 +27,14 @@ module.exports = async function(req, res, next) {
       if(decoded.user.role == 'employee'){
         console.log(`validating employee`);
         req.user = await Employee.findById(decoded.user.id).select('-password'); // Assuming the payload has user.id
+      console.log("Authenticated user:", req.user);
+      if (!req.user) {
+        return res.status(401).json({ msg: 'User not found' });
+      }
+      }
+      if(decoded.user.role == 'admin'){
+        console.log(`validating admin`);
+        req.user = await Admin.findById(decoded.user.id).select('-password'); // Assuming the payload has user.id
       console.log("Authenticated user:", req.user);
       if (!req.user) {
         return res.status(401).json({ msg: 'User not found' });

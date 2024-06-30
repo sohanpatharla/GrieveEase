@@ -37,7 +37,7 @@ async function loginAdmin(req, res) {
   
       const payload = {
         user: {
-          id: admin.companyId,
+          id: admin.id,
           role: admin.role,
           name:admin.username
         },
@@ -120,7 +120,9 @@ const getAllEmployees = async (req, res) => {
 // Function to add a new employee
 const addEmployee = async (req, res) => {
     const { companyEmail, employeeId, employeeName, username, password, mobileNumber } = req.body;
-    const addedBy = req.user.name; // Make sure to authenticate and get the admin's user ID
+    console.log(req.body);
+    console.log(req.user);
+    const addedBy = req.user.username; // Make sure to authenticate and get the admin's user ID
   
     try {
       const newEmployee = new Employee({
