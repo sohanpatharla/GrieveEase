@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 import api from '../../api';
 import ComplaintStatusOverview from './ComplaintStatusOverview';
+import ComplaintsOverTime from "./ComplaintsOverTime";
 // import ComplaintStatusChart from './ComplaintStatusChart';
 // import ComplaintTimeChart from './ComplaintTimeChart';
 // import ComplaintCategoryChart from './ComplaintCategoryChart';
@@ -324,6 +325,8 @@ const AdminDashboard = () => {
           <div>
             <h2>Dashboard Analytics</h2>
             <ComplaintStatusOverview />
+            <h3>Complaints Over time analysis</h3>
+            <ComplaintsOverTime />
             {/* <ComplaintStatusChart data={statusData} /> */}
             {/* <ComplaintTimeChart data={timeData} /> */}
 

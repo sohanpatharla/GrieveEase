@@ -95,4 +95,24 @@ async function deleteComplaint(req, res) {
   }
 }
 
-module.exports = { addComplaint, updateComplaint, listComplaintsByUser, listComplaintById, deleteComplaint };
+const getComplaintsOverTime = async (req, res) => {
+  try {
+    console.log('In complaints section');
+      const complaintsOverTime = await Complaint.aggregate([
+          {
+              $group: {
+                  _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+                  count: { $sum: 1 }
+              }
+          },
+          { $sort: { _id: 1 } }
+      ]);
+      console.log(complaintsOverTime);
+      res.status(200).json(complaintsOverTime);
+  } catch (error) {
+      console.error('Error fetching complaints over time:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports = { addComplaint, updateComplaint, listComplaintsByUser, listComplaintById, deleteComplaint,getComplaintsOverTime };
