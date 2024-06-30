@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const verify = require('../JWT_Auth/verify');
 const {
+    loginAdmin,
     getAllComplaints,
     getComplaint,
     deleteComplaint,
@@ -17,6 +18,7 @@ const {
 } = require('../controllers/adminController');
 
 // Use verify middleware to protect routes if needed
+router.post('/login', loginAdmin);
 router.get('/complaints', getAllComplaints);
 router.get('/complaint/:id',getComplaint);
 router.delete('/delete/:id', deleteComplaint);

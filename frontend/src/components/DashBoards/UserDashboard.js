@@ -27,7 +27,7 @@ const UserDashboard = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await api.get('/complaints');
+      const res = await api.get('/complaints/complaints');
       setComplaints(res.data);
     } catch (err) {
       console.error('Error fetching complaints:', err);

@@ -22,7 +22,7 @@ const Signup = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-        const res = await axios.post('http://localhost:5000/api/users/register', formData);
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/register`, formData);
         console.log('Response:', res); // Log the response for debugging
         localStorage.setItem('token', res.data.token);
         alert('User registered successfully');

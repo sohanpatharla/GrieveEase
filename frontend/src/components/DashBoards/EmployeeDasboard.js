@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './EmployeeDashboard.css';
+import api from '../../api';
 
 const EmployeeDashboard = () => {
   const [complaints, setComplaints] = useState([]);
@@ -14,7 +15,8 @@ const EmployeeDashboard = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await axios.get('/api/employee/assignedComplaints');
+      console.log(`Going to fetch complaints`);
+      const res = await api.get('/employee/assignedComplaints');
       setComplaints(res.data);
     } catch (error) {
       console.error('Error fetching complaints:', error);
@@ -43,7 +45,7 @@ const EmployeeDashboard = () => {
         status,
         lastUpdated: new Date()
       };
-      await axios.put(`/api/employee/updateComplaint/${selectedComplaint.complaintId}`, updatedComplaint);
+      await api.put(`/employee/updateComplaint/${selectedComplaint.complaintId}`, updatedComplaint);
       setComplaints(complaints.map(c => (c.complaintId === updatedComplaint.complaintId ? updatedComplaint : c)));
       setSelectedComplaint(updatedComplaint);
       alert('Complaint updated successfully!');

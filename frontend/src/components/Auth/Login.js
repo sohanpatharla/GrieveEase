@@ -21,8 +21,18 @@ const Login = () => {
     console.log('In login');
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/users/login', formData);
+      console.log(`${process.env.REACT_APP_BACKEND_URL}`);
+      if (role === 'admin') {
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/admin/login`, formData);
+      localStorage.setItem('token', res.data.token); // Navigate to '/admin' route after successful login
+      } else if (role === 'employee') {
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/employee/login`, formData);
       localStorage.setItem('token', res.data.token);
+      } else {
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, formData);
+      localStorage.setItem('token', res.data.token);
+      }
+      
       // Navigate to appropriate route after login
       if (role === 'admin') {
         navigate('/admin'); // Navigate to '/admin' route after successful login

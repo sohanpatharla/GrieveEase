@@ -60,7 +60,8 @@ async function updateComplaint(req, res) {
 
 async function listComplaintsByUser(req, res) {
   try {
-    const complaints = await Complaint.find();
+    console.log(req.user);
+    const complaints = await Complaint.find({ createdBy: req.user.name });
     res.json(complaints);
   } catch (err) {
     console.error(err.message);

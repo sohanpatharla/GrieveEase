@@ -9,7 +9,7 @@ const ComplaintStatusOverview = () => {
     const fetchStatusData = async () => {
       try {
         const response = await api.get(
-          "http://localhost:5000/api/admin/complaintStatuses"
+          `${process.env.REACT_APP_BACKEND_URL}/admin/complaintStatuses`
         );
         const statusData = Object.entries(response.data).map(
           ([key, value], index) => ({
@@ -42,12 +42,12 @@ const ComplaintStatusOverview = () => {
           width={400}
           height={300}
           colors={["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"]}
-          sx={{
-            [`& .${pieArcLabelClasses.root}`]: {
-              fill: "white",
-              fontWeight: "bold",
-            },
-          }}
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fill: "white",
+                fontWeight: "bold",
+              },
+            }}
           // series={[
           //   {
           //     arcLabel: (item) => `${item.label} (${item.value})`,

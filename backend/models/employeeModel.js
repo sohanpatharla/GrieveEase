@@ -11,7 +11,7 @@ const employeeSchema = new mongoose.Schema(
    
     role: {
       type: String,
-      default: "Employee"
+      default: "employee"
     },
     addedBy:{type:String,required:true},
   },

@@ -1,7 +1,64 @@
+const jwt = require("jsonwebtoken");
 const Admin = require('../models/adminModel');
 const Employee = require('../models/employeeModel');
 const Complaint = require('../models/complaintModel');
 
+async function loginAdmin(req, res) {
+    console.log(req.body);
+    const { email, password ,role} = req.body;
+    const companyEmail=email;
+  
+    try {
+      const admin = await Admin.findOne({ companyEmail });
+      if (!admin) {
+        console.log(`Admin not found`);
+        return res.status(400).json({ msg: "Invalid credentials" });
+      }
+      else{
+        console.log("Admin found");
+      }
+  
+      // const isMatch = await bcrypt.compare(password, employee.password);
+      let isMatch=true;
+      if(password === admin.password)
+        {
+          isMatch=true;
+        }
+        else{
+          isMatch=false;
+        }
+      if (!isMatch) {
+        console.log('Incorrect password');
+        return res.status(400).json({ msg: "Invalid credentials" });
+      }
+      else{
+        console.log('Correct password');
+      }
+  
+      const payload = {
+        user: {
+          id: admin.companyId,
+          role: admin.role,
+          name:admin.username
+        },
+      };
+  
+      jwt.sign(
+        payload,
+        process.env.SECRET_KEY,
+        { expiresIn: "1h" },
+        (err, token) => {
+          if (err) throw err;
+          console.log({token});
+          res.json({ token });
+        }
+      );
+    } catch (err) {
+      console.log(`error signing token`);
+      console.log(err.message);
+      res.status(500).send("Server error");
+    }
+  }
 // Function to get all complaints
 const getAllComplaints = async (req, res) => {
     try {
@@ -211,6 +268,7 @@ const getComplaintStatuses = async (req, res) => {
 };
 
 module.exports = {
+    loginAdmin,
     getAllComplaints,
     getComplaint,
     deleteComplaint,

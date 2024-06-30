@@ -19,7 +19,7 @@ const ComplaintsOverTime = () => {
 
   useEffect(() => {
     console.log('In complaints service');
-    axios.get('http://localhost:5000/api/complaints/complaintsovertime')
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/complaints/complaintsovertime`)
       .then(response => {
         console.log('Response received:', response.data);
         const formattedData = response.data.map(item => ({
