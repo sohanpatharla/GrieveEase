@@ -59,7 +59,7 @@ h1, h2 {
 }
 
 input, textarea, button {
-    width: 100%;
+    width: 10%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #333; /* Dark gray border */
