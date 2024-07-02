@@ -7,7 +7,7 @@ function SignUpForm() {
     password: '',
     username: 'user',
     name: '',
-    mobileNumber: '',
+    mobileNumber: '12345678',
     role: 'user', // default role is set to 'user'
   });
   const [error, setError] = useState(null);
@@ -100,13 +100,6 @@ function SignUpForm() {
           value={password}
           onChange={onChange}
           placeholder="Password"
-        />
-        <input
-          type="text"
-          name="mobileNumber"
-          value={mobileNumber}
-          onChange={onChange}
-          placeholder="Mobile Number"
         />
         <button>Sign Up</button>
       </form>
