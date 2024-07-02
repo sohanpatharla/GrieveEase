@@ -3,6 +3,8 @@ import "./AdminDashboard.css";
 import api from '../../api';
 import ComplaintStatusOverview from './ComplaintStatusOverview';
 import ComplaintsOverTime from "./ComplaintsOverTime";
+import { useNavigate } from 'react-router-dom'; 
+
 // import ComplaintStatusChart from './ComplaintStatusChart';
 // import ComplaintTimeChart from './ComplaintTimeChart';
 // import ComplaintCategoryChart from './ComplaintCategoryChart';
@@ -22,10 +24,11 @@ const AdminDashboard = () => {
   const [timeData, setTimeData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [priorityData, setPriorityData] = useState([]);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     await fetchUsers();
@@ -203,6 +206,11 @@ const AdminDashboard = () => {
       setMessage('Error updating complaint');
     }
   };
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear the token from local storage
+    navigate('/login'); // Redirect to login page
+  };
+
 
   return (
     <div className="admin-dashboard">
@@ -324,6 +332,7 @@ const AdminDashboard = () => {
         {activeTab === "dashboardAnalytics" && (
           <div>
             <h2>Dashboard Analytics</h2>
+            <button className="btn btn-danger logout-button" onClick={handleLogout}>Logout</button>
             <ComplaintStatusOverview />
             <h3>Complaints Over time analysis</h3>
             <ComplaintsOverTime />

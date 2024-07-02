@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api'; // Import the axios instance
 import './UserDashboard.css'; // Custom styles if needed
+import { useNavigate } from 'react-router-dom'; 
 
 const UserDashboard = () => {
   const [complaints, setComplaints] = useState([]);
@@ -19,7 +20,8 @@ const UserDashboard = () => {
   });
   const [editComplaint, setEditComplaint] = useState(null);
   const [error, setError] = useState('');
-  const [user, setUser] = useState(null); // Assuming user info is stored here
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // Assuming user info is stored here
 
   useEffect(() => {
     fetchComplaints();
@@ -85,10 +87,16 @@ const UserDashboard = () => {
     const { name, value } = e.target;
     setEditComplaint({ ...editComplaint, [name]: value });
   };
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear the token from local storage
+    navigate('/login'); // Redirect to login page
+  };
 
   return (
     <div className="container border-bottom scrollarea">
       <h1 className="my-4">User Dashboard</h1>
+      <button className="btn btn-danger logout-button" onClick={handleLogout}>Logout</button>
+
 
       <div className="card mb-4">
         <div className="card-header">

@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './EmployeeDashboard.css';
 import api from '../../api';
+import { useNavigate } from 'react-router-dom'; 
+
 
 const EmployeeDashboard = () => {
   const [complaints, setComplaints] = useState([]);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [response, setResponse] = useState('');
   const [status, setStatus] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchComplaints();
@@ -53,10 +56,16 @@ const EmployeeDashboard = () => {
       console.error('Error updating complaint:', error);
     }
   };
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear the token from local storage
+    navigate('/login'); // Redirect to login page
+  };
 
   return (
     <div className="employee-dashboard">
       <h1>Employee Dashboard</h1>
+      <button className="btn btn-danger logout-button" onClick={handleLogout}>Logout</button>
+
       <div className="complaint-list">
         <h2>Assigned Complaints</h2>
         <ul>
