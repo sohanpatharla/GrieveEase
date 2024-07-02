@@ -37,6 +37,7 @@ class Landing extends React.Component {
             {/* <span id={styles.landtext}>Grievance Portal</span> */}
             <br />
             <div className={styles.landsub}>Your Complaints, Our Commitment. Streamlining grievance management for swift resolutions.</div>
+            
             <Link
               className={styles.underline_btn}
               style={{ color: "#1c1c1c" }}
