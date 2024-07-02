@@ -33,9 +33,10 @@ class Landing extends React.Component {
       <Container fluid id={styles.landingback}>
         <Row className="justify-content-md-center">
           <Col xs="12" lg="12" sm="12" md="12" id={styles.landbox}>
-            <span id={styles.landtext}>Grievance Portal</span>
+            <span id={styles.landtext}>GrieveEase</span>
+            {/* <span id={styles.landtext}>Grievance Portal</span> */}
             <br />
-            <div className={styles.landsub}>We are here to support you</div>
+            <div className={styles.landsub}>Your Complaints, Our Commitment. Streamlining grievance management for swift resolutions.</div>
             <Link
               className={styles.underline_btn}
               style={{ color: "#1c1c1c" }}
