@@ -208,7 +208,7 @@ const AdminDashboard = () => {
   };
   const handleLogout = () => {
     localStorage.removeItem('token'); // Clear the token from local storage
-    navigate('/login'); // Redirect to login page
+    navigate('/loginpage'); // Redirect to login page
   };
 
 
