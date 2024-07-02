@@ -5,14 +5,18 @@
 }
 
 #landingback {
-  /* background-image: url("./svg/1.svg"), url("./svg/2.svg"); */
+  background-image: url("./svg/1.svg"), url("./svg/2.svg");
   background-position: right top, left bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: 25%;
+  background-size: 23%;
   height: 100vh;
   overflow-x: hidden !important;
+  border-radius: 20%; /* Makes the background images rounded */
+  background-color: rgba(255, 255, 255, 0.5); /* Decrease opacity to 50% */
 }
+
+
 
 @media (max-width: 450px) {
   #landingback {
