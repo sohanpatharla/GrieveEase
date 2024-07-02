@@ -15,7 +15,7 @@ export default function LoginPage() {
     "container " + (type === "signUp" ? "right-panel-active" : "");
   return (
     <div className="App">
-      <h2>Sign in/up Form</h2>
+      {/* <h2>Sign in/up Form</h2> */}
       <div className={containerClass} id="container">
         <SignUpForm />
         <SignInForm />

@@ -41,6 +41,13 @@ class Landing extends React.Component {
             <Link
               className={styles.underline_btn}
               style={{ color: "#1c1c1c" }}
+              to="/loginpage"
+            >
+              Get Started
+            </Link>
+            {/* <Link
+              className={styles.underline_btn}
+              style={{ color: "#1c1c1c" }}
               to="/signup"
             >
               Sign Up
@@ -51,7 +58,7 @@ class Landing extends React.Component {
               to="/login"
             >
               Login
-            </Link>
+            </Link> */}
           </Col>
         </Row>
       </Container>
