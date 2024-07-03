@@ -128,7 +128,6 @@ import { useState, useEffect } from 'react';
 import api from '../../api'; // Import the axios instance
 // import './UserDashboard.css'; // Custom styles if needed
 import { useNavigate } from 'react-router-dom'; 
-import '../DashBoards/UserDashboard.css';
 
 
 const drawerWidth = 240;
@@ -300,7 +299,7 @@ function DrawerAppBar(props) {
       <Box component="main" sx={{ p: 3 }}>
       <div className="container border-bottom scrollarea">
       <h1 className="my-4">User Dashboard</h1>
-      <button className="btn btn-danger logout-button" onClick={handleLogout}>Logout</button> 
+      <button className="btn btn-danger logout-button" onClick={handleLogout}>Logout</button>
 
 
       <div className="card mb-4">
