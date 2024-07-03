@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
+import {
+  AppBar, Tabs, Tab, Box, Typography, Button, Grid, Card, CardContent, Snackbar, IconButton,TextField,List, ListItem, ListItemText
+} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import api from '../../api';
 import ComplaintStatusOverview from './ComplaintStatusOverview';
 import ComplaintsOverTime from "./ComplaintsOverTime";
@@ -39,8 +43,8 @@ const AdminDashboard = () => {
     await fetchAnalytics();
   };
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
     setMessage("");
   };
 
@@ -210,74 +214,147 @@ const AdminDashboard = () => {
     localStorage.removeItem('token'); // Clear the token from local storage
     navigate('/'); // Redirect to login page
   };
+  const handleCloseSnackbar = () => {
+    setMessage("");
+  };
 
 
   return (
     <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
-      <div className="tabs">
-        <button className={activeTab === "userManagement" ? "active" : ""} onClick={() => handleTabChange("userManagement")}>
-          User Management
-        </button>
-        <button className={activeTab === "complaintManagement" ? "active" : ""} onClick={() => handleTabChange("complaintManagement")}>
-          Complaint Management
-        </button>
-        <button className={activeTab === "statusManagement" ? "active" : ""} onClick={() => handleTabChange("statusManagement")}>
-          Status Management
-        </button>
-        <button className={activeTab === "employeeManagement" ? "active" : ""} onClick={() => handleTabChange("employeeManagement")}>
-          Employee Management
-        </button>
-        <button className={activeTab === "dashboardAnalytics" ? "active" : ""} onClick={() => handleTabChange("dashboardAnalytics")}>
-          Dashboard Analytics
-        </button>
-      </div>
-      <div className="dashboard-content">
-        {message && <p className="message">{message}</p>}
+      <AppBar position="static">
+        <Tabs value={activeTab} onChange={handleTabChange}>
+          <Tab label="User Management" value="userManagement" />
+          <Tab label="Complaint Management" value="complaintManagement" />
+          <Tab label="Status Management" value="statusManagement" />
+          <Tab label="Employee Management" value="employeeManagement" />
+          <Tab label="Dashboard Analytics" value="dashboardAnalytics" />
+        </Tabs>
+      </AppBar>
+      <Box p={3}>
+        {message && (
+          <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            open={Boolean(message)}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+            message={message}
+            action={
+              <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            }
+          />
+        )}
         {activeTab === "userManagement" && (
-          <div>
-            <h2>User Data</h2>
-            <div className="buttons">
-              <button onClick={fetchUsers}>Fetch Users</button>
-            </div>
-            {users.length > 0 ? (
-              <ul>
-                {users.map((user) => (
-                  <li key={user._id}>{user.name} - {user.email}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>No users found. Click "Fetch Users" to load data.</p>
-            )}
-          </div>
+          <Box>
+            <Typography variant="h4">User Data</Typography>
+            <Button variant="contained" color="primary" onClick={fetchUsers} style={{ margin: '20px 0' }}>
+              Fetch Users
+            </Button>
+            <Grid container spacing={2}>
+              {users.length > 0 ? (
+                users.map((user) => (
+                  <Grid item xs={12} sm={6} md={4} key={user._id}>
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h6">{user.name}</Typography>
+                        <Typography color="textSecondary">{user.email}</Typography>
+                        <Typography variant="body2">Username: {user.username}</Typography>
+                        <Typography variant="body2">Mobile: {user.mobileNumber}</Typography>
+                        <Typography variant="body2">Role: {user.role}</Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))
+              ) : (
+                <Typography>No users found. Click "Fetch Users" to load data.</Typography>
+              )}
+            </Grid>
+          </Box>
         )}
         {activeTab === "complaintManagement" && (
-          <div>
-            <h2>Complaint Management</h2>
+          <Box>
+            <Typography variant="h4">Complaint Management</Typography>
             <form onSubmit={handleUpdateComplaint}>
-              <input type="text" name="id" placeholder="Complaint ID" onChange={handleInputChange} />
-              <input type="text" name="complaintName" placeholder="Complaint Name" onChange={handleInputChange} />
-              <input type="text" name="complaintContent" placeholder="Complaint Content" onChange={handleInputChange} />
-              <input type="text" name="comments" placeholder="Comments" onChange={handleInputChange} />
-              <input type="text" name="status" placeholder="Status" onChange={handleInputChange} />
-              <input type="text" name="assignedTo" placeholder="Assigned To" onChange={handleInputChange} />
-              <button type="submit">Update Complaint</button>
+              <TextField
+                label="Complaint ID"
+                name="id"
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                label="Complaint Name"
+                name="complaintName"
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                label="Complaint Content"
+                name="complaintContent"
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                label="Comments"
+                name="comments"
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                label="Status"
+                name="status"
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                label="Assigned To"
+                name="assignedTo"
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              />
+              <Button type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>
+                Update Complaint
+              </Button>
             </form>
-            <div className="buttons">
-              <button onClick={fetchComplaints}>All Complaints</button>
-              <button onClick={fetchOpenComplaints}>Open Complaints</button>
-              <button onClick={fetchClosedComplaints}>Closed Complaints</button>
-            </div>
-            {complaints.length > 0 ? (
-              <ul>
-                {complaints.map((complaint) => (
-                  <li key={complaint._id}>{complaint.complaintName} - {complaint.status}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>No complaints found. Click "Complaint Buttons" to load data.</p>
-            )}
-          </div>
+            <Box mt={3}>
+              <Button variant="contained" color="default" onClick={fetchComplaints} style={{ marginRight: '10px' }}>
+                All Complaints
+              </Button>
+              <Button variant="contained" color="default" onClick={fetchOpenComplaints} style={{ marginRight: '10px' }}>
+                Open Complaints
+              </Button>
+              <Button variant="contained" color="default" onClick={fetchClosedComplaints}>
+                Closed Complaints
+              </Button>
+            </Box>
+            <Box mt={3}>
+              {complaints.length > 0 ? (
+                <List>
+                  {complaints.map((complaint) => (
+                    <ListItem key={complaint._id}>
+                      <ListItemText
+                        primary={`${complaint.complaintName} - ${complaint.status}`}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <Typography>No complaints found. Click "Complaint Buttons" to load data.</Typography>
+              )}
+            </Box>
+          </Box>
         )}
         {activeTab === "statusManagement" && (
           <div>
@@ -300,6 +377,7 @@ const AdminDashboard = () => {
               </div>
             )}
           </div>
+    
         )}
         {activeTab === "employeeManagement" && (
           <div>
@@ -330,22 +408,17 @@ const AdminDashboard = () => {
           </div>
         )}
         {activeTab === "dashboardAnalytics" && (
-          <div>
-            <h2>Dashboard Analytics</h2>
-            <button className="btn btn-danger logout-button" onClick={handleLogout}>Logout</button>
+          <Box>
+            <Typography variant="h4">Dashboard Analytics</Typography>
+            <Button variant="contained" color="secondary" onClick={handleLogout}>
+              Logout
+            </Button>
             <ComplaintStatusOverview />
-            <h3>Complaints Over time analysis</h3>
+            <Typography variant="h5">Complaints Over Time Analysis</Typography>
             <ComplaintsOverTime />
-            {/* <ComplaintStatusChart data={statusData} /> */}
-            {/* <ComplaintTimeChart data={timeData} /> */}
-
-            {/* <ComplaintCategoryChart data={categoryData} /> */}
-
-
-            {/* <ComplaintPriorityChart data={priorityData} /> */}
-          </div>
+          </Box>
         )}
-      </div>
+      </Box>
     </div>
   );
 };
