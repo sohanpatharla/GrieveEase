@@ -8,11 +8,37 @@ import api from '../../api';
 import ComplaintStatusOverview from './ComplaintStatusOverview';
 import ComplaintsOverTime from "./ComplaintsOverTime";
 import { useNavigate } from 'react-router-dom'; 
+import {
+  CardActions,
+} from '@mui/material';
 
 // import ComplaintStatusChart from './ComplaintStatusChart';
 // import ComplaintTimeChart from './ComplaintTimeChart';
 // import ComplaintCategoryChart from './ComplaintCategoryChart';
 // import ComplaintPriorityChart from './ComplaintPriorityChart';
+const ComplaintCard = ({ complaint, handleAssignComplaint }) => (
+  <Card sx={{ minWidth: 275, mb: 2 }}>
+    <CardContent>
+      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        Complaint ID: {complaint.complaintId}
+      </Typography>
+      <Typography variant="h5" component="div">
+        {complaint.complaintName}
+      </Typography>
+      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        Status: {complaint.status}
+      </Typography>
+      <Typography variant="body2">
+        Description: {complaint.complaintContent}
+      </Typography>
+    </CardContent>
+    <CardActions>
+      <Button size="small" onClick={() => handleAssignComplaint(complaint._id)}>
+        Assign
+      </Button>
+    </CardActions>
+  </Card>
+);
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("userManagement");
@@ -340,20 +366,21 @@ const AdminDashboard = () => {
               </Button>
             </Box>
             <Box mt={3}>
-              {complaints.length > 0 ? (
-                <List>
-                  {complaints.map((complaint) => (
-                    <ListItem key={complaint._id}>
-                      <ListItemText
-                        primary={`${complaint.complaintName} - ${complaint.status}`}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Typography>No complaints found. Click "Complaint Buttons" to load data.</Typography>
-              )}
-            </Box>
+      {complaints.length > 0 ? (
+        <Grid container spacing={3}>
+          {complaints.map((complaint) => (
+            <Grid item xs={12} sm={6} md={4} key={complaint._id}>
+              <ComplaintCard
+                complaint={complaint}
+                // handleAssignComplaint={handleAssignComplaint}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography>No complaints found. Click "Complaint Buttons" to load data.</Typography>
+      )}
+    </Box>
           </Box>
         )}
         {activeTab === "statusManagement" && (
