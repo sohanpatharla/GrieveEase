@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: 'Roboto', sans-serif;
     background: #1a1a1a; 
     margin: 0;
@@ -132,3 +132,13 @@ button:active {
         transform: translateX(0);
     }
 }
+
+.card-body {
+    background-color: #1a1a1a;
+} */
+
+.container {
+    max-width: 51%;
+    margin-left: 0;
+}
+
