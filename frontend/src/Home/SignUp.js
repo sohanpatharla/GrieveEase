@@ -101,7 +101,7 @@ function SignUpForm() {
           onChange={onChange}
           placeholder="Password"
         />
-        <button>Sign Up</button>
+        <button id="btnbtn">Sign Up</button>
       </form>
     </div>
   );

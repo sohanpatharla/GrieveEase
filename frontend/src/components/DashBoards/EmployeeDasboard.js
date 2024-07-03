@@ -58,7 +58,7 @@ const EmployeeDashboard = () => {
   };
   const handleLogout = () => {
     localStorage.removeItem('token'); // Clear the token from local storage
-    navigate('/loginpage'); // Redirect to login page
+    navigate('/'); // Redirect to login page
   };
 
   return (
