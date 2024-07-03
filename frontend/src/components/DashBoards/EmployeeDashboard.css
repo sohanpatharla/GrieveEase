@@ -5,6 +5,22 @@
     background: linear-gradient(135deg, #72edf2 10%, #5151e5 100%);
     color: #333;
   }
+  .logout-button {
+    position: absolute;
+    top: 10px; /* Adjust the distance from the top */
+    right: 10px; /* Adjust the distance from the right */
+    padding: 10px 20px;
+    background-color: #dc3545; /* Bootstrap danger button color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333; /* Darker button color on hover */
+  }
   
   h1, h2, h3 {
     color: #fff;

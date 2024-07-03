@@ -1,9 +1,165 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// import { useNavigate } from 'react-router-dom'; // Import useNavigate
+// import './Login.css';
+
+
+// const Login = () => {
+//   const [formData, setFormData] = useState({
+//     email: '',
+//     password: '',
+//     role: 'user', // default role is set to 'user'
+//   });
+//   const [error, setError] = useState(null);
+
+//   const { email, password, role } = formData;
+//   const navigate = useNavigate(); // Use useNavigate hook
+
+//   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+//   const onSubmit = async (e) => {
+//     console.log('In login');
+//     e.preventDefault();
+//     try {
+//       console.log(`${process.env.REACT_APP_BACKEND_URL}`);
+//       if (role === 'admin') {
+//         const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/admin/login`, formData);
+//       localStorage.setItem('token', res.data.token); // Navigate to '/admin' route after successful login
+//       } else if (role === 'employee') {
+//         const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/employee/login`, formData);
+//       localStorage.setItem('token', res.data.token);
+//       } else {
+//         const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, formData);
+//       localStorage.setItem('token', res.data.token);
+//       }
+      
+//       // Navigate to appropriate route after login
+//       if (role === 'admin') {
+//         navigate('/admin'); // Navigate to '/admin' route after successful login
+//       } else if (role === 'employee') {
+//         navigate('/employee'); // Navigate to '/employee' route after successful login
+//       } else {
+//         navigate('/user'); // Navigate to '/user' route after successful login
+//       }
+//     } catch (error) {
+//       console.error(error);
+//       setError('Error logging in');
+//     }
+//   };
+
+//   return (
+//     <div className="login-container">
+//       <form className="login-form" onSubmit={onSubmit}>
+//         <h2>Login</h2>
+//         <input
+//           type="email"
+//           name="email"
+//           value={email}
+//           onChange={onChange}
+//           required
+//           placeholder="Email"
+//         />
+//         <input
+//           type="password"
+//           name="password"
+//           value={password}
+//           onChange={onChange}
+//           required
+//           placeholder="Password"
+//         />
+//         <div className="role-selection">
+//           <label>
+//             <input
+//               type="radio"
+//               name="role"
+//               value="user"
+//               checked={role === 'user'}
+//               onChange={onChange}
+//             />
+//             User
+//           </label>
+//           <label>
+//             <input
+//               type="radio"
+//               name="role"
+//               value="admin"
+//               checked={role === 'admin'}
+//               onChange={onChange}
+//             />
+//             Admin
+//           </label>
+//           <label>
+//             <input
+//               type="radio"
+//               name="role"
+//               value="employee"
+//               checked={role === 'employee'}
+//               onChange={onChange}
+//             />
+//             Employee
+//           </label>
+//         </div>
+//         <button type="submit">Login</button>
+//         {error && <p className="error-message">{error}</p>}
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default Login;
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+
+import { useState, useEffect } from 'react';
 import api from '../../api'; // Import the axios instance
-import './UserDashboard.css'; // Custom styles if needed
+// import './UserDashboard.css'; // Custom styles if needed
 import { useNavigate } from 'react-router-dom'; 
 
-const UserDashboard = () => {
+
+const drawerWidth = 240;
+const navItems = ['Home', 'About Us', 'Contact'];
+
+function DrawerAppBar(props) {
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+      GrieveEase
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }}>
+              <ListItemText primary={item} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
   const [complaints, setComplaints] = useState([]);
   const [newComplaint, setNewComplaint] = useState({
     complaintId: '',
@@ -92,8 +248,56 @@ const UserDashboard = () => {
     navigate('/'); // Redirect to login page
   };
 
+
   return (
-    <div className="container border-bottom scrollarea">
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar component="nav">
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+          >
+            GrieveEase
+          </Typography>
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            {navItems.map((item) => (
+              <Button key={item} sx={{ color: '#fff' }}>
+                {item}
+              </Button>
+            ))}
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <nav>
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </nav>
+      <Box component="main" sx={{ p: 3 }}>
+      <div className="container border-bottom scrollarea">
       <h1 className="my-4">User Dashboard</h1>
       <button className="btn btn-danger logout-button" onClick={handleLogout}>Logout</button>
 
@@ -275,6 +479,18 @@ const UserDashboard = () => {
         </div>
       )}
     </div>
+       
+      </Box>
+    </Box>
   );
+}
+
+DrawerAppBar.propTypes = {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
 };
-export default UserDashboard;
+
+export default DrawerAppBar;
