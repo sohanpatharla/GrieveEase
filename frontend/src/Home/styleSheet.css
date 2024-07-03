@@ -8,8 +8,19 @@
   * {
     box-sizing: border-box;
   }
+
   
   body {
+    background-image: url("../../public/svg/test3.svg"), url("../../public/svg/test3.svg");
+    background-position: right top, left bottom;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 28%;
+    z-index: auto;
+    height: 100vh;
+    overflow-x: hidden !important;
+    border-radius: 0%; /* Makes the background images rounded */
+    background-color: rgba(255, 255, 255, 0.5); /* Decrease opacity to 50% */
     background: #f6f5f7;
     /* display: flex; */
     justify-content: center;

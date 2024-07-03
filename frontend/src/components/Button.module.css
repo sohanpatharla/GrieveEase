@@ -5,7 +5,7 @@
 }
 
 #landingback {
-  background-image: url("./svg/test.svg"), url("./svg/test4.svg");
+  background-image: url("./svg/registration.svg"), url("./svg/test3.svg");
   background-position: right top, left bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;

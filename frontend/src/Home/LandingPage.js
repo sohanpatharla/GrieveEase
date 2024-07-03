@@ -3,7 +3,7 @@ import "./styleSheet.css";
 import SignInForm from "./SignIn";
 import SignUpForm from "./SignUp";
 
-export default function LoginPage() {
+export default function LandingPage() {
   const [type, setType] = useState("signIn");
   const handleOnClick = text => {
     if (text !== type) {

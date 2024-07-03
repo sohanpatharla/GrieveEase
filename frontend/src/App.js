@@ -6,14 +6,14 @@ import Home from './components/Home';
 import DrawerAppBar from './components/DashBoards/UserDashboard';
 import AdminDashboard from './components/DashBoards/AdminDashboard';
 import EmployeeDashboards from './components/DashBoards/EmployeeDasboard';
-import LoginPage from './Home/LoginPage';
+import LandingPage from './Home/LandingPage';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/loginpage" element={<LoginPage/>} />
+        <Route path="/loginpage" element={<LandingPage/>} />
 
         <Route path="/user" element={<DrawerAppBar />} />
         <Route path="/admin" element={<AdminDashboard />} />
