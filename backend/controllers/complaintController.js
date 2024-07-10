@@ -116,4 +116,142 @@ const getComplaintsOverTime = async (req, res) => {
   }
 };
 
-module.exports = { addComplaint, updateComplaint, listComplaintsByUser, listComplaintById, deleteComplaint,getComplaintsOverTime };
+// Complaints by Category
+const getComplaintsByCategory = async (req, res) => {
+  try {
+    const complaintsByCategory = await Complaint.aggregate([
+      { $group: { _id: '$category', count: { $sum: 1 } } }
+    ]);
+    res.status(200).json(complaintsByCategory);
+  } catch (error) {
+    console.error('Error fetching complaints by category:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Average Resolution Time
+const getAverageResolutionTime = async (req, res) => {
+  try {
+    const averageResolutionTime = await Complaint.aggregate([
+      { $match: { status: 'Closed' } },
+      {
+        $project: {
+          resolutionTime: { $subtract: ['$lastUpdated', '$createdOn'] },
+          category: 1
+        }
+      },
+      {
+        $group: {
+          _id: '$category',
+          avgResolutionTime: { $avg: '$resolutionTime' }
+        }
+      }
+    ]);
+    res.status(200).json(averageResolutionTime);
+  } catch (error) {
+    console.error('Error fetching average resolution time:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Complaint Priority Distribution
+const getComplaintPriorityDistribution = async (req, res) => {
+  try {
+    const priorityDistribution = await Complaint.aggregate([
+      { $group: { _id: '$priority', count: { $sum: 1 } } }
+    ]);
+    res.status(200).json(priorityDistribution);
+  } catch (error) {
+    console.error('Error fetching complaint priority distribution:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Top Complaint Generators
+const getTopComplaintGenerators = async (req, res) => {
+  try {
+    const topGenerators = await Complaint.aggregate([
+      { $group: { _id: '$createdBy', count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 10 }
+    ]);
+    res.status(200).json(topGenerators);
+  } catch (error) {
+    console.error('Error fetching top complaint generators:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Complaints by User Type
+const getComplaintsByUserType = async (req, res) => {
+  try {
+    const complaintsByUserType = await Complaint.aggregate([
+      { $group: { _id: '$createdBy', count: { $sum: 1 } } }
+    ]);
+    res.status(200).json(complaintsByUserType);
+  } catch (error) {
+    console.error('Error fetching complaints by user type:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Monthly/Quarterly Comparison
+const getMonthlyQuarterlyComparison = async (req, res) => {
+  try {
+    const monthlyComparison = await Complaint.aggregate([
+      { $group: { _id: { $dateToString: { format: '%Y-%m', date: '$createdOn' } }, count: { $sum: 1 } } },
+      { $sort: { '_id': 1 } }
+    ]);
+    res.status(200).json(monthlyComparison);
+  } catch (error) {
+    console.error('Error fetching monthly/quarterly comparison:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Resolution Rate
+const getResolutionRate = async (req, res) => {
+  try {
+    const resolutionRate = await Complaint.aggregate([
+      { $group: { _id: { $dateToString: { format: '%Y-%m', date: '$createdOn' } }, total: { $sum: 1 }, resolved: { $sum: { $cond: [{ $eq: ['$status', 'Closed'] }, 1, 0] } } } },
+      { $project: { _id: 1, resolutionRate: { $divide: ['$resolved', '$total'] } } },
+      { $sort: { '_id': 1 } }
+    ]);
+    res.status(200).json(resolutionRate);
+  } catch (error) {
+    console.error('Error fetching resolution rate:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Complaints by Location
+const getComplaintsByLocation = async (req, res) => {
+  try {
+    const complaintsByLocation = await Complaint.aggregate([
+      { $group: { _id: '$location', count: { $sum: 1 } } }
+    ]);
+    res.status(200).json(complaintsByLocation);
+  } catch (error) {
+    console.error('Error fetching complaints by location:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports = {
+  addComplaint,
+  updateComplaint,
+  listComplaintsByUser,
+  listComplaintById,
+  deleteComplaint,
+  getComplaintsOverTime,
+  getComplaintsByCategory,
+  getAverageResolutionTime,
+  getComplaintPriorityDistribution,
+  getTopComplaintGenerators,
+  getComplaintsByUserType,
+  getMonthlyQuarterlyComparison,
+  getResolutionRate,
+  getComplaintsByLocation
+};
+
+
