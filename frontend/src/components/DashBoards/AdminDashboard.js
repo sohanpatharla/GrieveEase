@@ -5,8 +5,13 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import api from '../../api';
+
+
 import ComplaintStatusOverview from './ComplaintStatusOverview';
 import ComplaintsOverTime from "./ComplaintsOverTime";
+import ComplaintsByCategory from "./ComplaintsByCategory";
+import ComplaintsAverageResolutionTime from "./ComplaintsAverageResolutionTime";
+
 import { useNavigate } from 'react-router-dom'; 
 import {
   CardActions,
@@ -443,6 +448,9 @@ const AdminDashboard = () => {
             <ComplaintStatusOverview />
             <Typography variant="h5">Complaints Over Time Analysis</Typography>
             <ComplaintsOverTime />
+            <ComplaintsByCategory />
+            <ComplaintsAverageResolutionTime />
+            <ComplaintsByUserType />
           </Box>
         )}
       </Box>
