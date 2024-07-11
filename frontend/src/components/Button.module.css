@@ -5,7 +5,7 @@
 }
 
 #landingback {
-  background-image: url("./svg/registration.svg"), url("./svg/test3.svg");
+  background-image: url("../../public/svg/registration.svg"), url("../../public/svg/test3.svg");
   background-position: right top, left bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -43,7 +43,7 @@
 }
 
 #loginback {
-  background-image: url("./svg/notebook.svg"), url("./svg/login.svg");
+  background-image: url("../../public/svg/notebook.svg"), url("../../public/svg/login.svg");
   background-position: right top, left bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -53,7 +53,7 @@
 }
 
 #registrationback {
-  background-image: url("./svg/registration.svg"), url("./svg/check.svg");
+  background-image: url("../../public/svg/registration.svg"), url("../../public/svg/check.svg");
   background-position: right top, left bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -63,7 +63,7 @@
 }
 
 #resetback {
-  background-image: url("./svg/forgot.svg");
+  background-image: url("../../public/svg/forgot.svg");
   background-position: right top, left bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;

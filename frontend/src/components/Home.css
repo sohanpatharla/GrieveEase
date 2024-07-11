@@ -285,7 +285,7 @@ html, body, .app {
 }
 
 #ticketback {
-  background-image: url("./svg/check.svg");
+  background-image: url("../../public/svg/check.svg");
   background-position: bottom right;
   background-repeat: no-repeat;
   background-attachment: fixed;

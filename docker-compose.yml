@@ -1,0 +1,17 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI: "mongodb+srv://sohanpatharla:sohanpatharla@cluster0.vm3etby.mongodb.net/grievance_redressal"
+      JWT_SECRET: "secret"
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
