@@ -11,6 +11,7 @@ import ComplaintStatusOverview from './ComplaintStatusOverview';
 import ComplaintsOverTime from "./ComplaintsOverTime";
 import ComplaintsByCategory from "./ComplaintsByCategory";
 import ComplaintsAverageResolutionTime from "./ComplaintsAverageResolutionTime";
+import ComplaintsByUserType from "./ComplaintsByUserType";
 
 import { useNavigate } from 'react-router-dom'; 
 import {

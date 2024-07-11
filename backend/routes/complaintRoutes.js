@@ -27,8 +27,8 @@ router.put('/updateComplaint/:id', verify, updateComplaint);
 router.delete('/delete/:id', verify, deleteComplaint);
 router.get('/complaintsovertime', getComplaintsOverTime);
 router.get('/category', getComplaintsByCategory);
-router.get('/avgrestime', getAverageResolutionTime);
-router.get('/avgrestime', ComplaintsByUserType);
+// router.get('/avgrestime', getAverageResolutionTime);
+router.get('/avgrestime', getComplaintsByUserType);
 
 
 module.exports = router;
