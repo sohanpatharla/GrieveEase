@@ -98,12 +98,27 @@ async function updateComplaint(req, res) {
   const { comments, status } = req.body;
 
   try {
+    const complaint = await Complaint.findOne({ complaintId });
+    if (!complaint) {
+      return res.status(404).json({ msg: "Complaint not found" });
+    }
+
+    let resolutionTime = null;
+    if (status === 'Closed' || status === 'Resolved') {
+      const createdOn = complaint.createdOn;
+      const currentDate = new Date();
+      const diffTime = Math.abs(currentDate - createdOn);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Time in days
+      resolutionTime = `${diffDays} days`;
+    }
+
     const updatedComplaint = await Complaint.findOneAndUpdate(
       { complaintId },
       {
         comments,
         status,
         lastUpdated: Date.now(),
+        resolutionTime: resolutionTime || complaint.resolutionTime, // Update resolutionTime only if resolved/closed
       },
       { new: true }
     );
@@ -119,4 +134,5 @@ async function updateComplaint(req, res) {
   }
 }
 
-module.exports = { loginEmployee, employeeDetails,assignedComplaints,updateComplaint };
+module.exports = { loginEmployee, employeeDetails, assignedComplaints, updateComplaint };
+
