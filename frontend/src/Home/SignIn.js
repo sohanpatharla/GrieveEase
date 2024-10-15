@@ -20,7 +20,7 @@ function SignInForm() {
   //   email: "",
   //   password: ""
   // });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
   const navigate = useNavigate(); // Use useNavigate hook
 
   const { email, password, role } = formData;
@@ -81,13 +81,13 @@ function SignInForm() {
       <form onSubmit={onSubmit}>
         <h1>Sign in</h1>
         <div className="social-container">
-          <a href="#" className="social">
+          <a href="/" className="social">
             <i className="fab fa-facebook-f" />
           </a>
-          <a href="#" className="social">
+          <a href="/" className="social">
             <i className="fab fa-google-plus-g" />
           </a>
-          <a href="#" className="social">
+          <a href="/" className="social">
             <i className="fab fa-linkedin-in" />
           </a>
         </div>
@@ -119,7 +119,7 @@ function SignInForm() {
         <FormControlLabel value="admin" control={<Radio />} label="Admin" name="role" checked={role === 'admin'} onChange={onChange}/>
       </RadioGroup>
     
-        <a href="#">Forgot your password?</a>
+        <a href="/">Forgot your password?</a>
         <button className="loginBtn">Sign In</button>
       </form>
     </div>

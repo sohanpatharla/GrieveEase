@@ -10,10 +10,10 @@ function SignUpForm() {
     mobileNumber: '12345678',
     role: 'user', // default role is set to 'user'
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
   const navigate = useNavigate();
 
-  const { email, password, username, name, mobileNumber, role } = formData;
+  const { email, password, name, role } = formData;
 
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -70,13 +70,13 @@ function SignUpForm() {
       <form onSubmit={onSubmit}>
         <h1>Create Account</h1>
         <div className="social-container">
-          <a href="#" className="social">
+          <a href="/" className="social">
             <i className="fab fa-facebook-f" />
           </a>
-          <a href="#" className="social">
+          <a href="/" className="social">
             <i className="fab fa-google-plus-g" />
           </a>
-          <a href="#" className="social">
+          <a href="/" className="social">
             <i className="fab fa-linkedin-in" />
           </a>
         </div>

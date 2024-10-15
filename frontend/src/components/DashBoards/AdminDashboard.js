@@ -264,18 +264,21 @@ const AdminDashboard = () => {
       </AppBar>
       <Box p={3}>
         {message && (
-          <Snackbar
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-            open={Boolean(message)}
-            autoHideDuration={6000}
-            onClose={handleCloseSnackbar}
-            message={message}
-            action={
-              <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            }
-          />
+         <Snackbar
+  anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+  open={Boolean(message)}
+  autoHideDuration={6000}
+  onClose={handleCloseSnackbar}
+  message={message}
+  action={
+    <React.Fragment>
+      <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  }
+/>
+
         )}
         {activeTab === "userManagement" && (
           <Box>
@@ -450,7 +453,7 @@ const AdminDashboard = () => {
             <Typography variant="h5">Complaints Over Time Analysis</Typography>
             <ComplaintsOverTime />
             <ComplaintsByCategory />
-            <ComplaintsAverageResolutionTime />
+            {/* <ComplaintsAverageResolutionTime /> */}
             <ComplaintsByUserType />
           </Box>
         )}
