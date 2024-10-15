@@ -1,10 +1,68 @@
 const Complaint = require('../models/complaintModel');
 
+const {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} = require("@google/generative-ai");
+
+const apiKey = process.env.GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(apiKey);
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+});
+
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 64,
+  maxOutputTokens: 8192,
+  responseMimeType: "text/plain",
+};
+
+// Function to classify a complaint and update its category in the database
+async function classifyAndUpdateComplaint(complaintId, complaintContent) {
+  try {
+    // Create a chat session with the AI model
+    const chatSession = model.startChat({
+      generationConfig,
+      history: [
+        {
+          role: "user",
+          parts: [
+            {text: `"${complaintContent}"`},
+          ],
+        },
+      ],
+    });
+
+    // Get the AI's response, which includes the category
+    const response = await chatSession.generate({
+      role: "user",
+      parts: [{ text: complaintContent }],
+    });
+
+    // Extract the category from the AI's response
+    const predictedCategory = response.history[response.history.length - 1].parts[0].text.trim();
+
+    // Update the complaint in the database with the predicted category
+    await ComplaintModel.findByIdAndUpdate(complaintId, { category: predictedCategory });
+
+    console.log(`Complaint ${complaintId} categorized as ${predictedCategory}`);
+
+  } catch (error) {
+    console.error("Error classifying the complaint:", error);
+  }
+}
+
   async function addComplaint(req, res) {
     console.log("Working");
     console.log(req.user);
     const { complaintId, complaintName, complaintContent, priority, category, attachments, comments } = req.body;
     const createdBy = req.user.name;
+    classifyAndUpdateComplaint(complaintId, complaintContent);
+    category=predictedCategory;
     console.log(req.body);
     try {
       const complaint = new Complaint({
@@ -186,7 +244,23 @@ const getTopComplaintGenerators = async (req, res) => {
 const getComplaintsByUserType = async (req, res) => {
   try {
     const complaintsByUserType = await Complaint.aggregate([
-      { $group: { _id: '$createdBy', count: { $sum: 1 } } }
+      {
+        $group: {
+          _id: '$createdBy', 
+          complaints: { 
+            $push: {
+              complaintId: "$complaintId",
+              complaintName: "$complaintName",
+              category: "$category",
+              priority: "$priority",
+              status: "$status",
+              createdOn: "$createdOn",
+              lastUpdated: "$lastUpdated"
+            }
+          },
+          count: { $sum: 1 }
+        }
+      }
     ]);
     res.status(200).json(complaintsByUserType);
   } catch (error) {
@@ -194,6 +268,7 @@ const getComplaintsByUserType = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 // Monthly/Quarterly Comparison
 const getMonthlyQuarterlyComparison = async (req, res) => {
