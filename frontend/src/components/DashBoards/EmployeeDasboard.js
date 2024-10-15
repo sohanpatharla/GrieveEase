@@ -198,7 +198,7 @@ function EmployeeDashboards(props) {
                 <MenuItem value="Closed">Closed</MenuItem>
               </TextField>
               <Button variant="contained" color="primary" onClick={handleUpdateComplaint}>
-                Update Complaint
+                Resolve Complaint
               </Button>
             </div>
           )}
