@@ -13,11 +13,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField'; // Material UI text field
-import MenuItem from '@mui/material/MenuItem'; // Material UI dropdown
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 import React, { useState, useEffect } from 'react';
 import api from '../../api';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import '../DashBoards/EmployeeDashboard.css';
 
 const drawerWidth = 240;
@@ -65,7 +65,7 @@ function EmployeeDashboards(props) {
         ...selectedComplaint,
         comments: response,
         status,
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
       };
       await api.put(`/employee/updateComplaint/${selectedComplaint.complaintId}`, updatedComplaint);
       setComplaints(complaints.map(c => (c.complaintId === updatedComplaint.complaintId ? updatedComplaint : c)));
@@ -77,8 +77,8 @@ function EmployeeDashboards(props) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); 
-    navigate('/'); 
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   const drawer = (
@@ -104,7 +104,7 @@ function EmployeeDashboards(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" position="fixed" sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -115,11 +115,7 @@ function EmployeeDashboards(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
             GrieveEase
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -141,9 +137,7 @@ function EmployeeDashboards(props) {
           variant="temporary"
           open={mobileOpen}
           onClose={() => setMobileOpen(!mobileOpen)}
-          ModalProps={{
-            keepMounted: true, 
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
@@ -152,57 +146,75 @@ function EmployeeDashboards(props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3, width: '100%' }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <div className="employee-dashboard">
-          <Typography variant="h4">Employee Dashboard</Typography>
-          <Button variant="contained" color="error" onClick={handleLogout} sx={{ margin: '20px 0' }}>
-            Logout
-          </Button>
+        <Typography variant="h4" gutterBottom>
+          Employee Dashboard
+        </Typography>
+        <Button variant="contained" color="error" onClick={handleLogout} sx={{ mb: 2 }}>
+          Logout
+        </Button>
 
-          <Typography variant="h5">Assigned Complaints</Typography>
-          <ul>
-            {complaints.map(complaint => (
-              <li key={complaint.complaintId} onClick={() => handleComplaintSelect(complaint)}>
-                {complaint.complaintName} - {complaint.status}
-              </li>
-            ))}
-          </ul>
-
-          {selectedComplaint && (
-            <div className="complaint-details">
-              <Typography variant="h6">Complaint Details</Typography>
-              <p><strong>Name:</strong> {selectedComplaint.complaintName}</p>
-              <p><strong>Content:</strong> {selectedComplaint.complaintContent}</p>
-              <p><strong>Status:</strong> {selectedComplaint.status}</p>
-              <p><strong>Resolution Time:</strong> {selectedComplaint.resolutionTime || 'Not resolved yet'}</p>
-              <TextField
-                label="Response"
-                multiline
-                rows={4}
-                value={response}
-                onChange={handleResponseChange}
-                fullWidth
-                margin="normal"
+        <Typography variant="h5" gutterBottom>
+          Assigned Complaints
+        </Typography>
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          {complaints.map(complaint => (
+            <ListItemButton key={complaint.complaintId} onClick={() => handleComplaintSelect(complaint)}>
+              <ListItemText
+                primary={complaint.complaintName}
+                secondary={`Status: ${complaint.status}`}
               />
-              <TextField
-                select
-                label="Status"
-                value={status}
-                onChange={handleStatusChange}
-                fullWidth
-                margin="normal"
-              >
-                <MenuItem value="Pending">Pending</MenuItem>
-                <MenuItem value="Resolved">Resolved</MenuItem>
-                <MenuItem value="Closed">Closed</MenuItem>
-              </TextField>
-              <Button variant="contained" color="primary" onClick={handleUpdateComplaint}>
-                Resolve Complaint
-              </Button>
-            </div>
-          )}
-        </div>
+            </ListItemButton>
+          ))}
+        </List>
+
+        {selectedComplaint && (
+          <Box mt={4} p={2} sx={{ bgcolor: '#f9f9f9', borderRadius: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              Complaint Details
+            </Typography>
+            <Typography variant="subtitle1"><strong>Name:</strong> {selectedComplaint.complaintName}</Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              <strong>Content:</strong> {selectedComplaint.complaintContent}
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              <strong>Status:</strong> {selectedComplaint.status}
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              <strong>Resolution Time:</strong> {selectedComplaint.resolutionTime || 'Not resolved yet'}
+            </Typography>
+            <TextField
+              label="Response"
+              multiline
+              rows={4}
+              value={response}
+              onChange={handleResponseChange}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              select
+              label="Status"
+              value={status}
+              onChange={handleStatusChange}
+              fullWidth
+              sx={{ mb: 2 }}
+            >
+              <MenuItem value="Pending">Pending</MenuItem>
+              <MenuItem value="Resolved">Resolved</MenuItem>
+              <MenuItem value="Closed">Closed</MenuItem>
+            </TextField>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleUpdateComplaint}
+              sx={{ mt: 2 }}
+            >
+              Resolve Complaint
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );
