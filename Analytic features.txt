@@ -1,0 +1,28 @@
+1. Complaint Status Overview
+Visualization: Pie Chart or Doughnut Chart
+Description: Shows the distribution of complaints across different statuses (Pending, In-Progress, Resolved, Closed).
+	
+3. Complaints by Category
+Visualization: Bar Chart or Horizontal Bar Chart
+Description: Shows the number of complaints in each category (Technical, Administrative, etc.), highlighting which categories receive the most complaints.
+4. Average Resolution Time
+Visualization: Bar Chart
+Description: Displays the average time taken to resolve complaints, segmented by category or department.
+5. Complaint Priority Distribution
+Visualization: Pie Chart or Bar Chart
+Description: Shows the distribution of complaints by priority level (Low, Medium, High, Critical).
+6. Top Complaint Generators
+Visualization: Bar Chart or Horizontal Bar Chart
+Description: Lists the departments or units generating the most complaints.
+7. Complaints by User Type963/36/
+Visualization: Pie Chart or Bar Chart
+Description: Shows the distribution of complaints by different user types (Students, Staff, External Users).
+8. Monthly/Quarterly Comparison
+Visualization: Line Chart or Bar Chart
+Description: Compares the number of complaints received in different months or quarters to identify seasonal trends.
+9. Resolution Rate
+Visualization: Line Chart or Bar Chart
+Description: Displays the rate of resolved complaints over time.
+10. Complaints by Location
+Visualization: Geographic Map
+Description: Shows the geographic distribution of complaints, useful if your system covers multiple regions or campuses.
