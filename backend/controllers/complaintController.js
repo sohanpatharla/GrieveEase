@@ -143,9 +143,9 @@ async function classifyAndUpdateComplaint(complaintId, complaintContent) {
   async function addComplaint(req, res) {
     console.log("Working");
     console.log(req.user);
-    let { complaintId, complaintName, complaintContent, priority, category, attachments, comments } = req.body;
+    let { complaintId, complaintName, complaintContent, priority, attachments } = req.body;
      createdBy = req.user.name;
-    category= await classifyAndUpdateComplaint(complaintId, complaintContent);
+    let category= await classifyAndUpdateComplaint(complaintId, complaintContent);
     
     console.log(req.body);
     try {
@@ -157,7 +157,6 @@ async function classifyAndUpdateComplaint(complaintId, complaintContent) {
         priority,
         category,
         attachments,
-        comments
       });
       await complaint.save().then(() => {
         console.log("Saved");
