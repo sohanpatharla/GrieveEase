@@ -14,6 +14,7 @@ const {
     getComplaintsByUserType,
     getMonthlyQuarterlyComparison,
     getResolutionRate,
+    getEmployeeAvgResolutionTime,
     getComplaintsByLocation
   } = require('../controllers/complaintController');
 
@@ -27,7 +28,8 @@ router.put('/updateComplaint/:id', verify, updateComplaint);
 router.delete('/delete/:id', verify, deleteComplaint);
 router.get('/complaintsovertime', getComplaintsOverTime);
 router.get('/category', getComplaintsByCategory);
-// router.get('/avgrestime', getAverageResolutionTime);
+router.get('/avgrestime', getEmployeeAvgResolutionTime);
+
 router.get('/complaintsbyuser', getComplaintsByUserType);
 
 

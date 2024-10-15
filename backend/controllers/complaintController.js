@@ -312,6 +312,55 @@ const getComplaintsByLocation = async (req, res) => {
   }
 };
 
+const Employee = require("../models/employeeModel");
+
+async function getEmployeeAvgResolutionTime(req, res) {
+  try {
+    // Aggregate complaints to calculate average resolution time by employee
+    const avgResolutionTime = await Complaint.aggregate([
+      {
+        $match: { status: { $in: ["Resolved", "Closed"] } } // Only resolved or closed complaints
+      },
+      {
+        $group: {
+          _id: "$assignedTo",
+          avgResolutionTime: {
+            $avg: {
+              $divide: [
+                { $subtract: ["$lastUpdated", "$createdOn"] },
+                1000 * 60 * 60 * 24 // Convert milliseconds to days
+              ]
+            }
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "employees", // Join with employees collection to get category
+          localField: "_id",
+          foreignField: "employeeName", // Assuming assignedTo is the employee name
+          as: "employeeInfo"
+        }
+      },
+      {
+        $unwind: "$employeeInfo"
+      },
+      {
+        $project: {
+          employeeName: "$_id",
+          avgResolutionTime: 1,
+          category: "$employeeInfo.category"
+        }
+      }
+    ]);
+
+    res.status(200).json(avgResolutionTime);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+
 module.exports = {
   addComplaint,
   updateComplaint,
@@ -326,6 +375,7 @@ module.exports = {
   getComplaintsByUserType,
   getMonthlyQuarterlyComparison,
   getResolutionRate,
+  getEmployeeAvgResolutionTime,
   getComplaintsByLocation
 };
 

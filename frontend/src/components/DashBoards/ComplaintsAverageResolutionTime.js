@@ -1,8 +1,6 @@
-// ComplaintsAverageResolutionTime.js
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import api from '../../api';
 
 const ComplaintsAverageResolutionTime = () => {
@@ -14,9 +12,7 @@ const ComplaintsAverageResolutionTime = () => {
 
   const fetchAverageResolutionTime = async () => {
     try {
-        const response = await api.get(
-            `${process.env.REACT_APP_BACKEND_URL}/complaints/avgrestime`
-          );
+      const response = await api.get(`${process.env.REACT_APP_BACKEND_URL}/complaints/avgrestime`);
       setAverageResolutionTime(response.data);
     } catch (error) {
       console.error('Error fetching average resolution time:', error);
@@ -25,14 +21,25 @@ const ComplaintsAverageResolutionTime = () => {
 
   return (
     <Box>
-      <Typography variant="h5">Average Resolution Time by Category</Typography>
-      <ul>
-        {averageResolutionTime.map((item, index) => (
-          <li key={index}>
-            {item._id}: {item.avgResolutionTime.toFixed(2)} days
-          </li>
-        ))}
-      </ul>
+      <Typography variant="h5">Average Resolution Time by Employee</Typography>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Employee Name</TableCell>
+            <TableCell>Category</TableCell>
+            <TableCell>Average Resolution Time (Days)</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {averageResolutionTime.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.employeeName}</TableCell>
+              <TableCell>{item.category}</TableCell>
+              <TableCell>{item.avgResolutionTime.toFixed(2)}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </Box>
   );
 };

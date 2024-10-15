@@ -1,5 +1,3 @@
-
-
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,44 +13,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
+import TextField from '@mui/material/TextField'; // Material UI text field
+import MenuItem from '@mui/material/MenuItem'; // Material UI dropdown
 import React, { useState, useEffect } from 'react';
 import api from '../../api';
-import '../DashBoards/EmployeeDashboard.css';
 import { useNavigate } from 'react-router-dom'; 
-
+import '../DashBoards/EmployeeDashboard.css';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
 
 function EmployeeDashboards(props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-      GrieveEase
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [complaints, setComplaints] = useState([]);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [response, setResponse] = useState('');
@@ -65,7 +38,6 @@ function EmployeeDashboards(props) {
 
   const fetchComplaints = async () => {
     try {
-      console.log(`Going to fetch complaints`);
       const res = await api.get('/employee/assignedComplaints');
       setComplaints(res.data);
     } catch (error) {
@@ -103,10 +75,31 @@ function EmployeeDashboards(props) {
       console.error('Error updating complaint:', error);
     }
   };
+
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear the token from local storage
-    navigate('/'); // Redirect to login page
+    localStorage.removeItem('token'); 
+    navigate('/'); 
   };
+
+  const drawer = (
+    <Box onClick={() => setMobileOpen(false)} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        GrieveEase
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }}>
+              <ListItemText primary={item} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -117,7 +110,7 @@ function EmployeeDashboards(props) {
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={handleDrawerToggle}
+            onClick={() => setMobileOpen(!mobileOpen)}
             sx={{ mr: 2, display: { sm: 'none' } }}
           >
             <MenuIcon />
@@ -138,14 +131,18 @@ function EmployeeDashboards(props) {
           </Box>
         </Toolbar>
       </AppBar>
-      <nav>
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="mailbox folders"
+      >
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
-          onClose={handleDrawerToggle}
+          onClose={() => setMobileOpen(!mobileOpen)}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true, 
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -154,64 +151,65 @@ function EmployeeDashboards(props) {
         >
           {drawer}
         </Drawer>
-      </nav>
-      <Box component="main" sx={{ p: 3 }}>
+      </Box>
+      <Box component="main" sx={{ p: 3, width: '100%' }}>
         <Toolbar />
         <div className="employee-dashboard">
-      <h1>Employee Dashboard</h1>
-      <button className="btn btn-danger logout-button" onClick={handleLogout}>Logout</button>
+          <Typography variant="h4">Employee Dashboard</Typography>
+          <Button variant="contained" color="error" onClick={handleLogout} sx={{ margin: '20px 0' }}>
+            Logout
+          </Button>
 
-      <div className="complaint-list">
-        <h2>Assigned Complaints</h2>
-        <ul>
-          {complaints.map(complaint => (
-            <li key={complaint.complaintId} onClick={() => handleComplaintSelect(complaint)}>
-              {complaint.complaintName} - {complaint.status}
-            </li>
-          ))}
-        </ul>
-      </div>
-      {selectedComplaint && (
-        <div className="complaint-details">
-          <h2>Complaint Details</h2>
-          <p><strong>ID:</strong> {selectedComplaint.complaintId}</p>
-          <p><strong>Name:</strong> {selectedComplaint.complaintName}</p>
-          <p><strong>Description:</strong> {selectedComplaint.description}</p>
-          <p><strong>Created On:</strong> {new Date(selectedComplaint.createdOn).toLocaleString()}</p>
-          <p><strong>Priority:</strong> {selectedComplaint.priority}</p>
-          <p><strong>Category:</strong> {selectedComplaint.category}</p>
-          <p><strong>Assigned To:</strong> {selectedComplaint.assignedTo?.name}</p>
-          <p><strong>Last Updated:</strong> {new Date(selectedComplaint.lastUpdated).toLocaleString()}</p>
-          <p><strong>Status:</strong> {selectedComplaint.status}</p>
-          <p><strong>Attachments:</strong></p>
+          <Typography variant="h5">Assigned Complaints</Typography>
           <ul>
-            {selectedComplaint.attachments.map((file, index) => (
-              <li key={index}><a href={file} target="_blank" rel="noopener noreferrer">Attachment {index + 1}</a></li>
+            {complaints.map(complaint => (
+              <li key={complaint.complaintId} onClick={() => handleComplaintSelect(complaint)}>
+                {complaint.complaintName} - {complaint.status}
+              </li>
             ))}
           </ul>
-          <div className="update-section">
-            <h3>Update Complaint</h3>
-            <textarea
-              value={response}
-              onChange={handleResponseChange}
-              placeholder="Add your response here..."
-            ></textarea>
-            <select value={status} onChange={handleStatusChange}>
-              <option value="">Select Status</option>
-              <option value="open">Open</option>
-              <option value="in-progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-              <option value="closed">Closed</option>
-            </select>
-            <button onClick={handleUpdateComplaint}>Resolve Complaint</button>
-          </div>
+
+          {selectedComplaint && (
+            <div className="complaint-details">
+              <Typography variant="h6">Complaint Details</Typography>
+              <p><strong>Name:</strong> {selectedComplaint.complaintName}</p>
+              <p><strong>Content:</strong> {selectedComplaint.complaintContent}</p>
+              <p><strong>Status:</strong> {selectedComplaint.status}</p>
+              <p><strong>Resolution Time:</strong> {selectedComplaint.resolutionTime || 'Not resolved yet'}</p>
+              <TextField
+                label="Response"
+                multiline
+                rows={4}
+                value={response}
+                onChange={handleResponseChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                select
+                label="Status"
+                value={status}
+                onChange={handleStatusChange}
+                fullWidth
+                margin="normal"
+              >
+                <MenuItem value="Pending">Pending</MenuItem>
+                <MenuItem value="Resolved">Resolved</MenuItem>
+                <MenuItem value="Closed">Closed</MenuItem>
+              </TextField>
+              <Button variant="contained" color="primary" onClick={handleUpdateComplaint}>
+                Update Complaint
+              </Button>
+            </div>
+          )}
         </div>
-      )}
-    </div>
       </Box>
     </Box>
   );
 }
 
+EmployeeDashboards.propTypes = {
+  window: PropTypes.func,
+};
 
 export default EmployeeDashboards;

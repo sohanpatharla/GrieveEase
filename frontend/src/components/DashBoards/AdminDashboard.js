@@ -453,7 +453,7 @@ const AdminDashboard = () => {
             <Typography variant="h5">Complaints Over Time Analysis</Typography>
             <ComplaintsOverTime />
             <ComplaintsByCategory />
-            {/* <ComplaintsAverageResolutionTime /> */}
+            <ComplaintsAverageResolutionTime />
             <ComplaintsByUserType />
           </Box>
         )}
