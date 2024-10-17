@@ -19,7 +19,7 @@ const ComplaintsOverTime = () => {
 
   useEffect(() => {
     console.log('In complaints service');
-    axios.get(`${import.meta.VITE_APP_BACKEND_URL}/complaints/complaintsovertime`)
+    axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/complaints/complaintsovertime`)
       .then(response => {
         console.log('Response received:', response.data);
         const formattedData = response.data.map(item => ({

@@ -9,7 +9,7 @@ const ComplaintStatusOverview = () => {
     const fetchStatusData = async () => {
       try {
         const response = await api.get(
-          `${import.meta.VITE_APP_BACKEND_URL}/admin/complaintStatuses`
+          `${import.meta.env.VITE_APP_BACKEND_URL}/admin/complaintStatuses`
         );
         const statusData = Object.entries(response.data).map(
           ([key, value], index) => ({

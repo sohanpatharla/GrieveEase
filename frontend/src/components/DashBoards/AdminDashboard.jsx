@@ -82,7 +82,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/users/profiles`);
+      const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/users/profiles`);
       console.log("Fetched users:", res.data);
       setUsers(res.data);
     } catch (error) {
@@ -94,7 +94,7 @@ const AdminDashboard = () => {
     try {
       const { id } = formData;
       console.log(formData)
-      const res = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/admin/complaint/${id}`);
+      const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/complaint/${id}`);
       setFetchedComplaint(res.data);
       setMessage("Complaint fetched successfully!");
     } catch (error) {
@@ -105,7 +105,7 @@ const AdminDashboard = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/admin/complaints`);
+      const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/complaints`);
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching complaints:", error);
@@ -114,7 +114,7 @@ const AdminDashboard = () => {
 
   const fetchOpenComplaints = async () => {
     try {
-      const res = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/admin/openStatus`);
+      const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/openStatus`);
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching open complaints:", error);
@@ -123,7 +123,7 @@ const AdminDashboard = () => {
 
   const fetchClosedComplaints = async () => {
     try {
-      const res = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/admin/closedStatus`);
+      const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/closedStatus`);
       setComplaints(res.data);
     } catch (error) {
       console.error("Error fetching closed complaints:", error);
@@ -134,7 +134,7 @@ const AdminDashboard = () => {
     try {
       const { id } = formData;
       console.log(formData)
-      await api.delete(`${import.meta.VITE_APP_BACKEND_URL}/admin/delete/${id}`);
+      await api.delete(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/delete/${id}`);
       setFetchedComplaint(null);
       setMessage("Complaint deleted successfully!");
     } catch (error) {
@@ -145,7 +145,7 @@ const AdminDashboard = () => {
 
   const fetchEmployees = async () => {
     try {
-      const res = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/admin/employees`);
+      const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/employees`);
       setEmployees(res.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const res = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/admin/analytics`);
+      const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/analytics`);
       const data = res.data;
       setStatusData([
         { name: 'Pending', value: data.pending },
@@ -181,7 +181,7 @@ const AdminDashboard = () => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      await api.post(`${import.meta.VITE_APP_BACKEND_URL}/admin/addEmployee`, formData);
+      await api.post(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/addEmployee`, formData);
       setMessage("Employee added successfully!");
       fetchEmployees();
     } catch (error) {
@@ -195,7 +195,7 @@ const AdminDashboard = () => {
     console.log(formData);
     console.log(`this is the id${employeeId}`);
     try {
-      await api.put(`${import.meta.VITE_APP_BACKEND_URL}/admin/updateEmployee/${employeeId}`, updateData);
+      await api.put(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/updateEmployee/${employeeId}`, updateData);
       setMessage("Employee updated successfully!");
       setFormData({});
     } catch (error) {
@@ -207,7 +207,7 @@ const AdminDashboard = () => {
   const handleDeleteEmployee = async () => {
     const { employeeId } = formData;
     try {
-      await api.delete(`${import.meta.VITE_APP_BACKEND_URL}/admin/deleteEmployee/${employeeId}`);
+      await api.delete(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/deleteEmployee/${employeeId}`);
       setMessage("Employee deleted successfully!");
     } catch (error) {
       setMessage("Error deleting employee");
@@ -219,7 +219,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       const { id, ...updateData } = formData;
-      await api.put(`${import.meta.VITE_APP_BACKEND_URL}/admin/updateComplaint/${id}`, updateData);
+      await api.put(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/updateComplaint/${id}`, updateData);
       setMessage("Complaint updated successfully!");
     } catch (error) {
       console.error("Error updating complaint:", error.response || error.message);
@@ -235,7 +235,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     const { id } = formData;
     try {
-      await api.post(`${import.meta.VITE_APP_BACKEND_URL}/admin/mapComplaint/${id}`, { assignedTo: employeeName });
+      await api.post(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/mapComplaint/${id}`, { assignedTo: employeeName });
       setMessage('Complaint updated successfully!');
     } catch (error) {
       console.error('Error mapping complaint:', error.response || error.message);

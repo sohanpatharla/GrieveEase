@@ -3,10 +3,10 @@
   // require('dotenv').config();
 
   const api = axios.create({
-    baseURL: `${import.meta.VITE_APP_BACKEND_URL}`,
+    baseURL: `${import.meta.env.VITE_APP_BACKEND_URL}`,
   });
-  // const PORT=import.meta.PORT;
-  // const BACKEND=import.meta.BACKEND_PORT;
+  // const PORT=import.meta.env.PORT;
+  // const BACKEND=import.meta.env.BACKEND_PORT;
 
   // console.log(`Running on port:${PORT}`);
   // console.log(`Running on port:${BACKEND}`);

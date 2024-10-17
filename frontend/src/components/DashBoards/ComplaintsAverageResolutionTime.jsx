@@ -12,7 +12,7 @@ const ComplaintsAverageResolutionTime = () => {
 
   const fetchAverageResolutionTime = async () => {
     try {
-      const response = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/complaints/avgrestime`);
+      const response = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/complaints/avgrestime`);
       setAverageResolutionTime(response.data);
     } catch (error) {
       console.error('Error fetching average resolution time:', error);

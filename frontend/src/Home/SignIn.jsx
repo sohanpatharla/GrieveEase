@@ -29,15 +29,17 @@ function SignInForm() {
     console.log('In login');
     e.preventDefault();
     try {
-      console.log(`${import.meta.VITE_APP_BACKEND_URL}`);
+      console.log(import.meta.env);
+
+      console.log(import.meta.env.VITE_APP_BACKEND_URL);
       if (role === 'admin') {
-        const res = await axios.post(`${import.meta.VITE_APP_BACKEND_URL}/admin/login`, formData);
+        const res = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/login`, formData);
       localStorage.setItem('token', res.data.token); // Navigate to '/admin' route after successful login
       } else if (role === 'employee') {
-        const res = await axios.post(`${import.meta.VITE_APP_BACKEND_URL}/employee/login`, formData);
+        const res = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/employee/login`, formData);
       localStorage.setItem('token', res.data.token);
       } else {
-        const res = await axios.post(`${import.meta.VITE_APP_BACKEND_URL}/users/login`, formData);
+        const res = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/users/login`, formData);
       localStorage.setItem('token', res.data.token);
       }
       

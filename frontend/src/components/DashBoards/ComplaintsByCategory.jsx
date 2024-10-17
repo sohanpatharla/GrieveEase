@@ -15,7 +15,7 @@ const ComplaintsByCategory = () => {
   const fetchComplaintsByCategory = async () => {
     try {
         const response = await api.get(
-            `${import.meta.VITE_APP_BACKEND_URL}/complaints/category`
+            `${import.meta.env.VITE_APP_BACKEND_URL}/complaints/category`
           );
       
       setComplaintsByCategory(response.data);

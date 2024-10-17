@@ -12,7 +12,7 @@ const ComplaintsByUserType = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await api.get(`${import.meta.VITE_APP_BACKEND_URL}/complaints/complaintsbyuser`);
+        const result = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/complaints/complaintsbyuser`);
         console.log(result);
         setData(result.data);
       } catch (error) {

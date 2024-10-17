@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:600");
+@import url("https://fonts.googleapis.com/css2?family=Cardo&family=Montserrat:ital,wght@0,900;1,500&display=swap");
 
 * {
   margin: 0;
@@ -6,7 +7,7 @@
 }
 
 #landingback {
-  background-image: url("../../public/svg/registration.svg"), url("../../public/svg/test3.svg");
+  background-image: url("../../svg/registration.svg"), url("../../svg/test3.svg");
   background-position: right top, left bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -94,8 +95,6 @@
   font-size: 1.8rem;
   text-align: center;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Cardo&family=Montserrat:ital,wght@0,900;1,500&display=swap");
 
 .underline_btn {
   display: inline-block;
