@@ -1,4 +1,6 @@
 /* Home.css */
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap");
 
 body {
   overflow-x: hidden;
@@ -259,8 +261,7 @@ html, body, .app {
 }
 
 /* Flex */
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap");
+
 * {
   margin: 0;
   padding: 0;

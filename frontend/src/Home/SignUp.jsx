@@ -10,6 +10,8 @@ function SignUpForm() {
     mobileNumber: '12345678',
     role: 'user', // default role is set to 'user'
   });
+
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState();
   const navigate = useNavigate();
 

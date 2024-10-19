@@ -20,6 +20,8 @@ function SignInForm() {
   //   email: "",
   //   password: ""
   // });
+
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState();
   const navigate = useNavigate(); // Use useNavigate hook
 

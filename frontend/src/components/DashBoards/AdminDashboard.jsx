@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 import {
-  AppBar, Tabs, Tab, Box, Typography, Button, Grid, Card, CardContent, Snackbar, IconButton,TextField,List, ListItem, ListItemText
+  AppBar, Tabs, Tab, Box, Typography, Button, Grid, Card, CardContent, Snackbar, IconButton,TextField,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import api from '../../api';
@@ -56,15 +56,15 @@ const AdminDashboard = () => {
   const [employeeName, setEmployeeName] = useState('');
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState("");
-  const [statusData, setStatusData] = useState([]);
-  const [timeData, setTimeData] = useState([]);
-  const [categoryData, setCategoryData] = useState([]);
-  const [priorityData, setPriorityData] = useState([]);
+  // const [statusData, setStatusData] = useState([]);
+  // const [timeData, setTimeData] = useState([]);
+  // const [categoryData, setCategoryData] = useState([]);
+  // const [priorityData, setPriorityData] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const fetchData = async () => {
     await fetchUsers();
@@ -152,23 +152,23 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchAnalytics = async () => {
-    try {
-      const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/analytics`);
-      const data = res.data;
-      setStatusData([
-        { name: 'Pending', value: data.pending },
-        { name: 'In Progress', value: data.inProgress },
-        { name: 'Resolved', value: data.resolved },
-        { name: 'Rejected', value: data.rejected }
-      ]);
-      setTimeData(data.timeData); // Assuming timeData is an array of {name: 'date', count: number}
-      setCategoryData(data.categoryData); // Assuming categoryData is an array of {name: 'category', count: number}
-      setPriorityData(data.priorityData); // Assuming priorityData is an array of {name: 'priority', count: number}
-    } catch (error) {
-      console.error('Error fetching analytics:', error);
-    }
-  };
+  // const fetchAnalytics = async () => {
+  //   try {
+  //     const res = await api.get(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/analytics`);
+  //     const data = res.data;
+  //     setStatusData([
+  //       { name: 'Pending', value: data.pending },
+  //       { name: 'In Progress', value: data.inProgress },
+  //       { name: 'Resolved', value: data.resolved },
+  //       { name: 'Rejected', value: data.rejected }
+  //     ]);
+  //     setTimeData(data.timeData); // Assuming timeData is an array of {name: 'date', count: number}
+  //     setCategoryData(data.categoryData); // Assuming categoryData is an array of {name: 'category', count: number}
+  //     setPriorityData(data.priorityData); // Assuming priorityData is an array of {name: 'priority', count: number}
+  //   } catch (error) {
+  //     console.error('Error fetching analytics:', error);
+  //   }
+  // };
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
