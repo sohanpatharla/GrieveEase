@@ -10,6 +10,16 @@
   margin-bottom: 20px;
 }
 
+form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s;
+}
+
 .tabs button {
   flex: 1;
   padding: 10px 20px;
@@ -21,6 +31,12 @@
   border-radius: 5px; /* Rounded corners */
   transition: background-color 0.3s, color 0.3s;
 }
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+
 
 .tabs button.active {
   background-color: #007bff; /* Blue background for active tab */
@@ -61,19 +77,8 @@ form input {
   border-radius: 5px; /* Rounded corners */
 }
 
-form button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s;
-}
 
-form button:hover {
-  background-color: #0056b3;
-}
+
 
 .message {
   color: #155724; /* Green color for success message */
