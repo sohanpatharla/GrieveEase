@@ -1,6 +1,7 @@
+
 # GrieveEase
 
-Effortless Complaint Resolution
+**Effortless Complaint Resolution**
 
 ## Table of Contents
 
@@ -42,22 +43,35 @@ GrieveEase is an online grievance redressal system designed to provide effortles
    ```bash
    git clone https://github.com/your-username/GrieveEase.git
    cd GrieveEase
-# Install backend dependencies
-cd backend
-npm install
-# Install frontend dependencies
-cd ../frontend
-npm install
+   ```
 
-# Start backend server
-cd backend
-npm start
+2. **Install backend dependencies:**
+   ```bash
+   cd backend
+   npm install
+   ```
 
-# Start frontend server
-cd ../frontend
-npm start
+3. **Install frontend dependencies:**
+   ```bash
+   cd ../frontend
+   npm install
+   ```
 
+4. **Start backend server:**
+   ```bash
+   cd backend
+   npm start
+   ```
 
+5. **Start frontend server:**
+   ```bash
+   cd ../frontend
+   npm start
+   ```
+
+## Project Structure
+
+```
 GrieveEase/
 ├── backend/
 │   ├── config/
@@ -77,36 +91,56 @@ GrieveEase/
 │   │   └── AdminDashboard.js
 │   └── package.json
 └── README.md
+```
 
-Usage
-Admin Dashboard: Provides functionalities for fetching and managing users, complaints, employees, and analytics.
-User Dashboard: Allows users to submit complaints and track their status.
-Employee Dashboard: Enables employees to manage assigned complaints.
+## Usage
 
-API Endpoints
-User Routes
-GET /users/profiles: Fetch all user profiles.
-POST /users/register: Register a new user.
-POST /users/login: Login a user.
-Admin Routes
-GET /admin/complaints: Fetch all complaints.
-GET /admin/complaint/:id: Fetch a specific complaint by ID.
-DELETE /admin/delete/:id: Delete a specific complaint by ID.
-PUT /admin/updateComplaint/:id: Update a specific complaint by ID.
-GET /admin/openStatus: Fetch complaints with open status.
-GET /admin/closedStatus: Fetch complaints with closed status.
-GET /admin/employees: Fetch all employee profiles.
-POST /admin/addEmployee: Add a new employee.
-PUT /admin/updateEmployee/:employeeId: Update a specific employee by ID.
-DELETE /admin/deleteEmployee/:employeeId: Delete a specific employee by ID.
-GET /admin/analytics: Fetch analytics data.
-Employee Routes
-GET /employee/complaints: Fetch complaints assigned to the employee.
-Contributing
+- **Admin Dashboard**: Provides functionalities for fetching and managing users, complaints, employees, and analytics.
+- **User Dashboard**: Allows users to submit complaints and track their status.
+- **Employee Dashboard**: Enables employees to manage assigned complaints.
+
+## API Endpoints
+
+### User Routes
+- **GET** `/users/profiles`: Fetch all user profiles.
+- **POST** `/users/register`: Register a new user.
+- **POST** `/users/login`: Login a user.
+
+### Admin Routes
+- **GET** `/admin/complaints`: Fetch all complaints.
+- **GET** `/admin/complaint/:id`: Fetch a specific complaint by ID.
+- **DELETE** `/admin/delete/:id`: Delete a specific complaint by ID.
+- **PUT** `/admin/updateComplaint/:id`: Update a specific complaint by ID.
+- **GET** `/admin/openStatus`: Fetch complaints with open status.
+- **GET** `/admin/closedStatus`: Fetch complaints with closed status.
+- **GET** `/admin/employees`: Fetch all employee profiles.
+- **POST** `/admin/addEmployee`: Add a new employee.
+- **PUT** `/admin/updateEmployee/:employeeId`: Update a specific employee by ID.
+- **DELETE** `/admin/deleteEmployee/:employeeId`: Delete a specific employee by ID.
+- **GET** `/admin/analytics`: Fetch analytics data.
+
+### Employee Routes
+- **GET** `/employee/complaints`: Fetch complaints assigned to the employee.
+
+## Contributing
+
 We welcome contributions from the community! Please read the following guidelines before submitting a pull request:
 
-Fork the repository.
-Create a new branch (git checkout -b feature-branch).
-Make your changes and commit them (git commit -m 'Add new feature').
-Push to the branch (git push origin feature-branch).
-Create a pull request.
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature-branch
+   ```
+3. Make your changes and commit them:
+   ```bash
+   git commit -m 'Add new feature'
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature-branch
+   ```
+5. Create a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
