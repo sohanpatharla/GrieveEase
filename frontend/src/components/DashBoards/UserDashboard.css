@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: 'Roboto', sans-serif;
     background: #1a1a1a; 
     margin: 0;
@@ -7,7 +7,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: #ccc; 
+    /* color: #ccc;  */
     overflow: hidden;
 }
 
@@ -131,4 +131,4 @@ button:active {
         opacity: 1;
         transform: translateX(0);
     }
-}
+} */
