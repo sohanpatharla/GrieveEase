@@ -174,7 +174,8 @@ async function updateComplaint(req, res) {
 
   try {
     // Find the complaint by id and createdBy user
-    const complaint = await Complaint.findOne({ _id: id, createdBy: req.user.id });
+    // const complaint = await Complaint.findOne({ _id: id, createdBy: req.user.id });
+    const complaint = await Complaint.findOne({ _id: id});
     if (!complaint) {
       return res.status(404).json({ msg: 'Complaint not found' });
     }
